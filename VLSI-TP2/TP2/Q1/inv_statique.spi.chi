@@ -1,0 +1,24 @@
+  Run on schmitt (Linux 3.10.0-1160.92.1.el7.x86_64)
+
+
+***** SYSTEM INFORMATION ...
+
+*** User  : izm
+*** OS    : \S [VCO = aol]
+*** CPU   :
+    Intel(R) Core(TM) i5-8400 CPU @ 2.80GHz
+    Number of physical processors     : 1
+    Hyper-Threading Technology        : disabled
+    Number of cpu cores               : 6
+    Number of logical processors      : 6
+*** Freq  : 1296.777MHz
+*** Cache : 9216 KB
+*** MEM   : 32572528 kB
+*** Date  : Wed Sep 27 10:00:20 2023
+
+*** Eldo VERSION : ELDO 17.1 patch1 (64 bits) Thu Apr  6 15:28:32 GMT 2017
+
+/users/soft/mentor/ams-2017.1_1/aol/bin/eldo_64.exe -i inv_statique.spi
+
+ERROR 1: Unable to open file inv_statique.spi
++   No such file or directory

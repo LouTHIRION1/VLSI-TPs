@@ -1,0 +1,679 @@
+  Run on schmitt (Linux 3.10.0-1160.92.1.el7.x86_64)
+
+
+***** SYSTEM INFORMATION ...
+
+*** User  : izm
+*** OS    : \S [VCO = aol]
+*** CPU   :
+    Intel(R) Core(TM) i5-8400 CPU @ 2.80GHz
+    Number of physical processors     : 1
+    Hyper-Threading Technology        : disabled
+    Number of cpu cores               : 6
+    Number of logical processors      : 6
+*** Freq  : 3140.771MHz
+*** Cache : 9216 KB
+*** MEM   : 32572528 kB
+*** Date  : Wed Sep 27 11:13:15 2023
+
+*** Eldo VERSION : ELDO 17.1 patch1 (64 bits) Thu Apr  6 15:28:32 GMT 2017
+
+/users/soft/mentor/ams-2017.1_1/aol/bin/eldo_64.exe -i inv_statique.spi
+
+
+***** PRE-PROCESSING ...
+1*******27-Sep-23 *******  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  *******11:13:15******
+
+0*  simulation statique de l'inverseur CMOS
+
+0****     INPUT LISTING                                               
+
+0***********************************************************************
+    2  
+    3  .LIB  mon_inv.spi  typical
+    4  ** INCLUDING LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=typical
+    4  ** including /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/mosn_mosp.wc
+    1  ********************************************************************************
+    2  * c035 n slow models
+    3  ********************************************************************************* mos models
+    4  ********************************************************************************
+    5  *
+    6  * nmos 3.3v minimum idss current
+    7  *        #eldo 4.4.1  #spectre   #hspice96
+    8  *
+    9  .MODEL TN   NMOS                     LEVEL   =   59
+   10  +TOX    =   8.100E-09   TR      =   2.700E+01   WVAR    =  -5.000E-08
+   11  +LVAR   =   4.000E-08   WOT     =   7.527E-08   LAP     =   6.765E-09
+   12  +LER    =   5.000E-06   WER     =   1.000E-05   SWA3    =  -1.282E-08
+   13  +SLA3   =  -1.690E-07   A3R     =   1.113E+00   SWA2    =  -4.664E-09
+   14  +SLA2   =   1.326E-07   A2R     =   2.008E+01   SWA1    =   1.078E-07
+   15  +SLA1   =   1.251E-07   STA1    =   5.000E-03   A1R     =   5.839E+00
+   16  +SLVSBT =   0.000E+00   VSBTR   =   1.000E+02   SLZET1  =  -1.105E-03
+   17  +ETAZET =   5.000E-01   ZET1R   =   2.808E+00   ETAMR   =   1.000E+00
+   18  +SLMO   =   3.026E-05   STMO    =  -5.000E-04   MOR     =   3.066E-01
+   19  +ETAGAMR=   1.000E+00   SLGAMOO =   2.113E-15   GAMOOR  =   1.546E-03
+   20  +VPR    =   5.942E+00   SWALP   =   0.000E+00   SLALP   =   0.000E+00
+   21  +ETAALP =   1.000E+00   ALPR    =   1.000E-02   ETADSR  =   6.000E-01
+   22  +SWGAM1 =   1.841E-08   SLGAM1  =   2.085E-08   GAM1R   =  -2.046E-02
+   23  +SWTHE3 =  -1.396E-09   STLTHE3 =  -3.000E-10   SLTHE3R =   1.000E-07
+   24  +STTHE3R=   1.000E-05   THE3R   =  -2.530E-02   SWTHE2  =   1.802E-08
+   25  +STLTHE2=  -2.118E-10   SLTHE2R =  -3.560E-08   STTHE2R =   3.156E-04
+   26  +THE2R  =   1.762E-01   SWTHE1  =  -7.780E-08   STLTHE1 =  -6.134E-10
+   27  +SLTHE1R=   1.689E-07   STTHE1R =  -5.700E-04   THE1R   =   2.460E-01
+   28  +ETABET =   1.893E+00   BETSQ   =   2.203E-04   SWVSBX  =   0.000E+00
+   29  +SLVSBX =   0.000E+00   VSBXR   =   1.000E+02   PHIBR   =   8.500E-01
+   30  +SWK    =  -1.200E-08   SLK     =  -5.975E-08   KR      =   5.554E-01
+   31  +SWKO   =  -1.200E-08   SLKO    =  -5.975E-08   KOR     =   5.554E-01
+   32  +SWVTO  =   2.044E-08   SL2VTO  =  -3.157E-14   SLVTO   =   9.078E-08
+   33  +STVTO  =  -8.580E-04   VTOR    =   6.650E-01
+   34  +COL    =   1.010E-10   NTR     =  22.000E-21   NFR     =   3.890E-11
+   35  +CJ     =   9.330E-04   PB      =   0.8         MJ      =   0.370
+   36  +CJSW   =   2.994E-10   PBSW    =   0.8         MJSW    =   0.210
+   37  +CJGATE =   2.085E-10   JSW     =   3.000E-13   JS      =   4.70E-09
+   38  +N      =   1.000
+   39  +DCAPLEV = 0 HDIF = 0.4875E-6
+   40  *
+   41  ********************************************************************************
+   42  *
+   43  * p slow models
+   44  *
+   45  ********************************************************************************* mos models
+   46  ********************************************************************************
+   47  *
+   48  * pmos 3.3v minimum idss current 
+   49  *        #eldo 4.4.1  #spectre   #hspice96
+   50  *
+   51  .MODEL TP   PMOS                   LEVEL   =   59
+   52  +TOX    =   8.100E-09   TR      =   2.700E+01   WVAR    =  -5.000E-08
+   53  +LVAR   =   4.000E-08   WOT     =   3.874E-08   LAP     =   3.903E-08
+   54  +LER    =   5.000E-06   WER     =   1.000E-05   SWA3    =   7.542E-08
+   55  +SLA3   =  -7.093E-08   A3R     =   1.008E+00   SWA2    =   1.373E-07
+   56  +SLA2   =  -2.472E-07   A2R     =   3.354E+01   SWA1    =   4.350E-06
+   57  +SLA1   =   4.801E-07   STA1    =   4.000E-02   A1R     =   1.510E+01
+   58  +SLVSBT =   0.000E+00   VSBTR   =   1.000E+02   SLZET1  =  -1.739E-07
+   59  +ETAZET =   1.000E+00   ZET1R   =   1.858E+00   ETAMR   =   1.000E+00
+   60  +SLMO   =   1.685E-05   STMO    =   0.000E+00   MOR     =   3.245E-01
+   61  +ETAGAMR=   1.000E+00   SLGAMOO =   1.163E-15   GAMOOR  =   4.776E-04
+   62  +VPR    =   4.340E+00   SWALP   =   4.032E-10   SLALP   =   8.163E-09
+   63  +ETAALP =   1.000E+00   ALPR    =   1.634E-02   ETADSR  =   6.000E-01
+   64  +SWGAM1 =   4.105E-12   SLGAM1  =   1.556E-08   GAM1R   =  -3.021E-04
+   65  +SWTHE3 =   1.452E-08   STLTHE3 =  -6.000E-11   SLTHE3R =   4.318E-09
+   66  +STTHE3R=   0.000E+00   THE3R   =  -9.268E-03   SWTHE2  =   2.397E-08
+   67  +STLTHE2=   0.000E+00   SLTHE2R =  -3.957E-08   STTHE2R =  -5.000E-04
+   68  +THE2R  =   3.715E-01   SWTHE1  =  -1.143E-08   STLTHE1 =  -1.786E-10
+   69  +SLTHE1R=   7.519E-08   STTHE1R =  -6.200E-04   THE1R   =   2.267E-01
+   70  +ETABET =   1.207E+00   BETSQ   =   4.223E-05   SWVSBX  =   0.000E+00
+   71  +SLVSBX =   0.000E+00   VSBXR   =   1.000E+02   PHIBR   =   8.500E-01
+   72  +SWK    =   4.046E-09   SLK     =  -4.272E-08   KR      =   6.860E-01
+   73  +SWKO   =   4.046E-09   SLKO    =  -4.272E-08   KOR     =   6.860E-01
+   74  +SWVTO  =  -2.230E-08   SL2VTO  =  -8.381E-15   SLVTO   =   2.513E-08
+   75  +STVTO  =  -8.000E-04   VTOR    =   6.550E-01
+   76  +COL    =   1.010E-10   NTR     =  22.000E-21   NFR     =   8.590E-12     
+   77  +CJ     =   1.329E-03   PB      =   0.8         MJ      =   0.430
+   78  +CJSW   =   3.146E-10   PBSW    =   0.8         MJSW    =   0.400
+   79  +CJGATE =   1.864E-10   JSW     =   2.00E-13    JS      =   2.500E-09
+   80  +N      =   1.000
+   81  +DCAPLEV = 0 HDIF = 0.4875E-6
+    4  
+    5  .LIB  mon_inv.spi  circuit
+    6  ** INCLUDING LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=circuit
+    9  .SUBCKT MON_INV D Q VDD VSS BN BP PARAM: W=2.0E-06
+   10  MP Q D VDD BP TP L=0.35E-06 W=W 
+   11  MN Q D VSS BN TN L=0.35E-06 W=1.4E-06
+   12  .ENDS
+   13  
+    6  ** END OF LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=circuit
+    4  ** END OF LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=typical
+    4  .PARAM WP=2E-6
+    5  
+    6  
+    7  * Instanciation de l'inverseur, modèle mon_inv, le paramètre W=Wp
+    8  XINV D Q DD 0 0 DD MON_INV  W=WP
+    9  
+   10  * La source d'alimentatn 
+   11  Vdd dd 0 DC 3.3
+   12  
+   13  * la source d'entrée
+   14  Vd d 0 DC 0.0
+   15  
+   16  * Analyse DC paramétrique: on fait varier la source d'entrée 
+   17  .DC Vd 0.0 3.3 {3.3/63}
+   18  
+   19  * On peut faire varier le paramètre Wp pour essayer de trouver
+   20  * une valeur qui équilibre la porte 
+   21  .STEP param Wp 1u 5u 0.5u
+   22  .PLOT V(Q) V(D)
+   23  
+   24  .END
+
+End of file 
+
+
+***** 0  error(s). 
+***** 0  warning(s). 
+
+
+***** GENERATION ...
+
+
+***** 0  error(s). 
+***** 0  warning(s). 
+
+
+INFORMATION ABOUT COMPILATION 
+
+Peak memory usage (MB): 39
+Virtual memory usage (MB): 377
+4 elements
+3 nodes 
+2 input signals
+Detail about objects and nodes found in the design, and simulated by Eldo:
+Number of nodes                     3
+Number of intrinsic nodes           0
+Number of input signals             2
+Number of resistors                 0
+Number of floating capacitors       0
+Number of grounded capacitors       0
+Number of inductors                 0
+Number of voltage sources           2
+Number of current sources           0
+Number of dependent sources         0
+Number of diodes                    0
+Number of BJT                       0
+Number of JFET                      0
+Number of MOS                       2
+Number of SWITCHES                  0
+Number of transmission lines        0
+Total number of elements simulated  4
+Repartition per level of MOS
+  MOSP9 2
+Note 108: Acquiring license Analog Simulator Kernel (eldokernel)
+
+
+0************************************************************************************************************************
+
+
+run number 1 out of 9
+   value of parameter WP is 1.000000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:13:15*****************
+
+0*  simulation statique de l'inverseur CM
+0****                 MODELS PARAMETERS                                    TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+
+ DEVICE          MOS
+ MODEL: TN
+ TYPE            N
+ LEVEL 59 :  MOSP9 - v1.2
+ LIBRARY : /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi
+ CORNER  : typical
+
+  names    values    units     names    values    units     names    values    units   
+  -----    ------    -----     -----    ------    -----     -----    ------    -----   
+VERSION = 9.0310E+02 -       INIT    = 0.0        -       LER,LREF= 5.0000E-06 m      
+WER,WREF= 1.0000E-05 m       WDOG    = 0.0        m       FTHE1   = 0.0        -      
+TOX     = 8.1000E-09 m       
+ * Threshold-Voltage related Parameters *
+VTOR    = 6.6500E-01 V       STVTO   =-8.5800E-04 V/deg.K SLVTO   = 9.0780E-08 V.m    
+SL2VTO  =-3.1570E-14 V.m^2   SWVTO   = 2.0440E-08 V.m     PHIBR   = 8.5000E-01 V      
+KOR     = 5.5540E-01 V^1/2   SLKO    =-5.9750E-08 V^1/2.m SWKO    =-1.2000E-08 V^1/2.m
+KR      = 5.5540E-01 V^1/2   SLK     =-5.9750E-08 V^1/2.m SWK     =-1.2000E-08 V^1/2.m
+VSBXR   = 1.0000E+02 V       SLVSBX  = 0.0        V.m     SWVSBX  = 0.0        V.m    
+ * Channel-Current related Parameters *
+BETSQ   = 2.2030E-04 A/V^2   ETABET  = 1.8930E+00 -       THE1R   = 2.4600E-01 1/V    
+THE2R   = 1.7620E-01 1/V^1/2 THE3R   =-2.5300E-02 1/V     STTHE1R =-5.7000E-04 unit1  
+STTHE2R = 3.1560E-04 unit2   STTHE3R = 1.0000E-05 unit1   SLTHE1R = 1.6890E-07 m/V    
+SLTHE2R =-3.5600E-08 m/V^1/2 SLTHE3R = 1.0000E-07 m/V     STLTHE1 =-6.1340E-10 unit3  
+STLTHE2 =-2.1180E-10 unit4   STLTHE3 =-3.0000E-10 unit3   SWTHE1  =-7.7800E-08 m/V    
+SWTHE2  = 1.8020E-08 m/V^1/2 SWTHE3  =-1.3960E-09 m/V     
+ * Drain-Feedback related Parameters *
+GAM1R   =-2.0460E-02 unit5   SLGAM1  = 2.0850E-08 unit6   SWGAM1  = 1.8410E-08 unit6  
+ETADSR  = 6.0000E-01 -       ETAALP  = 1.0000E+00 -       ETAGAMR = 1.0000E+00 -      
+ALPR    = 1.0000E-02 -       SLALP   = 0.0        unit7   SWALP   = 0.0        m      
+VPR     = 5.9420E+00 V       
+ * Sub-Threshold related Parameters *
+GAMOOR  = 1.5460E-03 -       SLGAMOO = 2.1130E-15 m^2     MOR     = 3.0660E-01 -      
+STMO    =-5.0000E-04 1/degK  SLMO    = 3.0260E-05 m^1/2   ETAMR   = 1.0000E+00 -      
+ETAZET  = 5.0000E-01 -       ZET1R   = 2.8080E+00 -       SLZET1  =-1.1050E-03 unit8  
+VSBTR   = 1.0000E+02 V       SLVSBT  = 0.0        V.m     
+ * Weak Avalanche related Parameters *
+A1R     = 5.8390E+00 -       A2R     = 2.0080E+01 V       A3R     = 1.1130E+00 -      
+SLA1    = 1.2510E-07 m       SLA2    = 1.3260E-07 V.m     SLA3    =-1.6900E-07 m      
+SWA1    = 1.0780E-07 m       SWA2    =-4.6640E-09 V.m     SWA3    =-1.2820E-08 m      
+STA1    = 5.0000E-03 1/degK  
+ * Parasitic Capacitance Parameters *
+COL     = 1.0100E-10 F/m     CGBO    = 0.0        F/m     
+ * Noise related Parameters *
+AF      = 1.0000E+00 -       NFR     = 3.8900E-11 V^2     NTR     = 2.2000E-20 -      
+NFMOD   = 0.0        -       NFAR    = 7.1500E+22 1/Vm^4  NFBR    = 2.1600E+07 1/Vm^2 
+NFCR    = 0.0        1/V     
+
+ *** Common extrinsic model parameters ***
+OPTACM  = 0          -       ARLEV   = 6          -       ALEV    = 6          -      
+RLEV    = 6          -       
+ * Access resistances related parameters *
+RD      = 0.0        Ohm     RS      = 0.0        Ohm     RSH     = 0.0        Ohm/Sq.
+RDC     = 0.0        Ohm     RSC     = 0.0        Ohm     
+ * Geometry related parameters *
+LAP     = 6.7650E-09 m       WOT     = 7.5270E-08 m       LVAR    = 4.0000E-08 m      
+WVAR    =-5.0000E-08 m       LDIF    = 0.0        m       HDIF    = 4.8750E-07 m      
+WMLT    = 1.0000E+00 -       LMLT    = 1.0000E+00 -       DEL     = 0.0        m      
+XJ      = 0.0        m       
+ * Static bulk-diode related parameters *
+DIOLEV  = 1          -       JS      = 4.7000E-09 A/m^2   JSW     = 3.0000E-13 A/m    
+IS      = 1.0000E-14 A       N       = 1.0000E+00 -       NDS     = 1.0000E+00 -      
+VNDS    =-1.0000E+00 V       VDLIN   = 5.0000E-01 -       
+ * Dynamic bulk-diode related parameters *
+DCAPLEV = 0          -       CJGATE  = 2.0850E-10         CBD     = 0.0        F      
+CBS     = 0.0        F       CJ      = 9.3300E-04 F/m^2   CJSW    = 2.9940E-10 F/m    
+FC      = 5.0000E-01 -       MJ      = 3.7000E-01 -       MJSW    = 2.1000E-01 -      
+TT      = 0.0        s       PB      = 8.0000E-01 V       PBSW    = 8.0000E-01 V      
+ * Temperature related Parameters 
+EG      = 1.1100E+00 eV      GAP1    = 7.0200E-04 eV/degK GAP2    = 1.1080E+03 degK   
+TR      = 2.7000E+01 degC    TLEV    = 0          -       TLEVC   = 0          -      
+TLEVI   = 0          -       
+ * Temperature Access Resistance related parameters * TLEVR = 1 
+TRD1    = 0.0        1/degK  TRS1    = 0.0        1/degK  TRSH1   = 0.0        1/degK 
+TRD2    = 0.0        unit9   TRS2    = 0.0        unit9   TRSH2   = 0.0        unit9  
+
+unit1 represents 1/V.degK
+unit2 represents 1/V^1/2.degK
+unit3 represents m/V.degK
+unit4 represents m/V^1/2.degK
+unit5 represents V^(1-ETADSR)
+unit6 represents m.V^(1-ETADSR)
+unit7 represents m^ETAALP
+unit8 represents m^ETAZET
+unit9 represents 1/degK^2
+
+ DEVICE          MOS
+ MODEL: TP
+ TYPE            P
+ LEVEL 59 :  MOSP9 - v1.2
+ LIBRARY : /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi
+ CORNER  : typical
+
+  names    values    units     names    values    units     names    values    units   
+  -----    ------    -----     -----    ------    -----     -----    ------    -----   
+VERSION = 9.0310E+02 -       INIT    = 0.0        -       LER,LREF= 5.0000E-06 m      
+WER,WREF= 1.0000E-05 m       WDOG    = 0.0        m       FTHE1   = 0.0        -      
+TOX     = 8.1000E-09 m       
+ * Threshold-Voltage related Parameters *
+VTOR    = 6.5500E-01 V       STVTO   =-8.0000E-04 V/deg.K SLVTO   = 2.5130E-08 V.m    
+SL2VTO  =-8.3810E-15 V.m^2   SWVTO   =-2.2300E-08 V.m     PHIBR   = 8.5000E-01 V      
+KOR     = 6.8600E-01 V^1/2   SLKO    =-4.2720E-08 V^1/2.m SWKO    = 4.0460E-09 V^1/2.m
+KR      = 6.8600E-01 V^1/2   SLK     =-4.2720E-08 V^1/2.m SWK     = 4.0460E-09 V^1/2.m
+VSBXR   = 1.0000E+02 V       SLVSBX  = 0.0        V.m     SWVSBX  = 0.0        V.m    
+ * Channel-Current related Parameters *
+BETSQ   = 4.2230E-05 A/V^2   ETABET  = 1.2070E+00 -       THE1R   = 2.2670E-01 1/V    
+THE2R   = 3.7150E-01 1/V^1/2 THE3R   =-9.2680E-03 1/V     STTHE1R =-6.2000E-04 unit1  
+STTHE2R =-5.0000E-04 unit2   STTHE3R = 0.0        unit1   SLTHE1R = 7.5190E-08 m/V    
+SLTHE2R =-3.9570E-08 m/V^1/2 SLTHE3R = 4.3180E-09 m/V     STLTHE1 =-1.7860E-10 unit3  
+STLTHE2 = 0.0        unit4   STLTHE3 =-6.0000E-11 unit3   SWTHE1  =-1.1430E-08 m/V    
+SWTHE2  = 2.3970E-08 m/V^1/2 SWTHE3  = 1.4520E-08 m/V     
+ * Drain-Feedback related Parameters *
+GAM1R   =-3.0210E-04 unit5   SLGAM1  = 1.5560E-08 unit6   SWGAM1  = 4.1050E-12 unit6  
+ETADSR  = 6.0000E-01 -       ETAALP  = 1.0000E+00 -       ETAGAMR = 1.0000E+00 -      
+ALPR    = 1.6340E-02 -       SLALP   = 8.1630E-09 unit7   SWALP   = 4.0320E-10 m      
+VPR     = 4.3400E+00 V       
+ * Sub-Threshold related Parameters *
+GAMOOR  = 4.7760E-04 -       SLGAMOO = 1.1630E-15 m^2     MOR     = 3.2450E-01 -      
+STMO    = 0.0        1/degK  SLMO    = 1.6850E-05 m^1/2   ETAMR   = 1.0000E+00 -      
+ETAZET  = 1.0000E+00 -       ZET1R   = 1.8580E+00 -       SLZET1  =-1.7390E-07 unit8  
+VSBTR   = 1.0000E+02 V       SLVSBT  = 0.0        V.m     
+ * Weak Avalanche related Parameters *
+A1R     = 1.5100E+01 -       A2R     = 3.3540E+01 V       A3R     = 1.0080E+00 -      
+SLA1    = 4.8010E-07 m       SLA2    =-2.4720E-07 V.m     SLA3    =-7.0930E-08 m      
+SWA1    = 4.3500E-06 m       SWA2    = 1.3730E-07 V.m     SWA3    = 7.5420E-08 m      
+STA1    = 4.0000E-02 1/degK  
+ * Parasitic Capacitance Parameters *
+COL     = 1.0100E-10 F/m     CGBO    = 0.0        F/m     
+ * Noise related Parameters *
+AF      = 1.0000E+00 -       NFR     = 8.5900E-12 V^2     NTR     = 2.2000E-20 -      
+NFMOD   = 0.0        -       NFAR    = 1.5300E+22 1/Vm^4  NFBR    = 4.0600E+06 1/Vm^2 
+NFCR    = 2.9200E-10 1/V     
+
+ *** Common extrinsic model parameters ***
+OPTACM  = 0          -       ARLEV   = 6          -       ALEV    = 6          -      
+RLEV    = 6          -       
+ * Access resistances related parameters *
+RD      = 0.0        Ohm     RS      = 0.0        Ohm     RSH     = 0.0        Ohm/Sq.
+RDC     = 0.0        Ohm     RSC     = 0.0        Ohm     
+ * Geometry related parameters *
+LAP     = 3.9030E-08 m       WOT     = 3.8740E-08 m       LVAR    = 4.0000E-08 m      
+WVAR    =-5.0000E-08 m       LDIF    = 0.0        m       HDIF    = 4.8750E-07 m      
+WMLT    = 1.0000E+00 -       LMLT    = 1.0000E+00 -       DEL     = 0.0        m      
+XJ      = 0.0        m       
+ * Static bulk-diode related parameters *
+DIOLEV  = 1          -       JS      = 2.5000E-09 A/m^2   JSW     = 2.0000E-13 A/m    
+IS      = 1.0000E-14 A       N       = 1.0000E+00 -       NDS     = 1.0000E+00 -      
+VNDS    =-1.0000E+00 V       VDLIN   = 5.0000E-01 -       
+ * Dynamic bulk-diode related parameters *
+DCAPLEV = 0          -       CJGATE  = 1.8640E-10         CBD     = 0.0        F      
+CBS     = 0.0        F       CJ      = 1.3290E-03 F/m^2   CJSW    = 3.1460E-10 F/m    
+FC      = 5.0000E-01 -       MJ      = 4.3000E-01 -       MJSW    = 4.0000E-01 -      
+TT      = 0.0        s       PB      = 8.0000E-01 V       PBSW    = 8.0000E-01 V      
+ * Temperature related Parameters 
+EG      = 1.1100E+00 eV      GAP1    = 7.0200E-04 eV/degK GAP2    = 1.1080E+03 degK   
+TR      = 2.7000E+01 degC    TLEV    = 0          -       TLEVC   = 0          -      
+TLEVI   = 0          -       
+ * Temperature Access Resistance related parameters * TLEVR = 1 
+TRD1    = 0.0        1/degK  TRS1    = 0.0        1/degK  TRSH1   = 0.0        1/degK 
+TRD2    = 0.0        unit9   TRS2    = 0.0        unit9   TRSH2   = 0.0        unit9  
+
+unit1 represents 1/V.degK
+unit2 represents 1/V^1/2.degK
+unit3 represents m/V.degK
+unit4 represents m/V^1/2.degK
+unit5 represents V^(1-ETADSR)
+unit6 represents m.V^(1-ETADSR)
+unit7 represents m^ETAALP
+unit8 represents m^ETAZET
+unit9 represents 1/degK^2
+
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:13:15*****************
+
+0*  simulation statique de l'inverseur CMOS
+0****                 OPTION SUMMARY                                         TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+
+
+
+*** DC Control Options : 
+
+GMIN           = 1.00e-12 NMAXSIZE       = 100000   ITL1           = 100      
+GRAMP          = 0        NETSIZE        = 100      VMINDC         = UNDEF    
+VMAXDC         = UNDEF    
+
+*** Initial Accuracy Control Options (May be adjusted during simulation): 
+
+ITOL           = 1.00e-06 EPS            = 5.00e-03 VNTOL          = 1.00e-06 
+RELTOL         = 1.00e-03 RELERR         = 5.00e-02 PIVREL         = 1.00e-03 
+PIVTOL         = 1.00e-16 ABSTOL         = 1.00e-12 FLXTOL         = 1.00e-11 
+MAXORD         = 2.00e+00 
+
+*** Time-step Control Options : 
+
+ZOOMTIME       = 1.00e+00 STEP           = 0.00e+00 STARTSMP       = 0.00e+00 
+FREQSMP        = 0.00e+00 COURESOL       = 0.00e+00 TRTOL          = 7.00e+00 
+HMIN           = 1.00e-12 ITL3           = 3        ITL4           = 13       
+FT             = 1.25e-01 DCLOG          = 1.00e+00 LVLTIM         = 2        
+LVLCNV         = 2        DVDT           = -1       RELVAR         = 1.50e-01 
+ABSVAR         = 2.00e-01 SAMPLE         = 0.00e+00 HMAX           = UNDEF    
+
+
+*** MosFet default Options : 
+
+SCALE          = 1.00e+00 SCALM          = 1.00e+00 SCALEBSIM      = 1.00e+00 
+DEFAD          = UNDEF    DEFAS          = UNDEF    DEFPD          = UNDEF    
+DEFPS          = UNDEF    DEFW           = 1.00e-04 DEFL           = 1.00e-04 
+DEFNRD         = UNDEF    DEFNRS         = UNDEF    XA             = 6.00e-06 
+LIMRMOS        = UNDEF    SHRINK         = 1.00e+00 
+
+*** General Information Options : 
+
+CPTIME         = UNDEF    STAT           = 0        TIMEDIV        = 0        
+SIMUDIV        = 10       SAVETIME       = 0        MAXTRAN        = 1000     
+MAXNODES       = 10000    MAXV           = 1.00e+13 LIMPROBE       = 10000    
+FLICKER_NOISE  = 0        THERMAL_NOISE  = 0        TNOM           = 2.70e+01 
+TMAX           = UNDEF    
+SPICDC         = 0        SPIOUT         = 0        NEWTON         = 1        
+OSR            = 0        TRAP           = 1        GEAR           = 0        
+BE             = 0        PROBEOP        = 0        NOLAT          = 0        
+NWLAT          = 0        ANALOG         = 0        BBDEBUG        = 0        
+NOSIZECHK      = 0        QTRUNC         = 0        UNBOUND        = 0        
+LCAPOP         = 0        NOAEX          = 0        AEX            = 0        
+AEX            = 0        STVER          = 0        MOTOROLA       = 0        
+AMS            = 0        ASPEC          = 0        INPUT          = 0        
+NOINIT         = 0        PSF            = 0        NOBIN          = 0        
+NOCOU          = 1        WL             = 0        NODE           = 0        
+LIST           = 0        SPI3BIN        = 0        SPI3ASC        = 0        
+NOMOD          = 0        NOBIN          = 0        NOCOU          = 1        
+RMOS           = 0        NWRMOS         = 1        NONWRMOS       = 0        
+USEDEFAP       = 0        NOASCII        = 0        ASCII          = 1        
+MIXED          = 0        SWITCH         = 0        USERSWITCH     = 0        
+TIMING         = 0        MODWL          = 1        ULOGIC         = 0        
+
+
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 2 out of 9
+   value of parameter WP is 1.500000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 3 out of 9
+   value of parameter WP is 2.000000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 4 out of 9
+   value of parameter WP is 2.500000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 5 out of 9
+   value of parameter WP is 3.000000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 010ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 6 out of 9
+   value of parameter WP is 3.500000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 7 out of 9
+   value of parameter WP is 4.000000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 8 out of 9
+   value of parameter WP is 4.500000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+
+***>CPU TIME 0s 000ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 9 out of 9
+   value of parameter WP is 5.000000E-06
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:13:15
+*** TITLE: *  simulation statique de l'inverseur CMOS
+
+TEMPERATURE : 27.000000 degrees C
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:13:15*****************
+
+0*  simulation statique de l'inverseur CMOS
+0****                 ACCOUNTING INFORMATION                                 TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+
+
+
+Number of nodes                     3
+Number of intrinsic nodes           0
+Number of input signals             2
+Number of resistors                 0
+Number of floating capacitors       0
+Number of grounded capacitors       0
+Number of inductors                 0
+Number of voltage sources           2
+Number of current sources           0
+Number of dependent sources         0
+Number of diodes                    0
+Number of BJT                       0
+Number of JFET                      0
+Number of MOS                       2
+Number of SWITCHES                  0
+Number of transmission lines        0
+Total number of elements simulated  4
+Repartition per level of MOS
+  MOSP9 2
+Number of equations                 5
+Number of non-zero terms            10
+Percent Zeros                         60
+Number of DC points                 64
+Number of Newton iterations         143
+Average number of Newton iterations 2.234e+00
+Evaluation of active devices        274
+Virtual memory size (MB)            377
+Peak memory size (MB)      44
+
+***>CPU TIME 0s 000ms <***
+
+
+***>GLOBAL CPU TIME 0s 050ms <***
+
+
+***>GLOBAL ELAPSED TIME 0s <***
+
+
+  Job started at 27-Sep-2023 11:13:15
+  Job end at     27-Sep-2023 11:13:15
+
+  Run on schmitt (Linux 3.10.0-1160.92.1.el7.x86_64)
+
+-----------------------------------------
+Maximum number of license(s) consumed:
+   1 Analog Simulator Kernel (eldokernel)
+
+Time spent acquiring licenses: 0.174404 s (avg: 0.087202 s, max: 0.164200 s at Wed Sep 27 11:13:15 2023)
+Time spent releasing licenses: 0.000876 s (avg: 0.000438 s, max: 0.000695 s at Wed Sep 27 11:13:15 2023)
+-----------------------------------------

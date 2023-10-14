@@ -1,0 +1,31 @@
+* Equilibrage de l'inverseur
+.lib "mon_inv.spi" typical
+.lib "buf_x8.spi" circuit
+
+.PARAM WP={4e-06}
+.PARAM VDD=3.3
+.PARAM TR=0.5e-09
+.PARAM TF=0.5e-09
+.param capa=90e-15
+.param VDD=3.3
+
+* Instanciation de l'inverseur
+Xinv1 d q1 dd 0 0 dd mon_inv W=WP
+Xbuf q1 q dd 0 buf_x8 
+** Sa capacité de charge 
+C q 0 {capa} 
+
+** La tension d'alimentatn
+Vdd dd 0 DC 3.3
+** La source d'entrée 
+Vd d 0 pulse( 0 {Vdd} {TR} {TR} {TR} {3*TR} {20*TR})
+
+** la simulation transitoire
+** .tran TPRINT TSTOP TSTART HMAX
+
+.step param capa 0 300f 50f
+.TRAN {9*TR}  {9*TR} 0 {TR/1000}
+.PLOT v(d) v(q)
+.extract tran label=delayup tpd(V(d), v(q), occur=2)
+
+.END

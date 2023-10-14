@@ -1,0 +1,24 @@
+*  simulation statique de l'inverseur CMOS
+
+.lib "mon_inv.spi" typical
+.param Wp=3.6e-6
+*2e-6
+
+* Instanciation de l'inverseur, modèle mon_inv, le paramètre W=Wp
+Xinv d q dd 0 0 dd mon_inv  W=Wp
+
+* La source d'alimentatn 
+Vdd dd 0 DC 3.3
+
+* la source d'entrée
+Vd d 0 DC 0.0
+
+* Analyse DC paramétrique: on fait varier la source d'entrée 
+.DC Vd 0.0 3.3 {3.3/63}
+
+* On peut faire varier le paramètre Wp pour essayer de trouver
+* une valeur qui équilibre la porte 
+*.step param Wp 1u 5u 0.5u
+.PLOT V(q) V(d)
+
+.END

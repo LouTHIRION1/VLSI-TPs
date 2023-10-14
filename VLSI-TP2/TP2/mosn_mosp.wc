@@ -1,0 +1,81 @@
+********************************************************************************
+* c035 n slow models
+********************************************************************************* mos models
+********************************************************************************
+*
+* nmos 3.3v minimum idss current
+*        #eldo 4.4.1  #spectre   #hspice96
+*
+.model TN   nmos                     level   =   59
++tox    =   8.100e-09   tr      =   2.700e+01   wvar    =  -5.000e-08
++lvar   =   4.000e-08   wot     =   7.527e-08   lap     =   6.765e-09
++ler    =   5.000e-06   wer     =   1.000e-05   swa3    =  -1.282e-08
++sla3   =  -1.690e-07   a3r     =   1.113e+00   swa2    =  -4.664e-09
++sla2   =   1.326e-07   a2r     =   2.008e+01   swa1    =   1.078e-07
++sla1   =   1.251e-07   sta1    =   5.000e-03   a1r     =   5.839e+00
++slvsbt =   0.000e+00   vsbtr   =   1.000e+02   slzet1  =  -1.105e-03
++etazet =   5.000e-01   zet1r   =   2.808e+00   etamr   =   1.000e+00
++slmo   =   3.026e-05   stmo    =  -5.000e-04   mor     =   3.066e-01
++etagamr=   1.000e+00   slgamoo =   2.113e-15   gamoor  =   1.546e-03
++vpr    =   5.942e+00   swalp   =   0.000e+00   slalp   =   0.000e+00
++etaalp =   1.000e+00   alpr    =   1.000e-02   etadsr  =   6.000e-01
++swgam1 =   1.841e-08   slgam1  =   2.085e-08   gam1r   =  -2.046e-02
++swthe3 =  -1.396e-09   stlthe3 =  -3.000e-10   slthe3r =   1.000e-07
++stthe3r=   1.000e-05   the3r   =  -2.530e-02   swthe2  =   1.802e-08
++stlthe2=  -2.118e-10   slthe2r =  -3.560e-08   stthe2r =   3.156e-04
++the2r  =   1.762e-01   swthe1  =  -7.780e-08   stlthe1 =  -6.134e-10
++slthe1r=   1.689e-07   stthe1r =  -5.700e-04   the1r   =   2.460e-01
++etabet =   1.893e+00   betsq   =   2.203e-04   swvsbx  =   0.000e+00
++slvsbx =   0.000e+00   vsbxr   =   1.000e+02   phibr   =   8.500e-01
++swk    =  -1.200e-08   slk     =  -5.975e-08   kr      =   5.554e-01
++swko   =  -1.200e-08   slko    =  -5.975e-08   kor     =   5.554e-01
++swvto  =   2.044e-08   sl2vto  =  -3.157e-14   slvto   =   9.078e-08
++stvto  =  -8.580e-04   vtor    =   6.650e-01
++col    =   1.010e-10   ntr     =  22.000e-21   nfr     =   3.890e-11
++cj     =   9.330e-04   pb      =   0.8         mj      =   0.370
++cjsw   =   2.994e-10   pbsw    =   0.8         mjsw    =   0.210
++cjgate =   2.085e-10   jsw     =   3.000e-13   js      =   4.70e-09
++n      =   1.000
++dcaplev = 0 hdif = 0.4875e-6
+*
+********************************************************************************
+*
+* p slow models
+*
+********************************************************************************* mos models
+********************************************************************************
+*
+* pmos 3.3v minimum idss current 
+*        #eldo 4.4.1  #spectre   #hspice96
+*
+.model TP   pmos                   level   =   59
++tox    =   8.100e-09   tr      =   2.700e+01   wvar    =  -5.000e-08
++lvar   =   4.000e-08   wot     =   3.874e-08   lap     =   3.903e-08
++ler    =   5.000e-06   wer     =   1.000e-05   swa3    =   7.542e-08
++sla3   =  -7.093e-08   a3r     =   1.008e+00   swa2    =   1.373e-07
++sla2   =  -2.472e-07   a2r     =   3.354e+01   swa1    =   4.350e-06
++sla1   =   4.801e-07   sta1    =   4.000e-02   a1r     =   1.510e+01
++slvsbt =   0.000e+00   vsbtr   =   1.000e+02   slzet1  =  -1.739e-07
++etazet =   1.000e+00   zet1r   =   1.858e+00   etamr   =   1.000e+00
++slmo   =   1.685e-05   stmo    =   0.000e+00   mor     =   3.245e-01
++etagamr=   1.000e+00   slgamoo =   1.163e-15   gamoor  =   4.776e-04
++vpr    =   4.340e+00   swalp   =   4.032e-10   slalp   =   8.163e-09
++etaalp =   1.000e+00   alpr    =   1.634e-02   etadsr  =   6.000e-01
++swgam1 =   4.105e-12   slgam1  =   1.556e-08   gam1r   =  -3.021e-04
++swthe3 =   1.452e-08   stlthe3 =  -6.000e-11   slthe3r =   4.318e-09
++stthe3r=   0.000e+00   the3r   =  -9.268e-03   swthe2  =   2.397e-08
++stlthe2=   0.000e+00   slthe2r =  -3.957e-08   stthe2r =  -5.000e-04
++the2r  =   3.715e-01   swthe1  =  -1.143e-08   stlthe1 =  -1.786e-10
++slthe1r=   7.519e-08   stthe1r =  -6.200e-04   the1r   =   2.267e-01
++etabet =   1.207e+00   betsq   =   4.223e-05   swvsbx  =   0.000e+00
++slvsbx =   0.000e+00   vsbxr   =   1.000e+02   phibr   =   8.500e-01
++swk    =   4.046e-09   slk     =  -4.272e-08   kr      =   6.860e-01
++swko   =   4.046e-09   slko    =  -4.272e-08   kor     =   6.860e-01
++swvto  =  -2.230e-08   sl2vto  =  -8.381e-15   slvto   =   2.513e-08
++stvto  =  -8.000e-04   vtor    =   6.550e-01
++col    =   1.010e-10   ntr     =  22.000e-21   nfr     =   8.590e-12     
++cj     =   1.329e-03   pb      =   0.8         mj      =   0.430
++cjsw   =   3.146e-10   pbsw    =   0.8         mjsw    =   0.400
++cjgate =   1.864e-10   jsw     =   2.00e-13    js      =   2.500e-09
++n      =   1.000
++dcaplev = 0 hdif = 0.4875e-6

@@ -1,0 +1,5 @@
+START report: Wed Sep 27 09:44:15 2023 
+** Warning: (eldo-1071)  In file "./polar_nmos.spi" line 19:
++   COMMAND .PLOT: instructions after unexpected keyword '/VD' ignored.
+** Warning: (eldo-1526)  In file "./polar_nmos.spi" line 19:
++   COMMAND .PLOT: Unknown output type: /VD. Following specifications are ignored.

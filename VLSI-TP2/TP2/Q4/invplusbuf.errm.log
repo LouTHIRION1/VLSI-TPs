@@ -1,0 +1,8 @@
+START report: Wed Sep 27 11:01:21 2023 
+** Warning: (eldo-46)  In file "./invplusbuf.spi" line 10:
++   Double definition for parameter VDD
++   Previous definition was in file "./invplusbuf.spi" line 5
+** Warning: (eldo-252)  In file "./buf_x8.spi" line 124:
++   OBJECT "XBUF.C2_81": Self-connected object not created.
+** Warning: (eldo-252)  In file "./buf_x8.spi" line 127:
++   OBJECT "XBUF.C2_91": Self-connected object not created.

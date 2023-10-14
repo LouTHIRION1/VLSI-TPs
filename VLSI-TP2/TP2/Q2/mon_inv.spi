@@ -1,0 +1,20 @@
+* description d'un inverseur CMOS
+
+.lib typical
+.include ../mosn_mosp.wc
+.lib "mon_inv.spi" circuit
+.endl  typical
+
+.lib circuit
+
+** On déclare un sous-circuit inverseur nommé mon_inv
+** On spécifie les interfaces dans l'ordre suivant : 
+** d=entrée, q=sortie, vdd=alim+, vss=alim-, bn=connexion bulk nMOS, bp=connexion bulk nMOS
+
+.subckt mon_inv d q vdd vss bn bp param: W=2.0e-06
+** Instanciation de 2 transistors nMOS et pMOS
+MP q d vdd bp TP L=0.35e-06 W=W 
+MN q d vss bn TN L=0.35e-06 W=1.4e-06
+.ends
+
+.endl circuit

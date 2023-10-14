@@ -1,0 +1,15 @@
+AS_ARM = /usr/bin/arm-linux-gnu-as
+LD_ARM = /usr/bin/arm-linux-gnu-ld
+CFLAGS = -march=armv2a -mno-thumb-interwork -Wall -O1
+LD_FLAGS = -Bstatic -fix-v4bx
+
+all : test1
+
+test1 : test1.o
+	${LD_ARM} ${LD_FLAGS} -T sections.lds -o test1 test1.o
+
+test1.o : test1.s
+	${AS_ARM} -c test1.s -o test1.o
+
+clean :
+	rm -f test1 *.o

@@ -1,0 +1,1518 @@
+  Run on schmitt (Linux 3.10.0-1160.92.1.el7.x86_64)
+
+
+***** SYSTEM INFORMATION ...
+
+*** User  : izm
+*** OS    : \S [VCO = aol]
+*** CPU   :
+    Intel(R) Core(TM) i5-8400 CPU @ 2.80GHz
+    Number of physical processors     : 1
+    Hyper-Threading Technology        : disabled
+    Number of cpu cores               : 6
+    Number of logical processors      : 6
+*** Freq  : 3098.730MHz
+*** Cache : 9216 KB
+*** MEM   : 32572528 kB
+*** Date  : Wed Sep 27 11:01:21 2023
+
+*** Eldo VERSION : ELDO 17.1 patch1 (64 bits) Thu Apr  6 15:28:32 GMT 2017
+
+/users/soft/mentor/ams-2017.1_1/aol/bin/eldo_64.exe -i invplusbuf.spi
+
+
+***** PRE-PROCESSING ...
+1*******27-Sep-23 *******  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  *******11:01:21******
+
+0* Equilibrage de l'inverseur
+
+0****     INPUT LISTING                                               
+
+0***********************************************************************
+    2  .LIB  mon_inv.spi  typical
+    3  ** INCLUDING LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=typical
+    4  ** including /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/mosn_mosp.wc
+    1  ********************************************************************************
+    2  * c035 n slow models
+    3  ********************************************************************************* mos models
+    4  ********************************************************************************
+    5  *
+    6  * nmos 3.3v minimum idss current
+    7  *        #eldo 4.4.1  #spectre   #hspice96
+    8  *
+    9  .MODEL TN   NMOS                     LEVEL   =   59
+   10  +TOX    =   8.100E-09   TR      =   2.700E+01   WVAR    =  -5.000E-08
+   11  +LVAR   =   4.000E-08   WOT     =   7.527E-08   LAP     =   6.765E-09
+   12  +LER    =   5.000E-06   WER     =   1.000E-05   SWA3    =  -1.282E-08
+   13  +SLA3   =  -1.690E-07   A3R     =   1.113E+00   SWA2    =  -4.664E-09
+   14  +SLA2   =   1.326E-07   A2R     =   2.008E+01   SWA1    =   1.078E-07
+   15  +SLA1   =   1.251E-07   STA1    =   5.000E-03   A1R     =   5.839E+00
+   16  +SLVSBT =   0.000E+00   VSBTR   =   1.000E+02   SLZET1  =  -1.105E-03
+   17  +ETAZET =   5.000E-01   ZET1R   =   2.808E+00   ETAMR   =   1.000E+00
+   18  +SLMO   =   3.026E-05   STMO    =  -5.000E-04   MOR     =   3.066E-01
+   19  +ETAGAMR=   1.000E+00   SLGAMOO =   2.113E-15   GAMOOR  =   1.546E-03
+   20  +VPR    =   5.942E+00   SWALP   =   0.000E+00   SLALP   =   0.000E+00
+   21  +ETAALP =   1.000E+00   ALPR    =   1.000E-02   ETADSR  =   6.000E-01
+   22  +SWGAM1 =   1.841E-08   SLGAM1  =   2.085E-08   GAM1R   =  -2.046E-02
+   23  +SWTHE3 =  -1.396E-09   STLTHE3 =  -3.000E-10   SLTHE3R =   1.000E-07
+   24  +STTHE3R=   1.000E-05   THE3R   =  -2.530E-02   SWTHE2  =   1.802E-08
+   25  +STLTHE2=  -2.118E-10   SLTHE2R =  -3.560E-08   STTHE2R =   3.156E-04
+   26  +THE2R  =   1.762E-01   SWTHE1  =  -7.780E-08   STLTHE1 =  -6.134E-10
+   27  +SLTHE1R=   1.689E-07   STTHE1R =  -5.700E-04   THE1R   =   2.460E-01
+   28  +ETABET =   1.893E+00   BETSQ   =   2.203E-04   SWVSBX  =   0.000E+00
+   29  +SLVSBX =   0.000E+00   VSBXR   =   1.000E+02   PHIBR   =   8.500E-01
+   30  +SWK    =  -1.200E-08   SLK     =  -5.975E-08   KR      =   5.554E-01
+   31  +SWKO   =  -1.200E-08   SLKO    =  -5.975E-08   KOR     =   5.554E-01
+   32  +SWVTO  =   2.044E-08   SL2VTO  =  -3.157E-14   SLVTO   =   9.078E-08
+   33  +STVTO  =  -8.580E-04   VTOR    =   6.650E-01
+   34  +COL    =   1.010E-10   NTR     =  22.000E-21   NFR     =   3.890E-11
+   35  +CJ     =   9.330E-04   PB      =   0.8         MJ      =   0.370
+   36  +CJSW   =   2.994E-10   PBSW    =   0.8         MJSW    =   0.210
+   37  +CJGATE =   2.085E-10   JSW     =   3.000E-13   JS      =   4.70E-09
+   38  +N      =   1.000
+   39  +DCAPLEV = 0 HDIF = 0.4875E-6
+   40  *
+   41  ********************************************************************************
+   42  *
+   43  * p slow models
+   44  *
+   45  ********************************************************************************* mos models
+   46  ********************************************************************************
+   47  *
+   48  * pmos 3.3v minimum idss current 
+   49  *        #eldo 4.4.1  #spectre   #hspice96
+   50  *
+   51  .MODEL TP   PMOS                   LEVEL   =   59
+   52  +TOX    =   8.100E-09   TR      =   2.700E+01   WVAR    =  -5.000E-08
+   53  +LVAR   =   4.000E-08   WOT     =   3.874E-08   LAP     =   3.903E-08
+   54  +LER    =   5.000E-06   WER     =   1.000E-05   SWA3    =   7.542E-08
+   55  +SLA3   =  -7.093E-08   A3R     =   1.008E+00   SWA2    =   1.373E-07
+   56  +SLA2   =  -2.472E-07   A2R     =   3.354E+01   SWA1    =   4.350E-06
+   57  +SLA1   =   4.801E-07   STA1    =   4.000E-02   A1R     =   1.510E+01
+   58  +SLVSBT =   0.000E+00   VSBTR   =   1.000E+02   SLZET1  =  -1.739E-07
+   59  +ETAZET =   1.000E+00   ZET1R   =   1.858E+00   ETAMR   =   1.000E+00
+   60  +SLMO   =   1.685E-05   STMO    =   0.000E+00   MOR     =   3.245E-01
+   61  +ETAGAMR=   1.000E+00   SLGAMOO =   1.163E-15   GAMOOR  =   4.776E-04
+   62  +VPR    =   4.340E+00   SWALP   =   4.032E-10   SLALP   =   8.163E-09
+   63  +ETAALP =   1.000E+00   ALPR    =   1.634E-02   ETADSR  =   6.000E-01
+   64  +SWGAM1 =   4.105E-12   SLGAM1  =   1.556E-08   GAM1R   =  -3.021E-04
+   65  +SWTHE3 =   1.452E-08   STLTHE3 =  -6.000E-11   SLTHE3R =   4.318E-09
+   66  +STTHE3R=   0.000E+00   THE3R   =  -9.268E-03   SWTHE2  =   2.397E-08
+   67  +STLTHE2=   0.000E+00   SLTHE2R =  -3.957E-08   STTHE2R =  -5.000E-04
+   68  +THE2R  =   3.715E-01   SWTHE1  =  -1.143E-08   STLTHE1 =  -1.786E-10
+   69  +SLTHE1R=   7.519E-08   STTHE1R =  -6.200E-04   THE1R   =   2.267E-01
+   70  +ETABET =   1.207E+00   BETSQ   =   4.223E-05   SWVSBX  =   0.000E+00
+   71  +SLVSBX =   0.000E+00   VSBXR   =   1.000E+02   PHIBR   =   8.500E-01
+   72  +SWK    =   4.046E-09   SLK     =  -4.272E-08   KR      =   6.860E-01
+   73  +SWKO   =   4.046E-09   SLKO    =  -4.272E-08   KOR     =   6.860E-01
+   74  +SWVTO  =  -2.230E-08   SL2VTO  =  -8.381E-15   SLVTO   =   2.513E-08
+   75  +STVTO  =  -8.000E-04   VTOR    =   6.550E-01
+   76  +COL    =   1.010E-10   NTR     =  22.000E-21   NFR     =   8.590E-12     
+   77  +CJ     =   1.329E-03   PB      =   0.8         MJ      =   0.430
+   78  +CJSW   =   3.146E-10   PBSW    =   0.8         MJSW    =   0.400
+   79  +CJGATE =   1.864E-10   JSW     =   2.00E-13    JS      =   2.500E-09
+   80  +N      =   1.000
+   81  +DCAPLEV = 0 HDIF = 0.4875E-6
+    4  
+    5  .LIB  mon_inv.spi  circuit
+    6  ** INCLUDING LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=circuit
+    9  .SUBCKT MON_INV D Q VDD VSS BN BP PARAM: W=2.0E-06
+   10  MP Q D VDD BP TP L=0.35E-06 W=W 
+   11  MN Q D VSS BN TN L=0.35E-06 W=1.4E-06
+   12  .ENDS
+   13  
+    6  ** END OF LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=circuit
+    3  ** END OF LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi LIBTYPE=typical
+    3  .LIB  buf_x8.spi  circuit
+    4  
+    5  ** INCLUDING LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/buf_x8.spi LIBTYPE=circuit
+   13  
+   14  .SUBCKT BUF_X8 2 52 16 41 
+   15  * NET 2 = i
+   16  * NET 16 = vdd
+   17  * NET 41 = vss
+   18  * NET 52 = q
+   19  MTR_00010 56 33 6 16 TP L=0.35U W=5.9U AS=4.425P AD=4.425P PS=13.3U PD=13.3U 
+   20  MTR_00009 7 34 56 16 TP L=0.35U W=5.9U AS=4.425P AD=4.425P PS=13.3U PD=13.3U 
+   21  MTR_00008 57 35 7 16 TP L=0.35U W=5.9U AS=4.425P AD=4.425P PS=13.3U PD=13.3U 
+   22  MTR_00007 9 36 57 16 TP L=0.35U W=5.9U AS=4.425P AD=4.425P PS=13.3U PD=13.3U 
+   23  MTR_00006 6 3 31 16 TP L=0.35U W=5.9U AS=4.425P AD=4.425P PS=13.3U PD=13.3U 
+   24  MTR_00005 51 22 43 41 TN L=0.35U W=2.9U AS=2.175P AD=2.175P PS=7.3U PD=7.3U 
+   25  MTR_00004 42 21 51 41 TN L=0.35U W=2.9U AS=2.175P AD=2.175P PS=7.3U PD=7.3U 
+   26  MTR_00003 43 23 53 41 TN L=0.35U W=2.9U AS=2.175P AD=2.175P PS=7.3U PD=7.3U 
+   27  MTR_00002 53 24 44 41 TN L=0.35U W=2.9U AS=2.175P AD=2.175P PS=7.3U PD=7.3U 
+   28  MTR_00001 19 1 42 41 TN L=0.35U W=2.9U AS=2.175P AD=2.175P PS=7.3U PD=7.3U 
+   29  R5_1 1 2 12
+   30  R5_2 3 2 12
+   31  R4_1 6 16 12
+   32  R4_2 9 16 12
+   33  R4_3 7 16 12
+   34  R4_4 9 15 12
+   35  R4_5 7 8 12
+   36  R4_6 7 11 12
+   37  R4_7 7 14 12
+   38  R4_8 10 13 0.087
+   39  C4_81 10 41 1.46887E-16
+   40  C4_82 13 41 1.46887E-16
+   41  R4_9 12 13 0.087
+   42  C4_91 12 41 1.1751E-16
+   43  C4_92 13 41 1.1751E-16
+   44  R4_10 14 16 0.174
+   45  C4_101 14 41 2.05643E-16
+   46  C4_102 16 41 2.05643E-16
+   47  R4_11 11 14 0.087
+   48  C4_111 11 41 1.46887E-16
+   49  C4_112 14 41 1.46887E-16
+   50  R4_12 8 11 0.087
+   51  C4_121 8 41 1.46887E-16
+   52  C4_122 11 41 1.46887E-16
+   53  R4_13 15 16 0.174
+   54  C4_131 15 41 2.05643E-16
+   55  C4_132 16 41 2.05643E-16
+   56  R4_14 12 15 0.174
+   57  C4_141 12 41 1.76265E-16
+   58  C4_142 15 41 1.76265E-16
+   59  R3_1 19 20 12
+   60  R3_2 31 32 12
+   61  R3_3 31 37 12
+   62  R3_4 31 38 12
+   63  R3_5 26 25 12
+   64  R3_6 27 33 90
+   65  C3_61 27 41 6.07294E-16
+   66  C3_62 33 41 6.07294E-16
+   67  R3_7 21 27 60
+   68  C3_71 21 41 4.33781E-16
+   69  C3_72 27 41 4.33781E-16
+   70  R3_8 29 35 90
+   71  C3_81 29 41 6.07294E-16
+   72  C3_82 35 41 6.07294E-16
+   73  R3_9 23 29 60
+   74  C3_91 23 41 4.33781E-16
+   75  C3_92 29 41 4.33781E-16
+   76  R3_10 28 34 90
+   77  C3_101 28 41 6.07294E-16
+   78  C3_102 34 41 6.07294E-16
+   79  R3_11 22 28 60
+   80  C3_111 22 41 4.33781E-16
+   81  C3_112 28 41 4.33781E-16
+   82  R3_12 30 36 90
+   83  C3_121 30 41 6.07294E-16
+   84  C3_122 36 41 6.07294E-16
+   85  R3_13 24 30 60
+   86  C3_131 24 41 4.33781E-16
+   87  C3_132 30 41 4.33781E-16
+   88  R3_14 29 30 6
+   89  C3_141 29 41 2.62755E-16
+   90  C3_142 30 41 2.62755E-16
+   91  R3_15 28 29 6
+   92  C3_151 28 41 2.62755E-16
+   93  C3_152 29 41 2.62755E-16
+   94  R3_16 27 28 6
+   95  C3_161 27 41 2.62755E-16
+   96  C3_162 28 41 2.62755E-16
+   97  R3_17 26 27 12
+   98  C3_171 26 41 3.94133E-16
+   99  C3_172 27 41 3.94133E-16
+  100  R3_18 38 37 0.174
+  101  C3_181 38 41 1.40925E-16
+  102  C3_182 37 41 1.40925E-16
+  103  R3_19 32 38 0.174
+  104  C3_191 32 41 1.40925E-16
+  105  C3_192 38 41 1.40925E-16
+  106  R3_20 25 32 0.435
+  107  C3_201 25 41 2.8185E-16
+  108  C3_202 32 41 2.8185E-16
+  109  R3_21 20 25 0.435
+  110  C3_211 20 41 2.8185E-16
+  111  C3_212 25 41 2.8185E-16
+  112  R2_1 43 41 12
+  113  R2_2 43 45 12
+  114  R2_3 44 41 12
+  115  R2_4 42 41 12
+  116  R2_5 44 46 12
+  117  R2_6 47 48 0.087
+  118  C2_61 47 41 1.1751E-16
+  119  C2_62 48 41 1.1751E-16
+  120  R2_7 46 47 0.174
+  121  C2_71 46 41 2.05643E-16
+  122  C2_72 47 41 2.05643E-16
+  123  R2_8 41 46 0.174
+  124  C2_81 41 41 2.05643E-16
+  125  C2_82 46 41 2.05643E-16
+  126  R2_9 41 45 0.174
+  127  C2_91 41 41 2.05643E-16
+  128  C2_92 45 41 2.05643E-16
+  129  R1_1 51 52 12
+  130  R1_2 56 52 4
+  131  R1_3 59 57 12
+  132  R1_4 60 57 12
+  133  R1_5 58 57 12
+  134  R1_6 54 53 12
+  135  R1_7 59 60 0.087
+  136  C1_71 59 41 1.46887E-16
+  137  C1_72 60 41 1.46887E-16
+  138  R1_8 58 59 0.087
+  139  C1_81 58 41 1.46887E-16
+  140  C1_82 59 41 1.46887E-16
+  141  R1_9 55 58 0.261
+  142  C1_91 55 41 2.93775E-16
+  143  C1_92 58 41 2.93775E-16
+  144  R1_10 54 55 0.261
+  145  C1_101 54 41 2.93775E-16
+  146  C1_102 55 41 2.93775E-16
+  147  R1_11 52 55 0.348
+  148  C1_111 52 41 3.5253E-16
+  149  C1_112 55 41 3.5253E-16
+  150  .ENDS BUF_X8
+    5  ** END OF LIBRARY /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/buf_x8.spi LIBTYPE=circuit
+    5  .PARAM WP={4E-06}
+    6  .PARAM VDD=3.3
+    7  .PARAM TR=0.5E-09
+    8  .PARAM TF=0.5E-09
+    9  .PARAM CAPA=90E-15
+   10  .PARAM VDD=3.3
+   11  
+   12  * Instanciation de l'inverseur
+Warning 46: In file "./invplusbuf.spi" line 10:
++   Double definition for parameter VDD
++   Previous definition was in file "./invplusbuf.spi" line 5
+   13  XINV1 D Q1 DD 0 0 DD MON_INV W=WP
+   14  XBUF Q1 Q DD 0 BUF_X8 
+   15  ** Sa capacité de charge 
+   16  C Q 0 {CAPA} 
+   17  
+   18  ** La tension d'alimentatn
+   19  Vdd dd 0 DC 3.3
+   20  ** La source d'entrée 
+   21  Vd d 0 pulse( 0 {Vdd} {TR} {TR} {TR} {3*TR} {20*TR})
+   22  
+   23  ** la simulation transitoire
+   24  ** .tran TPRINT TSTOP TSTART HMAX
+   25  
+   26  .STEP param capa 0 300f 50f
+   27  .TRAN {9*TR}  {9*TR} 0 {TR/1000}
+   28  .PLOT V(D) V(Q)
+   29  .EXTRACT tran label=delayup tpd(V(d), v(q), occur=2)
+   30  
+   31  .END
+
+End of file 
+
+
+***** 0  error(s). 
+***** 1  warning(s). 
+
+
+***** GENERATION ...
+
+Warning 252: In file "./buf_x8.spi" line 124:
++   OBJECT "XBUF.C2_81": Self-connected object not created.
+Warning 252: In file "./buf_x8.spi" line 127:
++   OBJECT "XBUF.C2_91": Self-connected object not created.
+
+***** 0  error(s). 
+***** 3  warning(s). 
+
+
+INFORMATION ABOUT COMPILATION 
+
+Peak memory usage (MB): 40
+Virtual memory usage (MB): 377
+134 elements
+52 nodes 
+2 input signals
+Detail about objects and nodes found in the design, and simulated by Eldo:
+Number of nodes                     52
+Number of intrinsic nodes           0
+Number of input signals             2
+Number of resistors                 57
+Number of floating capacitors       0
+Number of grounded capacitors       63
+Number of inductors                 0
+Number of voltage sources           2
+Number of current sources           0
+Number of dependent sources         0
+Number of diodes                    0
+Number of BJT                       0
+Number of JFET                      0
+Number of MOS                       12
+Number of SWITCHES                  0
+Number of transmission lines        0
+Total number of elements simulated  134
+Repartition per level of MOS
+  MOSP9 12
+Note 108: Acquiring license Analog Simulator Kernel (eldokernel)
+
+
+0************************************************************************************************************************
+
+
+run number 1 out of 7
+   value of parameter CAPA is 0.000000
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:21
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:21*****************
+
+0* Equilibrage de l'inverseur
+0****                 MODELS PARAMETERS                                    TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+
+ DEVICE          MOS
+ MODEL: TN
+ TYPE            N
+ LEVEL 59 :  MOSP9 - v1.2
+ LIBRARY : /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi
+ CORNER  : typical
+
+  names    values    units     names    values    units     names    values    units   
+  -----    ------    -----     -----    ------    -----     -----    ------    -----   
+VERSION = 9.0310E+02 -       INIT    = 0.0        -       LER,LREF= 5.0000E-06 m      
+WER,WREF= 1.0000E-05 m       WDOG    = 0.0        m       FTHE1   = 0.0        -      
+TOX     = 8.1000E-09 m       
+ * Threshold-Voltage related Parameters *
+VTOR    = 6.6500E-01 V       STVTO   =-8.5800E-04 V/deg.K SLVTO   = 9.0780E-08 V.m    
+SL2VTO  =-3.1570E-14 V.m^2   SWVTO   = 2.0440E-08 V.m     PHIBR   = 8.5000E-01 V      
+KOR     = 5.5540E-01 V^1/2   SLKO    =-5.9750E-08 V^1/2.m SWKO    =-1.2000E-08 V^1/2.m
+KR      = 5.5540E-01 V^1/2   SLK     =-5.9750E-08 V^1/2.m SWK     =-1.2000E-08 V^1/2.m
+VSBXR   = 1.0000E+02 V       SLVSBX  = 0.0        V.m     SWVSBX  = 0.0        V.m    
+ * Channel-Current related Parameters *
+BETSQ   = 2.2030E-04 A/V^2   ETABET  = 1.8930E+00 -       THE1R   = 2.4600E-01 1/V    
+THE2R   = 1.7620E-01 1/V^1/2 THE3R   =-2.5300E-02 1/V     STTHE1R =-5.7000E-04 unit1  
+STTHE2R = 3.1560E-04 unit2   STTHE3R = 1.0000E-05 unit1   SLTHE1R = 1.6890E-07 m/V    
+SLTHE2R =-3.5600E-08 m/V^1/2 SLTHE3R = 1.0000E-07 m/V     STLTHE1 =-6.1340E-10 unit3  
+STLTHE2 =-2.1180E-10 unit4   STLTHE3 =-3.0000E-10 unit3   SWTHE1  =-7.7800E-08 m/V    
+SWTHE2  = 1.8020E-08 m/V^1/2 SWTHE3  =-1.3960E-09 m/V     
+ * Drain-Feedback related Parameters *
+GAM1R   =-2.0460E-02 unit5   SLGAM1  = 2.0850E-08 unit6   SWGAM1  = 1.8410E-08 unit6  
+ETADSR  = 6.0000E-01 -       ETAALP  = 1.0000E+00 -       ETAGAMR = 1.0000E+00 -      
+ALPR    = 1.0000E-02 -       SLALP   = 0.0        unit7   SWALP   = 0.0        m      
+VPR     = 5.9420E+00 V       
+ * Sub-Threshold related Parameters *
+GAMOOR  = 1.5460E-03 -       SLGAMOO = 2.1130E-15 m^2     MOR     = 3.0660E-01 -      
+STMO    =-5.0000E-04 1/degK  SLMO    = 3.0260E-05 m^1/2   ETAMR   = 1.0000E+00 -      
+ETAZET  = 5.0000E-01 -       ZET1R   = 2.8080E+00 -       SLZET1  =-1.1050E-03 unit8  
+VSBTR   = 1.0000E+02 V       SLVSBT  = 0.0        V.m     
+ * Weak Avalanche related Parameters *
+A1R     = 5.8390E+00 -       A2R     = 2.0080E+01 V       A3R     = 1.1130E+00 -      
+SLA1    = 1.2510E-07 m       SLA2    = 1.3260E-07 V.m     SLA3    =-1.6900E-07 m      
+SWA1    = 1.0780E-07 m       SWA2    =-4.6640E-09 V.m     SWA3    =-1.2820E-08 m      
+STA1    = 5.0000E-03 1/degK  
+ * Parasitic Capacitance Parameters *
+COL     = 1.0100E-10 F/m     CGBO    = 0.0        F/m     
+ * Noise related Parameters *
+AF      = 1.0000E+00 -       NFR     = 3.8900E-11 V^2     NTR     = 2.2000E-20 -      
+NFMOD   = 0.0        -       NFAR    = 7.1500E+22 1/Vm^4  NFBR    = 2.1600E+07 1/Vm^2 
+NFCR    = 0.0        1/V     
+
+ *** Common extrinsic model parameters ***
+OPTACM  = 0          -       ARLEV   = 6          -       ALEV    = 6          -      
+RLEV    = 6          -       
+ * Access resistances related parameters *
+RD      = 0.0        Ohm     RS      = 0.0        Ohm     RSH     = 0.0        Ohm/Sq.
+RDC     = 0.0        Ohm     RSC     = 0.0        Ohm     
+ * Geometry related parameters *
+LAP     = 6.7650E-09 m       WOT     = 7.5270E-08 m       LVAR    = 4.0000E-08 m      
+WVAR    =-5.0000E-08 m       LDIF    = 0.0        m       HDIF    = 4.8750E-07 m      
+WMLT    = 1.0000E+00 -       LMLT    = 1.0000E+00 -       DEL     = 0.0        m      
+XJ      = 0.0        m       
+ * Static bulk-diode related parameters *
+DIOLEV  = 1          -       JS      = 4.7000E-09 A/m^2   JSW     = 3.0000E-13 A/m    
+IS      = 1.0000E-14 A       N       = 1.0000E+00 -       NDS     = 1.0000E+00 -      
+VNDS    =-1.0000E+00 V       VDLIN   = 5.0000E-01 -       
+ * Dynamic bulk-diode related parameters *
+DCAPLEV = 0          -       CJGATE  = 2.0850E-10         CBD     = 0.0        F      
+CBS     = 0.0        F       CJ      = 9.3300E-04 F/m^2   CJSW    = 2.9940E-10 F/m    
+FC      = 5.0000E-01 -       MJ      = 3.7000E-01 -       MJSW    = 2.1000E-01 -      
+TT      = 0.0        s       PB      = 8.0000E-01 V       PBSW    = 8.0000E-01 V      
+ * Temperature related Parameters 
+EG      = 1.1100E+00 eV      GAP1    = 7.0200E-04 eV/degK GAP2    = 1.1080E+03 degK   
+TR      = 2.7000E+01 degC    TLEV    = 0          -       TLEVC   = 0          -      
+TLEVI   = 0          -       
+ * Temperature Access Resistance related parameters * TLEVR = 1 
+TRD1    = 0.0        1/degK  TRS1    = 0.0        1/degK  TRSH1   = 0.0        1/degK 
+TRD2    = 0.0        unit9   TRS2    = 0.0        unit9   TRSH2   = 0.0        unit9  
+
+unit1 represents 1/V.degK
+unit2 represents 1/V^1/2.degK
+unit3 represents m/V.degK
+unit4 represents m/V^1/2.degK
+unit5 represents V^(1-ETADSR)
+unit6 represents m.V^(1-ETADSR)
+unit7 represents m^ETAALP
+unit8 represents m^ETAZET
+unit9 represents 1/degK^2
+
+ DEVICE          MOS
+ MODEL: TP
+ TYPE            P
+ LEVEL 59 :  MOSP9 - v1.2
+ LIBRARY : /users/enseig/izm/Documents/VLSI/TME2/VLSI/TP2/Q4/mon_inv.spi
+ CORNER  : typical
+
+  names    values    units     names    values    units     names    values    units   
+  -----    ------    -----     -----    ------    -----     -----    ------    -----   
+VERSION = 9.0310E+02 -       INIT    = 0.0        -       LER,LREF= 5.0000E-06 m      
+WER,WREF= 1.0000E-05 m       WDOG    = 0.0        m       FTHE1   = 0.0        -      
+TOX     = 8.1000E-09 m       
+ * Threshold-Voltage related Parameters *
+VTOR    = 6.5500E-01 V       STVTO   =-8.0000E-04 V/deg.K SLVTO   = 2.5130E-08 V.m    
+SL2VTO  =-8.3810E-15 V.m^2   SWVTO   =-2.2300E-08 V.m     PHIBR   = 8.5000E-01 V      
+KOR     = 6.8600E-01 V^1/2   SLKO    =-4.2720E-08 V^1/2.m SWKO    = 4.0460E-09 V^1/2.m
+KR      = 6.8600E-01 V^1/2   SLK     =-4.2720E-08 V^1/2.m SWK     = 4.0460E-09 V^1/2.m
+VSBXR   = 1.0000E+02 V       SLVSBX  = 0.0        V.m     SWVSBX  = 0.0        V.m    
+ * Channel-Current related Parameters *
+BETSQ   = 4.2230E-05 A/V^2   ETABET  = 1.2070E+00 -       THE1R   = 2.2670E-01 1/V    
+THE2R   = 3.7150E-01 1/V^1/2 THE3R   =-9.2680E-03 1/V     STTHE1R =-6.2000E-04 unit1  
+STTHE2R =-5.0000E-04 unit2   STTHE3R = 0.0        unit1   SLTHE1R = 7.5190E-08 m/V    
+SLTHE2R =-3.9570E-08 m/V^1/2 SLTHE3R = 4.3180E-09 m/V     STLTHE1 =-1.7860E-10 unit3  
+STLTHE2 = 0.0        unit4   STLTHE3 =-6.0000E-11 unit3   SWTHE1  =-1.1430E-08 m/V    
+SWTHE2  = 2.3970E-08 m/V^1/2 SWTHE3  = 1.4520E-08 m/V     
+ * Drain-Feedback related Parameters *
+GAM1R   =-3.0210E-04 unit5   SLGAM1  = 1.5560E-08 unit6   SWGAM1  = 4.1050E-12 unit6  
+ETADSR  = 6.0000E-01 -       ETAALP  = 1.0000E+00 -       ETAGAMR = 1.0000E+00 -      
+ALPR    = 1.6340E-02 -       SLALP   = 8.1630E-09 unit7   SWALP   = 4.0320E-10 m      
+VPR     = 4.3400E+00 V       
+ * Sub-Threshold related Parameters *
+GAMOOR  = 4.7760E-04 -       SLGAMOO = 1.1630E-15 m^2     MOR     = 3.2450E-01 -      
+STMO    = 0.0        1/degK  SLMO    = 1.6850E-05 m^1/2   ETAMR   = 1.0000E+00 -      
+ETAZET  = 1.0000E+00 -       ZET1R   = 1.8580E+00 -       SLZET1  =-1.7390E-07 unit8  
+VSBTR   = 1.0000E+02 V       SLVSBT  = 0.0        V.m     
+ * Weak Avalanche related Parameters *
+A1R     = 1.5100E+01 -       A2R     = 3.3540E+01 V       A3R     = 1.0080E+00 -      
+SLA1    = 4.8010E-07 m       SLA2    =-2.4720E-07 V.m     SLA3    =-7.0930E-08 m      
+SWA1    = 4.3500E-06 m       SWA2    = 1.3730E-07 V.m     SWA3    = 7.5420E-08 m      
+STA1    = 4.0000E-02 1/degK  
+ * Parasitic Capacitance Parameters *
+COL     = 1.0100E-10 F/m     CGBO    = 0.0        F/m     
+ * Noise related Parameters *
+AF      = 1.0000E+00 -       NFR     = 8.5900E-12 V^2     NTR     = 2.2000E-20 -      
+NFMOD   = 0.0        -       NFAR    = 1.5300E+22 1/Vm^4  NFBR    = 4.0600E+06 1/Vm^2 
+NFCR    = 2.9200E-10 1/V     
+
+ *** Common extrinsic model parameters ***
+OPTACM  = 0          -       ARLEV   = 6          -       ALEV    = 6          -      
+RLEV    = 6          -       
+ * Access resistances related parameters *
+RD      = 0.0        Ohm     RS      = 0.0        Ohm     RSH     = 0.0        Ohm/Sq.
+RDC     = 0.0        Ohm     RSC     = 0.0        Ohm     
+ * Geometry related parameters *
+LAP     = 3.9030E-08 m       WOT     = 3.8740E-08 m       LVAR    = 4.0000E-08 m      
+WVAR    =-5.0000E-08 m       LDIF    = 0.0        m       HDIF    = 4.8750E-07 m      
+WMLT    = 1.0000E+00 -       LMLT    = 1.0000E+00 -       DEL     = 0.0        m      
+XJ      = 0.0        m       
+ * Static bulk-diode related parameters *
+DIOLEV  = 1          -       JS      = 2.5000E-09 A/m^2   JSW     = 2.0000E-13 A/m    
+IS      = 1.0000E-14 A       N       = 1.0000E+00 -       NDS     = 1.0000E+00 -      
+VNDS    =-1.0000E+00 V       VDLIN   = 5.0000E-01 -       
+ * Dynamic bulk-diode related parameters *
+DCAPLEV = 0          -       CJGATE  = 1.8640E-10         CBD     = 0.0        F      
+CBS     = 0.0        F       CJ      = 1.3290E-03 F/m^2   CJSW    = 3.1460E-10 F/m    
+FC      = 5.0000E-01 -       MJ      = 4.3000E-01 -       MJSW    = 4.0000E-01 -      
+TT      = 0.0        s       PB      = 8.0000E-01 V       PBSW    = 8.0000E-01 V      
+ * Temperature related Parameters 
+EG      = 1.1100E+00 eV      GAP1    = 7.0200E-04 eV/degK GAP2    = 1.1080E+03 degK   
+TR      = 2.7000E+01 degC    TLEV    = 0          -       TLEVC   = 0          -      
+TLEVI   = 0          -       
+ * Temperature Access Resistance related parameters * TLEVR = 1 
+TRD1    = 0.0        1/degK  TRS1    = 0.0        1/degK  TRSH1   = 0.0        1/degK 
+TRD2    = 0.0        unit9   TRS2    = 0.0        unit9   TRSH2   = 0.0        unit9  
+
+unit1 represents 1/V.degK
+unit2 represents 1/V^1/2.degK
+unit3 represents m/V.degK
+unit4 represents m/V^1/2.degK
+unit5 represents V^(1-ETADSR)
+unit6 represents m.V^(1-ETADSR)
+unit7 represents m^ETAALP
+unit8 represents m^ETAZET
+unit9 represents 1/degK^2
+
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:21*****************
+
+0* Equilibrage de l'inverseur
+0****                 OPTION SUMMARY                                         TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+
+
+
+*** DC Control Options : 
+
+GMIN           = 1.00e-12 NMAXSIZE       = 100000   ITL1           = 100      
+GRAMP          = 0        NETSIZE        = 100      VMINDC         = UNDEF    
+VMAXDC         = UNDEF    
+
+*** Initial Accuracy Control Options (May be adjusted during simulation): 
+
+ITOL           = 1.00e-06 EPS            = 5.00e-03 VNTOL          = 1.00e-06 
+RELTOL         = 1.00e-03 RELERR         = 5.00e-02 PIVREL         = 1.00e-03 
+PIVTOL         = 1.00e-16 ABSTOL         = 1.00e-12 FLXTOL         = 1.00e-11 
+MAXORD         = 2.00e+00 
+
+*** Time-step Control Options : 
+
+ZOOMTIME       = 1.00e+00 STEP           = 0.00e+00 STARTSMP       = 0.00e+00 
+FREQSMP        = 0.00e+00 COURESOL       = 0.00e+00 TRTOL          = 7.00e+00 
+HMIN           = 5.00e-14 ITL3           = 3        ITL4           = 13       
+FT             = 1.25e-01 DCLOG          = 1.00e+00 LVLTIM         = 2        
+LVLCNV         = 2        DVDT           = -1       RELVAR         = 1.50e-01 
+ABSVAR         = 2.00e-01 SAMPLE         = 0.00e+00 HMAX           = UNDEF    
+
+
+*** MosFet default Options : 
+
+SCALE          = 1.00e+00 SCALM          = 1.00e+00 SCALEBSIM      = 1.00e+00 
+DEFAD          = UNDEF    DEFAS          = UNDEF    DEFPD          = UNDEF    
+DEFPS          = UNDEF    DEFW           = 1.00e-04 DEFL           = 1.00e-04 
+DEFNRD         = UNDEF    DEFNRS         = UNDEF    XA             = 6.00e-06 
+LIMRMOS        = UNDEF    SHRINK         = 1.00e+00 
+
+*** General Information Options : 
+
+CPTIME         = UNDEF    STAT           = 0        TIMEDIV        = 0        
+SIMUDIV        = 10       SAVETIME       = 0        MAXTRAN        = 1000     
+MAXNODES       = 10000    MAXV           = 1.00e+13 LIMPROBE       = 10000    
+FLICKER_NOISE  = 0        THERMAL_NOISE  = 0        TNOM           = 2.70e+01 
+TMAX           = UNDEF    
+SPICDC         = 0        SPIOUT         = 0        NEWTON         = 1        
+OSR            = 0        TRAP           = 1        GEAR           = 0        
+BE             = 0        PROBEOP        = 0        NOLAT          = 0        
+NWLAT          = 0        ANALOG         = 0        BBDEBUG        = 0        
+NOSIZECHK      = 0        QTRUNC         = 0        UNBOUND        = 0        
+LCAPOP         = 0        NOAEX          = 0        AEX            = 0        
+AEX            = 0        STVER          = 0        MOTOROLA       = 0        
+AMS            = 0        ASPEC          = 0        INPUT          = 0        
+NOINIT         = 0        PSF            = 0        NOBIN          = 0        
+NOCOU          = 1        WL             = 0        NODE           = 0        
+LIST           = 0        SPI3BIN        = 0        SPI3ASC        = 0        
+NOMOD          = 0        NOBIN          = 0        NOCOU          = 1        
+RMOS           = 0        NWRMOS         = 1        NONWRMOS       = 0        
+USEDEFAP       = 0        NOASCII        = 0        ASCII          = 1        
+MIXED          = 0        SWITCH         = 0        USERSWITCH     = 0        
+TIMING         = 0        MODWL          = 1        ULOGIC         = 0        
+
+
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:2 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:21*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          :  90%               ( 90%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  40)
+CPU Usage                          :  80%               ( 85%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  70)
+CPU Usage                          : 100%               ( 93%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  90)
+CPU Usage                          : 100%               ( 94%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 110)
+CPU Usage                          : 100%               ( 95%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 130)
+CPU Usage                          :  90%               ( 94%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 160)
+CPU Usage                          : 100%               ( 96%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 180)
+CPU Usage                          :  95%               ( 96%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 200)
+CPU Usage                          : 100%               ( 96%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 220)
+CPU Usage                          : 100%               ( 97%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:21*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  0.0       
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  2.7992E-10 Sec 
+
+
+***>CPU TIME 0s 220ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 2 out of 7
+   value of parameter CAPA is 5.000000E-14
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:21
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:1 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:21*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          :  90%               ( 90%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  50)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  80)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 100)
+CPU Usage                          :  95%               (100%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 120)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 140)
+CPU Usage                          :  95%               (100%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 170)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 190)
+CPU Usage                          :  95%               (100%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 210)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 230)
+CPU Usage                          : 100%               (100%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:21*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  5.0000E-14
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  3.0583E-10 Sec 
+
+
+***>CPU TIME 0s 230ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 3 out of 7
+   value of parameter CAPA is 1.000000E-13
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:22
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:1 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          :  95%               ( 95%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  50)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  70)
+CPU Usage                          :  71%               ( 94%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  90)
+CPU Usage                          : 100%               ( 95%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 110)
+CPU Usage                          : 100%               ( 96%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 140)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 160)
+CPU Usage                          :  68%               ( 97%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 190)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 210)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 230)
+CPU Usage                          : 100%               (100%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  1.0000E-13
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  3.2844E-10 Sec 
+
+
+***>CPU TIME 0s 230ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 4 out of 7
+   value of parameter CAPA is 1.500000E-13
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:22
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:1 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  40)
+CPU Usage                          :  83%               ( 95%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  70)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  90)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 110)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 130)
+CPU Usage                          :  95%               ( 99%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 160)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 180)
+CPU Usage                          :  90%               ( 98%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 200)
+CPU Usage                          : 100%               ( 99%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 220)
+CPU Usage                          : 100%               ( 99%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  1.5000E-13
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  3.4939E-10 Sec 
+
+
+***>CPU TIME 0s 220ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 5 out of 7
+   value of parameter CAPA is 2.000000E-13
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:22
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:1 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  40)
+CPU Usage                          :  83%               ( 95%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  70)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  90)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 110)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 130)
+CPU Usage                          :  95%               ( 99%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 160)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 180)
+CPU Usage                          :  86%               ( 98%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 200)
+CPU Usage                          : 100%               ( 99%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 220)
+CPU Usage                          : 100%               ( 99%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  2.0000E-13
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  3.6939E-10 Sec 
+
+
+***>CPU TIME 0s 220ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 6 out of 7
+   value of parameter CAPA is 2.500000E-13
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:22
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:1 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  40)
+CPU Usage                          :  83%               (100%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  70)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  90)
+CPU Usage                          :  95%               (100%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 110)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 130)
+CPU Usage                          :  95%               ( 99%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 160)
+CPU Usage                          :  68%               (100%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 190)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 210)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 230)
+CPU Usage                          : 100%               (100%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  2.5000E-13
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  3.8884E-10 Sec 
+
+
+***>CPU TIME 0s 230ms <***
+
+
+
+0************************************************************************************************************************
+
+
+run number 7 out of 7
+   value of parameter CAPA is 3.000000E-13
+1************************************************************************************************************************
+
+*** DATE: 27-Sep-2023 11:01:22
+*** TITLE: * Equilibrage de l'inverseur
+
+TEMPERATURE : 27.000000 degrees C
+
+
+***> DC CPU TIME 0s 000ms <***
+
+DC:1 iterations FOR DC analysis
+
+
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 INITIAL TRANSIENT SOLUTION                           TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+  NODE         VOLTAGE      NODE         VOLTAGE      NODE         VOLTAGE    
+D            0.0         DD           3.3000E+00  Q            3.3000E+00  
+Q1           3.3000E+00  XBUF.1       3.3000E+00  XBUF.10      3.3000E+00  
+XBUF.11      3.3000E+00  XBUF.12      3.3000E+00  XBUF.13      3.3000E+00  
+XBUF.14      3.3000E+00  XBUF.15      3.3000E+00  XBUF.19      2.2528E-09  
+XBUF.20      2.2935E-09  XBUF.21      2.2949E-09  XBUF.22      2.2949E-09  
+XBUF.23      2.2949E-09  XBUF.24      2.2949E-09  XBUF.25      2.2949E-09  
+XBUF.26      2.2949E-09  XBUF.27      2.2949E-09  XBUF.28      2.2949E-09  
+XBUF.29      2.2949E-09  XBUF.3       3.3000E+00  XBUF.30      2.2949E-09  
+XBUF.31      2.3103E-09  XBUF.32      2.2964E-09  XBUF.33      2.2949E-09  
+XBUF.34      2.2949E-09  XBUF.35      2.2949E-09  XBUF.36      2.2949E-09  
+XBUF.37      2.2970E-09  XBUF.38      2.2968E-09  XBUF.42      4.2255E-11  
+XBUF.43      1.6291E-12  XBUF.44      8.1453E-13  XBUF.45      2.3284E-14  
+XBUF.46      1.1642E-14  XBUF.47      1.1642E-14  XBUF.48      1.1642E-14  
+XBUF.51      3.3000E+00  XBUF.53      3.3000E+00  XBUF.54      3.3000E+00  
+XBUF.55      3.3000E+00  XBUF.56      3.3000E+00  XBUF.57      3.3000E+00  
+XBUF.58      3.3000E+00  XBUF.59      3.3000E+00  XBUF.6       3.3000E+00  
+XBUF.60      3.3000E+00  XBUF.7       3.3000E+00  XBUF.8       3.3000E+00  
+XBUF.9       3.3000E+00  
+
+
+   VOLTAGE SOURCE CURRENT
+
+NAME      CURRENT      VOLTAGE      POWER        
+VDD       -2.1755E-11   3.3000E+00  -7.1792E-11  
+VD         0.0          0.0          0.0         
+
+   TOTAL POWER DISSIPATION:  7.1792E-11 WATTS
+
+
+
+
+
+Eldo NEWTON: VNTOL=1.000000e-06 RELTOL=7.500000e-04
+
+................................................
+Simulation progress                : 10% (t = 450.2500 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  20)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 20% (t = 900.0000 P)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  40)
+CPU Usage                          :  86%               ( 97%)
+................................................
+Simulation progress                : 30% (t = 1.3500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s  70)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 40% (t = 1.8000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s  90)
+CPU Usage                          :  95%               (100%)
+................................................
+Simulation progress                : 50% (t = 2.2500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 110)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 60% (t = 2.7000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 130)
+CPU Usage                          :  95%               (100%)
+................................................
+Simulation progress                : 70% (t = 3.1500 N)
+Elapsed CPU time                   :  0h  0mn  0s  30   ( 0h  0mn  0s 160)
+CPU Usage                          : 100%               (100%)
+................................................
+Simulation progress                : 80% (t = 3.6000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 180)
+CPU Usage                          :  86%               ( 99%)
+................................................
+Simulation progress                : 90% (t = 4.0500 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 200)
+CPU Usage                          : 100%               ( 99%)
+................................................
+Simulation progress                : 100% (t = 4.5000 N)
+Elapsed CPU time                   :  0h  0mn  0s  20   ( 0h  0mn  0s 220)
+CPU Usage                          : 100%               (100%)
+
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 EXTRACT INFORMATION                                    
+0****   PARAM CAPA =  3.0000E-13
+0****   TEMPERATURE =  2.7000E+01 Celsius
+
+0*************************************************************************************************************************
+
+
+
+* DELAYUP =  4.0793E-10 Sec 
+
+1***************27-Sep-2023 ***********************  ELDO 17.1 patch1 (64 bits)  (v8.4_1.1)  ***********************11:01:22*****************
+
+0* Equilibrage de l'inverseur
+0****                 ACCOUNTING INFORMATION                                 TEMPERATURE =   27.000 DEG C
+
+0*************************************************************************************************************************
+
+
+
+
+
+Number of nodes                     52
+Number of intrinsic nodes           0
+Number of input signals             2
+Number of resistors                 57
+Number of floating capacitors       0
+Number of grounded capacitors       63
+Number of inductors                 0
+Number of voltage sources           2
+Number of current sources           0
+Number of dependent sources         0
+Number of diodes                    0
+Number of BJT                       0
+Number of JFET                      0
+Number of MOS                       12
+Number of SWITCHES                  0
+Number of transmission lines        0
+Total number of elements simulated  134
+Repartition per level of MOS
+  MOSP9 12
+Number of equations                 50
+Number of non-zero terms            280
+Percent Zeros                       88.8
+Number of Newton iterations         9206
+Average number of Newton iterations 1.023
+Number of accepted time steps       9001
+Number of rejected time steps       0
+      due to LTE                    0
+      due to Newton                 0
+Evaluation of active devices        25028
+Virtual memory size (MB)            377
+Peak memory size (MB)      45
+
+***>CPU TIME 0s 220ms <***
+
+***>MESSAGE SUMMARY: 3 warnings
+
+***>GLOBAL CPU TIME 1s 610ms <***
+
+
+***>GLOBAL ELAPSED TIME 2s <***
+
+
+  Job started at 27-Sep-2023 11:01:21
+  Job end at     27-Sep-2023 11:01:23
+
+  Run on schmitt (Linux 3.10.0-1160.92.1.el7.x86_64)
+
+-----------------------------------------
+Maximum number of license(s) consumed:
+   1 Analog Simulator Kernel (eldokernel)
+
+Time spent acquiring licenses: 0.165983 s (avg: 0.082991 s, max: 0.156482 s at Wed Sep 27 11:01:21 2023)
+Time spent releasing licenses: 0.000772 s (avg: 0.000386 s, max: 0.000606 s at Wed Sep 27 11:01:23 2023)
+-----------------------------------------

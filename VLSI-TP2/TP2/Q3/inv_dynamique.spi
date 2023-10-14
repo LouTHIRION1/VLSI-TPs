@@ -1,0 +1,54 @@
+* Equilibrage de l'inverseur
+.lib "mon_inv.spi" typical
+
+.PARAM WP={4e-06}
+.PARAM VDD=3.3
+.PARAM TR=0.5e-09
+.PARAM TF=0.5e-09
+*.param capa=90e-15
+
+
+* Instanciation de l'inverseur
+Xinv1 d q dd 0 0 dd mon_inv W=WP
+Xinv2 d q dd 0 0 dd mon_inv
+Xinv3 d q dd 0 0 dd mon_inv
+Xinv4 d q dd 0 0 dd mon_inv
+Xinv5 d q dd 0 0 dd mon_inv
+Xinv6 d q dd 0 0 dd mon_inv
+Xinv7 d q dd 0 0 dd mon_inv
+Xinv8 d q dd 0 0 dd mon_inv
+Xinv9 d q dd 0 0 dd mon_inv
+Xinv10 d q dd 0 0 dd mon_inv
+Xinv11 d q dd 0 0 dd mon_inv
+Xinv12 d q dd 0 0 dd mon_inv
+Xinv13 d q dd 0 0 dd mon_inv
+Xinv14 d q dd 0 0 dd mon_inv
+Xinv15 d q dd 0 0 dd mon_inv
+Xinv16 d q dd 0 0 dd mon_inv
+Xinv17 d q dd 0 0 dd mon_inv
+Xinv18 d q dd 0 0 dd mon_inv
+Xinv19 d q dd 0 0 dd mon_inv
+Xinv20 d q dd 0 0 dd mon_inv
+Xinv21 d q dd 0 0 dd mon_inv
+
+
+
+
+** Sa capacité de charge 
+* C q 0 {capa} 
+
+** La tension d'alimentatn
+Vdd dd 0 DC 3.3
+** La source d'entrée 
+Vd d 0 pulse( 0 {Vdd} {TR} {TR} {TR} {3*TR} {20*TR})
+
+** la simulation transitoire
+** .tran TPRINT TSTOP TSTART HMAX
+
+*.step param capa 0 300f 50f
+.TRAN {9*TR}  {9*TR} 0 {TR/1000}
+.PLOT v(d) v(q)
+
+.extract tran label=delayup tpd(V(d), v(q), occur=2)
+
+.END

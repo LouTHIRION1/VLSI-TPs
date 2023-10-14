@@ -1,0 +1,19 @@
+* Equilibrage de l'inverseur
+.lib "mon_inv.spi" typical
+
+.PARAM WP={2*1.4e-06}
+.PARAM VDD=3.3
+.PARAM TR=0.5e-09
+.PARAM TF=0.5e-09
+
+Xinv1 d qi dd 0 0 dd mon_inv W=WP
+R qi q 3500
+C q 0 90e-15
+
+Vdd dd 0 DC 3.3
+Vd d 0 DC 0.0 PWL(0.0 0.0 {TR/2} {VDD/2} {TR} {VDD} {2*TR} {VDD} {5*TR/2} {VDD/2} {3*TR} 0.0)
+
+.TRAN {TR/63} {4*TR} 0.0 {TR/4095}
+.PLOT v(d) v(q)
+.extract tran label=delayup tpd(V(d), v(q), occur=2)
+.END

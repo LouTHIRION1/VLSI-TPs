@@ -1,0 +1,5 @@
+START report: Wed Sep 27 11:38:22 2023 
+** Warning: (eldo-252)  In file "./buf_x8.spi" line 124:
++   OBJECT "XBUF.C2_81": Self-connected object not created.
+** Warning: (eldo-252)  In file "./buf_x8.spi" line 127:
++   OBJECT "XBUF.C2_91": Self-connected object not created.
