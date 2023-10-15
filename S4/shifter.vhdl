@@ -37,32 +37,31 @@ begin
     if (shift_lsl = '1') then
       din_s  <= '0' & din; -- Add extra bit at MSB to capture C flag
       dout_s <= std_logic_vector(shift_left(unsigned(din_s), shift_amount));
-      cout_s <= dout_s(32); -- Capture C flag
+      cout_s <= dout_s(32); -- Capture C flag (MSB)
       temp   <= dout_s(31 downto 0);
 
     elsif (shift_lsr = '1') then
       din_s  <= din & '0'; -- Add extra bit at LSB to capture C flag
       dout_s <= std_logic_vector(shift_right(unsigned(din_s), shift_amount));
-      cout_s <= dout_s(0); -- Capture C flag
+      cout_s <= dout_s(0); -- Capture C flag (LSB)
       temp   <= dout_s(32 downto 1);
 
     elsif (shift_asr = '1') then
       din_s  <= din & '0'; -- Add extra bit at LSB to capture C flag
       dout_s <= std_logic_vector(shift_right(signed(din_s), shift_amount));
-      cout_s <= dout_s(0); -- Capture C flag
+      cout_s <= dout_s(0); -- Capture C flag (LSB)
       temp   <= dout_s(32 downto 1);
 
     elsif (shift_ror = '1') then
-      -- TODO: Fix logic for C flag
-      temp   <= din; -- Add extra bit at LSB to capture C flag
-      dout_s <= std_logic_vector(rotate_right(unsigned(temp), shift_amount));
-      cout_s <= dout_s(0); -- Capture C flag
+      -- din_s  <= din;
+      dout_s <= std_logic_vector(rotate_right(unsigned(din), shift_amount)) & '0';
+      cout_s <= dout_s(32); -- Capture C flag
       temp   <= dout_s(32 downto 1);
 
     elsif (shift_rrx = '1') then
       din_s  <= cin & din; -- Concatenate C flag at MSB
       dout_s <= std_logic_vector(rotate_right(unsigned(din_s), shift_amount));
-      cout_s <= dout_s(32); -- Capture C flag
+      cout_s <= dout_s(32); -- Capture C flag (MSB)
       temp   <= dout_s(31 downto 0);
 
     end if;
