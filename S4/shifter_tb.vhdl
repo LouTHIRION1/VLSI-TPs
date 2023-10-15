@@ -73,8 +73,24 @@ begin
     din_s       <= x"00000001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"00000002") report "Incorrect shift, dout = 0x" & to_hstring(dout_s) severity error;
-    assert(cout_s = '0') report "Incorrect carry out" severity error;
+    assert(dout_s = x"00000002") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '0') report "Incorrect carry out"severity error;
+
+    -- LSL
+    shift_lsl_s <= '1';
+    din_s       <= x"00000001";
+    shift_val_s <= "00010";
+    wait for 1 ns;
+    assert(dout_s = x"00000004") report "Incorrect shift, expected 0x00000004, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '0') report "Incorrect carry out"severity error;
+
+    -- LSL
+    shift_lsl_s <= '1';
+    din_s       <= x"80000000";
+    shift_val_s <= "00001";
+    wait for 1 ns;
+    assert(dout_s = x"00000000") report "Incorrect shift, expected 0x00000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- Clear inputs
     shift_lsl_s <= '0';
