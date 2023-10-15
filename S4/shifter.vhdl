@@ -33,4 +33,8 @@ begin
       dout_s <= std_logic_vector(shift_left(unsigned(din), to_integer(unsigned(shift_val))));
     end if;
   end process;
+
+  -- Affect signals
+  dout <= dout_s(31 downto 0);
+  -- cout <= dout_s(32);
 end Behavioral;
