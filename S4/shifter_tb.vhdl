@@ -135,19 +135,21 @@ begin
     assert(dout_s = x"00000000") report "Incorrect shift, expected 00000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
-    -- LSR
+    -- ASR
     din_s       <= x"80000000";
     shift_val_s <= "00001";
     wait for 1 ns;
     assert(dout_s = x"C0000000") report "Incorrect shift, expected C0000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
-    -- LSR
+    -- ASR
     din_s       <= x"80000000";
     shift_val_s <= "00010";
     wait for 1 ns;
     assert(dout_s = x"E0000000") report "Incorrect shift, expected E0000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
+
+    -- TODO: ROR tests
 
     -- Clear inputs
     shift_lsl_s <= '0';

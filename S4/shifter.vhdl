@@ -29,7 +29,7 @@ architecture Behavioral of Shifter is
   signal din_s  : std_logic_vector(32 downto 0);
   signal cout_s : std_logic := '0';
 begin
-  process (din, din_s, dout_s, temp, shift_val, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
+  process (din, din_s, dout_s, temp, shift_val, cin, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
     variable shift_amount : integer := 0;
   begin
     shift_amount := to_integer(unsigned(shift_val));
@@ -49,6 +49,13 @@ begin
     elsif (shift_asr = '1') then
       din_s  <= din & '0'; -- Add extra bit at LSB to capture C flag
       dout_s <= std_logic_vector(shift_right(signed(din_s), shift_amount));
+      cout_s <= dout_s(0); -- Capture C flag
+      temp   <= dout_s(32 downto 1);
+
+    elsif (shift_ror = '1') then
+      -- TODO: Fix logic for C flag
+      temp   <= din; -- Add extra bit at LSB to capture C flag
+      dout_s <= std_logic_vector(rotate_right(unsigned(temp), shift_amount));
       cout_s <= dout_s(0); -- Capture C flag
       temp   <= dout_s(32 downto 1);
 
