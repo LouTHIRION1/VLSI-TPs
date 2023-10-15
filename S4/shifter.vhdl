@@ -5,35 +5,32 @@ use IEEE.numeric_std.all;
 -- Declaration de l'interface
 entity Shifter is port
 (
+  -- Type of instruction
   shift_lsl : in std_logic; -- Logic Shift Left
   shift_lsr : in std_logic; -- Logic Shift Right
   shift_asr : in std_logic; -- Arithmetic Shift Right
   shift_ror : in std_logic; -- ROtate Right
   shift_rrx : in std_logic; -- Rotate Right eXtended
-  shift_val : in std_logic_vector(4 downto 0); -- Shift Value
-
-  din : in std_logic_vector(31 downto 0); -- Data in
-  cin : in std_logic; -- Carry in
-
+  -- Inputs
+  shift_val : in std_logic_vector(4 downto 0);  -- Shift Value (2^5 = 32 possible places)
+  din       : in std_logic_vector(31 downto 0); -- Data in
+  cin       : in std_logic;                     -- Carry in
+  -- Outputs
   dout : out std_logic_vector(31 downto 0); -- Data out
-  cout : out std_logic; -- Carry out
-
-  -- global interface
+  cout : out std_logic;                     -- Carry out
+  -- Global interface
   vdd : in bit;
   vss : in bit);
 end Shifter;
 
--- Description de l'alu
+-- Description du shifter
 architecture Behavioral of Shifter is
-  process (
-    shift_lsl,
-    shift_lsr,
-    shift_asr,
-    shift_ror,
-    shift_rrx,
-    shift_val,
-    )
+  signal dout_s : std_logic_vector(32 downto 0); -- Add one extra bit for cout
+begin
+  process (din, dout_s, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
   begin
-    -- TODO
+    if (shift_lsl = '1') then
+      dout_s <= std_logic_vector(rotate_right(unsigned(din), to_integer(unsigned(shift_val))));
+    end if;
   end process;
 end Behavioral;
