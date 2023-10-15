@@ -14,10 +14,10 @@ entity Shifter is port
   -- Inputs
   shift_val : in std_logic_vector(4 downto 0);  -- Shift Value (2^5 = 32 possible places)
   din       : in std_logic_vector(31 downto 0); -- Data in
-  cin       : in std_logic;                     -- Carry in
+  cin       : in std_logic := '0';              -- Carry in
   -- Outputs
   dout : out std_logic_vector(31 downto 0); -- Data out
-  cout : out std_logic;                     -- Carry out
+  cout : out std_logic := '0';              -- Carry out
   -- Global interface
   vdd : in bit;
   vss : in bit);
@@ -25,16 +25,33 @@ end Shifter;
 
 -- Description du shifter
 architecture Behavioral of Shifter is
-  signal dout_s : std_logic_vector(31 downto 0); -- Add one extra bit for cout
+  signal dout_s : std_logic_vector(32 downto 0); -- Add one extra bit for cout
+  signal value  : std_logic_vector(32 downto 0); -- Add one extra bit for cout
+  signal cin_s  : std_logic;
 begin
-  process (din, dout_s, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
+  process (din, value, dout_s, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
   begin
+    cin_s <= cin;
     if (shift_lsl = '1') then
-      dout_s <= std_logic_vector(shift_left(unsigned(din), to_integer(unsigned(shift_val))));
+      value  <= '0' & din;
+      dout_s <= std_logic_vector(shift_left(unsigned(value), to_integer(unsigned(shift_val))));
+
+    elsif (shift_lsr = '1') then
+      value  <= din & '0';
+      dout_s <= std_logic_vector(shift_right(unsigned(value), to_integer(unsigned(shift_val))));
+    elsif (shift_asr = '1') then
+      value  <= din & '0';
+      dout_s <= std_logic_vector(shift_right(signed(value), to_integer(unsigned(shift_val))));
+    elsif (shift_ror = '1') then
+      dout_s <= std_logic_vector(rotate_right(unsigned(value), to_integer(unsigned(shift_val))));
+    elsif (shift_rrx = '1') then
+      -- Rotate with carry flag
+      value  <= din & cin_s;
+      dout_s <= std_logic_vector(rotate_right(unsigned(value), to_integer(unsigned(shift_val))));
     end if;
   end process;
 
   -- Affect signals
   dout <= dout_s(31 downto 0);
-  -- cout <= dout_s(32);
+  cout <= dout_s(32);
 end Behavioral;
