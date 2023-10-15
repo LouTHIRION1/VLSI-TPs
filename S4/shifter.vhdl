@@ -59,6 +59,12 @@ begin
       cout_s <= dout_s(0); -- Capture C flag
       temp   <= dout_s(32 downto 1);
 
+    elsif (shift_rrx = '1') then
+      din_s  <= cin & din; -- Concatenate C flag at MSB
+      dout_s <= std_logic_vector(rotate_right(unsigned(din_s), shift_amount));
+      cout_s <= dout_s(32); -- Capture C flag
+      temp   <= dout_s(31 downto 0);
+
     end if;
   end process;
 

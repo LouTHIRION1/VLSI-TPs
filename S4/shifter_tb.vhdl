@@ -151,6 +151,37 @@ begin
 
     -- TODO: ROR tests
 
+    ---- RRX
+    report "Rotate Right Extended Tests." severity note;
+
+    shift_asr_s <= '0';
+    shift_rrx_s <= '1';
+
+    -- 1 00000001 -> 1 10000000
+    cin_s       <= '1';
+    din_s       <= x"00000001";
+    shift_val_s <= "00001";
+    wait for 1 ns;
+    assert(dout_s = x"80000000") report "Incorrect shift, expected 80000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '1') report "Incorrect carry out"severity error;
+
+    -- RRX
+    din_s       <= x"80000000";
+    shift_val_s <= "00001";
+    wait for 1 ns;
+    assert(dout_s = x"C0000000") report "Incorrect shift, expected C0000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '0') report "Incorrect carry out"severity error;
+
+    -- RRX
+    -- 0 11111111111111111111111111111111 -> 1 111101111111111111111111111111111
+    -- 0 FFFFFFFF -> 1 BFFFFFFF
+    cin_s       <= '0';
+    din_s       <= x"FFFFFFFF";
+    shift_val_s <= "00010";
+    wait for 1 ns;
+    assert(dout_s = x"BFFFFFFF") report "Incorrect shift, expected BFFFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '1') report "Incorrect carry out"severity error;
+
     -- Clear inputs
     shift_lsl_s <= '0';
     shift_lsr_s <= '0';
