@@ -148,6 +148,19 @@ begin
     assert(z_s = '1') report "Zero flag should be '1'" severity error;
     assert(n_s = '0') report "Negative flag should be '0'" severity error;
 
+    -- Overflow test
+    op1_s <= x"7FFFFFFF";
+    op2_s <= x"00000001";
+    cin_s <= '0';
+
+    cmd_s <= "00"; -- ADD
+    wait for 1 ns;
+    assert(res_s = x"80000000") report "Incorrect sum" severity error;
+    assert(cout_s = '0') report "Incorrect carry out" severity error;
+    assert(z_s = '0') report "Zero flag should be '0'" severity error;
+    assert(n_s = '1') report "Negative flag should be '0'" severity error;
+    assert(v_s = '1') report "Overflow flag should be '1'" severity error;
+
     -- Clear inputs
     op1_s <= x"00000000";
     op2_s <= x"00000000";
@@ -174,14 +187,14 @@ begin
     assert(res_s = x"FFFFFFFF") report "Incorrect sum" severity error;
     assert(cout_s = '0') report "Incorrect carry out" severity error;
     assert(z_s = '0') report "Zero flag should be '1'" severity error;
-    assert(n_s = '0') report "Negative flag should be '0'" severity error;
+    assert(n_s = '1') report "Negative flag should be '1'" severity error;
 
     cmd_s <= "11"; -- XOR
     wait for 1 ns;
     assert(res_s = x"FFFFFFFF") report "Incorrect sum" severity error;
     assert(cout_s = '0') report "Incorrect carry out" severity error;
     assert(z_s = '0') report "Zero flag should be '1'" severity error;
-    assert(n_s = '0') report "Negative flag should be '0'" severity error;
+    assert(n_s = '1') report "Negative flag should be '1'" severity error;
 
     op1_s <= x"10101010";
     op2_s <= x"01010101";

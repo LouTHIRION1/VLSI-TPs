@@ -46,7 +46,7 @@ architecture Behavioral of alu is
   end component;
 
   signal adder_out  : std_logic_vector(31 downto 0); -- sortie du adder
-  signal adder_cout : std_logic; -- retenue du adder
+  signal adder_cout : std_logic;                     -- retenue du adder
   signal res_s      : std_logic_vector(31 downto 0); -- sortie du adder
 
   signal cmd_s  : std_logic_vector(1 downto 0);
@@ -99,21 +99,34 @@ begin
     end if;
 
     -- Negative flag
-    if (res_s(31) = '1') then -- Don't forget to include all zeroes, checking for "0" won't work!
+    if (res_s(31) = '1') then
       n_f <= '1';
     else
       n_f <= '0';
     end if;
 
-    -- Overflow flag
-    -- TODO
+    -- Overflow flag (Does not matter for unsigned arithmetic)
+    -- More info : http://teaching.idallen.com/dat2343/11w/notes/040_overflow.txt
+    -- Positive sum
+    if ((op1(31) = '0') and (op2(31) = '0')) then
+      if (res_s(31) = '1') then
+        v_f <= '1';
+      end if;
+      -- Negative sum
+    elsif ((op1(31) = '1') and (op2(31) = '1')) then
+      if (res_s(31) = '0') then
+        v_f <= '1';
+      end if;
+    else
+      v_f <= '0';
+    end if;
   end process;
 
   -- Affect signals
-  res  <= res_s;
-  cout <= cout_s;
-  z    <= z_f;
-  n    <= n_f;
-  v    <= v_f;
+  res  <= res_s;  -- Result
+  cout <= cout_s; -- Carry out
+  z    <= z_f;    -- Zero flag
+  n    <= n_f;    -- Negative flag
+  v    <= v_f;    -- Overflow flag
 
 end Behavioral;
