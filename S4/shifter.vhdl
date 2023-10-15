@@ -23,35 +23,33 @@ entity Shifter is port
   vss : in bit);
 end Shifter;
 
--- Description du shifter
 architecture Behavioral of Shifter is
-  signal dout_s : std_logic_vector(32 downto 0); -- Add one extra bit for cout
-  signal value  : std_logic_vector(32 downto 0); -- Add one extra bit for cout
-  signal cin_s  : std_logic;
+  signal dout_s : std_logic_vector(32 downto 0);
+  signal temp   : std_logic_vector(31 downto 0);
+  signal din_s  : std_logic_vector(32 downto 0);
+  signal cout_s : std_logic := '0';
 begin
-  process (din, value, dout_s, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
+  process (din, din_s, dout_s, temp, shift_val, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
+    variable shift_amount : integer := 0;
   begin
-    cin_s <= cin;
+    shift_amount := to_integer(unsigned(shift_val));
+
     if (shift_lsl = '1') then
-      value  <= '0' & din;
-      dout_s <= std_logic_vector(shift_left(unsigned(value), to_integer(unsigned(shift_val))));
+      din_s  <= '0' & din; -- Add extra bit at MSB to capture C flag
+      dout_s <= std_logic_vector(shift_left(unsigned(din_s), shift_amount));
+      cout_s <= dout_s(32); -- Capture C flag
+      temp   <= dout_s(31 downto 0);
 
     elsif (shift_lsr = '1') then
-      value  <= din & '0';
-      dout_s <= std_logic_vector(shift_right(unsigned(value), to_integer(unsigned(shift_val))));
-    elsif (shift_asr = '1') then
-      value  <= din & '0';
-      dout_s <= std_logic_vector(shift_right(signed(value), to_integer(unsigned(shift_val))));
-    elsif (shift_ror = '1') then
-      dout_s <= std_logic_vector(rotate_right(unsigned(value), to_integer(unsigned(shift_val))));
-    elsif (shift_rrx = '1') then
-      -- Rotate with carry flag
-      value  <= din & cin_s;
-      dout_s <= std_logic_vector(rotate_right(unsigned(value), to_integer(unsigned(shift_val))));
+      din_s  <= din & '0'; -- Add extra bit at LSB to capture C flag
+      dout_s <= std_logic_vector(shift_right(unsigned(din_s), shift_amount));
+      cout_s <= dout_s(0); -- Capture C flag
+      temp   <= dout_s(32 downto 1);
+
     end if;
   end process;
 
   -- Affect signals
-  dout <= dout_s(31 downto 0);
-  cout <= dout_s(32);
+  cout <= cout_s;
+  dout <= temp;
 end Behavioral;
