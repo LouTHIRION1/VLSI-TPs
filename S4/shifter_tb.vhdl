@@ -149,12 +149,37 @@ begin
     assert(dout_s = x"E0000000") report "Incorrect shift, expected E0000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
-    -- TODO: ROR tests
+    ---- ROR
+    report "Rotate Right Tests." severity note;
+
+    shift_asr_s <= '0';
+    shift_ror_s <= '1';
+
+    cin_s       <= '0';
+    din_s       <= x"00000001";
+    shift_val_s <= "00001";
+    wait for 1 ns;
+    assert(dout_s = x"80000000") report "Incorrect shift, expected 80000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '1') report "Incorrect carry out"severity error;
+
+    -- ROR
+    din_s       <= x"80000000";
+    shift_val_s <= "00001";
+    wait for 1 ns;
+    assert(dout_s = x"40000000") report "Incorrect shift, expected 40000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '0') report "Incorrect carry out"severity error;
+
+    -- ROR
+    din_s       <= x"0FFFFFFF";
+    shift_val_s <= "00100";
+    wait for 1 ns;
+    assert(dout_s = x"F0FFFFFF") report "Incorrect shift, expected F0FFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     ---- RRX
     report "Rotate Right Extended Tests." severity note;
 
-    shift_asr_s <= '0';
+    shift_ror_s <= '0';
     shift_rrx_s <= '1';
 
     -- 1 00000001 -> 1 10000000
