@@ -73,7 +73,7 @@ begin
     din_s       <= x"00000001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"00000010") report "Incorrect shift, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"00000002") report "Incorrect shift, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out" severity error;
 
     -- Clear inputs
