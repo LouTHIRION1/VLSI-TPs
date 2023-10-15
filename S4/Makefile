@@ -1,48 +1,45 @@
+# https://github.com/jimtremblay/ghdl-example/blob/master/Makefile
+# VHDL files
+FILES = *.vhdl
+
+# Test Bench files
+TB_FILES = *_tb.vhdl
+TB_FILE = ${TB}_tb
+WORKDIR = work
+
+# GHDL config
 GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
+GHDL_FLAGS = --std=08 --workdir=$(WORKDIR)
 
-all : alu_tb
-# ---------------- ALU ----------------
-# Analyze (compile) the file
-alu.o : alu.vhdl
-	${GHDL} -a -v alu.vhdl
+# Simulation options
+STOP_TIME = 100ns
+GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
 
-# Analyze both the test bench and object 
-alu_tb.o : alu_tb.vhdl alu.o
-	${GHDL} -a -v alu_tb.vhdl
+.PHONY: clean
 
+all : clean make run
+
+make : 
+# strip removes whitespace from TB argument
+# ifeq checks if the argument is defined
+ifeq ($(strip $(TB)),)
+	@echo "TB not set. Use TB=<value> to set it."
+	@echo "Example: make TB=adder"
+	@exit 1
+endif
+# Create temporal work directory
+	@mkdir -p $(WORKDIR)
+# Analyze the files
+	@$(GHDL) -a -v $(GHDL_FLAGS) $(FILES)
 # Elaborate (create executable)
-alu_tb : alu.o alu_tb.o 
-	${GHDL} -e -v alu_tb
+	@$(GHDL) -e -v $(GHDL_FLAGS) $(TB_FILE) 
 
-run_alu : alu_tb
-	${GHDL} -r alu_tb --vcd=alu.vcd
-
-run : alu_tb
-	./alu_tb --vcd=alu_tb.vcd
+run :
+# Run the simulation
+	@$(GHDL) -r $(GHDL_FLAGS) --workdir=$(WORKDIR) $(TB_FILE) --vcd=$(TB_FILE).vcd $(GHDL_SIM_OPT)
+# Move the .vcd file to the work directory
+	@mv $(TB_FILE).vcd $(WORKDIR)/
 
 clean :
-	rm *.o work-obj93.cf *_tb *.vcd
-
-# ---------------- Adder ----------------
-# Analyze (compile) the file
-adder.o : adder.vhdl
-	${GHDL} -a -v adder.vhdl
-
-# Analyze both the test bench and object 
-adder_tb.o : adder_tb.vhdl adder.o
-	${GHDL} -a -v adder_tb.vhdl
-
-# Elaborate (create executable)
-adder_tb : adder.o adder_tb.o 
-	${GHDL} -e -v  adder_tb
-
-run_adder : adder_tb
-	${GHDL} -r adder_tb --vcd=adder.vcd
-
-# Elaborate and run executable
-# adder_tb : adder.o adder_tb.o 
-# ${GHDL} --elab-run adder_tb --vcd=adder.vcd
-
-# ---------------- Shifter ----------------
-shifter.o : shifter.vhdl
-	${GHDL} -a -v shifter.vhdl
+# Remove the work directory
+	@rm -rf $(WORKDIR)
