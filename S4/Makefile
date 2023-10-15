@@ -9,6 +9,7 @@ WORKDIR = work
 
 # GHDL config
 GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
+# VHDL 2008 standard lets us print the value of a signal in assertions (https://ghdl.github.io/ghdl/using/ImplementationOfVHDL.html#vhdl-standards)
 GHDL_FLAGS = --std=08 --workdir=$(WORKDIR)
 
 # Simulation options
