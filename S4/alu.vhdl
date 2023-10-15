@@ -108,15 +108,9 @@ begin
     -- Overflow flag (Does not matter for unsigned arithmetic)
     -- More info : http://teaching.idallen.com/dat2343/11w/notes/040_overflow.txt
     -- Positive sum
-    if ((op1(31) = '0') and (op2(31) = '0')) then
-      if (res_s(31) = '1') then
-        v_f <= '1';
-      end if;
-      -- Negative sum
-    elsif ((op1(31) = '1') and (op2(31) = '1')) then
-      if (res_s(31) = '0') then
-        v_f <= '1';
-      end if;
+    if (((op1(31) = '0') and (op2(31) = '0') and (res_s(31) = '1'))
+      or ((op1(31) = '1') and (op2(31) = '1') and (res_s(31) = '0'))) then
+      v_f <= '1';
     else
       v_f <= '0';
     end if;
