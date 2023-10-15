@@ -46,6 +46,12 @@ begin
       cout_s <= dout_s(0); -- Capture C flag
       temp   <= dout_s(32 downto 1);
 
+    elsif (shift_asr = '1') then
+      din_s  <= din & '0'; -- Add extra bit at LSB to capture C flag
+      dout_s <= std_logic_vector(shift_right(signed(din_s), shift_amount));
+      cout_s <= dout_s(0); -- Capture C flag
+      temp   <= dout_s(32 downto 1);
+
     end if;
   end process;
 
