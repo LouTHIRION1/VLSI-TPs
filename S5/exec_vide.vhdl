@@ -78,8 +78,8 @@ end EXec;
 ----------------------------------------------------------------------
 
 architecture Behavior of EXec is
-
-  component alu
+  -- COMPONENT DECLARATIONS
+  component Alu
     port
     (
       op1 : in std_logic_vector(31 downto 0);
@@ -94,6 +94,27 @@ architecture Behavior of EXec is
       n    : out std_logic;
       v    : out std_logic;
 
+      vdd : in bit;
+      vss : in bit);
+  end component;
+
+  component Shifter
+    port
+    (
+      -- Type of instruction
+      shift_lsl : in std_logic := '0'; -- Logic Shift Left
+      shift_lsr : in std_logic := '0'; -- Logic Shift Right
+      shift_asr : in std_logic := '0'; -- Arithmetic Shift Right
+      shift_ror : in std_logic := '0'; -- ROtate Right
+      shift_rrx : in std_logic := '0'; -- Rotate Right eXtended
+      -- Inputs
+      shift_val : in std_logic_vector(4 downto 0);  -- Shift Value (2^5 = 32 possible places)
+      din       : in std_logic_vector(31 downto 0); -- Data in
+      cin       : in std_logic := '0';              -- Carry in
+      -- Outputs
+      dout : out std_logic_vector(31 downto 0); -- Data out
+      cout : out std_logic := '0';              -- Carry out
+      -- Global interface
       vdd : in bit;
       vss : in bit);
   end component;
@@ -119,18 +140,50 @@ architecture Behavior of EXec is
     );
   end component;
 
+  -- SIGNAL DECLARATIONS
+
+begin
   --  Component instantiation.
-  alu_inst : alu
+  alu_inst : Alu
   port map
   (
-    vss => vss);
+    op1  => x,
+    op2  => x,
+    cin  => x,
+    cmd  => x,
+    res  => x,
+    cout => x,
+    z    => x,
+    n    => x,
+    v    => x,
+    vdd  => vdd,
+    vss  => vss);
+
+  shifter_inst : Shifter
+  port
+  map
+  (
+  shift_lsl => x,
+  shift_lsr => x,
+  shift_asr => x,
+  shift_ror => x,
+  shift_rrx => x,
+  shift_val => x,
+  din       => x,
+  cin       => x,
+  dout      => x,
+  cout      => x,
+  vdd       => vdd,
+  vss       => vss);
 
   exec2mem : fifo_72b
   port
-  map (din(71) => dec_mem_lw,
-  din(70)      => dec_mem_lb,
-  din(69)      => dec_mem_sw,
-  din(68)      => dec_mem_sb,
+  map
+  (
+  din(71) => dec_mem_lw,
+  din(70) => dec_mem_lb,
+  din(69) => dec_mem_sw,
+  din(68) => dec_mem_sb,
 
   din(67 downto 64) => dec_mem_dest,
   din(63 downto 32) => dec_mem_data,
