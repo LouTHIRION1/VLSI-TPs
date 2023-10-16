@@ -79,6 +79,20 @@ end EXec;
 
 architecture Behavior of EXec is
   -- COMPONENT DECLARATIONS
+
+  component mux2to1
+    port
+    (
+      a   : in std_logic_vector(31 downto 0);
+      b   : in std_logic_vector(31 downto 0);
+      cmd : in std_logic;
+      s   : out std_logic_vector(31 downto 0);
+      -- Global interface
+      vdd : in bit;
+      vss : in bit
+    );
+  end component;
+
   component Alu
     port
     (
@@ -144,37 +158,86 @@ architecture Behavior of EXec is
 
 begin
   --  Component instantiation.
-  alu_inst : Alu
+  -- TODO: Remplace 'x' by their respective signals
+
+  mux_op1 : mux2to1
   port map
   (
-    op1  => x,
-    op2  => x,
-    cin  => x,
-    cmd  => x,
-    res  => x,
-    cout => x,
-    z    => x,
-    n    => x,
-    v    => x,
-    vdd  => vdd,
-    vss  => vss);
+    a   => dec_op1,
+    b   => not dec_op1,
+    cmd => dec_comp_op1,
+    s   => mux_op1,
+    vdd => vdd,
+    vss => vss
+  );
+
+  mux_op2 : mux2to1
+  port
+  map
+  (
+  a   => dec_op2_shift,
+  b   => not dec_op2_shift,
+  cmd => dec_comp_op2,
+  s   => mux_op2,
+  vdd => vdd,
+  vss => vss
+  );
+
+  mux_res : mux2to1
+  port
+  map
+  (
+  a   => exe_res,
+  b   => dec_op1,
+  cmd => x,
+  s   => x,
+  vdd => vdd,
+  vss => vss
+  );
 
   shifter_inst : Shifter
   port
   map
   (
-  shift_lsl => x,
-  shift_lsr => x,
-  shift_asr => x,
-  shift_ror => x,
-  shift_rrx => x,
-  shift_val => x,
-  din       => x,
-  cin       => x,
-  dout      => x,
-  cout      => x,
-  vdd       => vdd,
-  vss       => vss);
+  -- Type of instruction
+  shift_lsl => dec_shift_lsl,
+  shift_lsr => dec_shift_lsr,
+  shift_asr => dec_shift_asr,
+  shift_ror => dec_shift_ror,
+  shift_rrx => dec_shift_rrx,
+  -- Inputs
+  shift_val => dec_shift_val,
+  din       => dec_op2,
+  cin       => dec_cy,
+  -- Outputs
+  dout => dec_op2_shift,
+  cout => x,
+  -- Global interface
+  vdd => vdd,
+  vss => vss
+  );
+
+  alu_inst : Alu
+  port
+  map
+  (
+  -- Operandes + Retenue Carry in
+  op1 => mux_op1,
+  op2 => mux_op2,
+  cin => dec_alu_cys,
+  -- Commande pour le mux
+  cmd => dec_alu_cmd,
+  -- Resultat + retenue Carry out
+  res  => exe_res,
+  cout => exe_c,
+  -- Flags
+  z => exe_z,
+  n => exe_n,
+  v => exe_v,
+  -- Global interface
+  vdd => vdd,
+  vss => vss
+  );
 
   exec2mem : fifo_72b
   port
@@ -209,4 +272,5 @@ begin
   vdd     => vdd,
   vss     => vss);
 
+  -- TODO: Create MUX component & instantiate it
 end Behavior;
