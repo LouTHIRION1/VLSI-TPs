@@ -29,7 +29,7 @@ architecture Behavioral of Shifter is
   signal din_s  : std_logic_vector(32 downto 0);
   signal cout_s : std_logic := '0';
 begin
-  process (din, din_s, dout_s, temp, shift_val, cin, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
+  process (din, din_s, dout_s, shift_val, cin, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
     variable shift_amount : integer := 0;
   begin
     shift_amount := to_integer(unsigned(shift_val));
