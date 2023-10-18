@@ -46,6 +46,7 @@ entity EXec is
     -- Exe bypass to decod
     exe_res : out std_logic_vector(31 downto 0);
 
+    -- flags
     exe_c : out std_logic;
     exe_v : out std_logic;
     exe_n : out std_logic;
@@ -166,6 +167,9 @@ architecture Behavior of EXec is
   signal res_reg   : std_logic_vector(31 downto 0);
   signal mem_adr   : std_logic_vector(31 downto 0);
 
+  signal mux_op1_s   : std_logic_vector(31 downto 0);
+  signal mux_op2_s   : std_logic_vector(31 downto 0);
+
   signal exe_push     : std_logic;
   signal exe2mem_full : std_logic;
   signal mem_acces    : std_logic;
@@ -179,9 +183,9 @@ begin
   port map
   (
     a   => dec_op1,
-    b   => not dec_op1,
+    b   => "not"(dec_op1),
     cmd => dec_comp_op1,
-    s   => mux_op1,
+    s   => mux_op1_s,
     vdd => vdd,
     vss => vss
   );
@@ -190,10 +194,10 @@ begin
   port
   map
   (
-  a   => dec_op2_shift,
-  b   => not dec_op2_shift,
+  a   => op2_shift,
+  b   => "not"(op2_shift),
   cmd => dec_comp_op2,
-  s   => mux_op2,
+  s   => mux_op2_s,
   vdd => vdd,
   vss => vss
   );
@@ -202,10 +206,10 @@ begin
   port
   map
   (
-  a   => exe_res,
+  a   => alu_res,
   b   => dec_op1,
-  cmd => x,
-  s   => x,
+  cmd => dec_pre_index,
+  s   => mem_adr,
   vdd => vdd,
   vss => vss
   );
@@ -237,8 +241,8 @@ begin
   map
   (
   -- Operandes + Retenue Carry in
-  op1 => op1,
-  op2 => op2,
+  op1 => mux_op1_s,
+  op2 => mux_op2_s,
   cin => dec_alu_cy,
   -- Commande pour le mux
   cmd => dec_alu_cmd,
@@ -288,7 +292,7 @@ begin
   vss     => vss);
 
   -- synchro
-  mem_adr <= xxx;
+  exe_res <= alu_res;
   -- cout
 
   -- ALU opearandes
