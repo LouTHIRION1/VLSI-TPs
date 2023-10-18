@@ -64,6 +64,10 @@ begin
       cout_s <= dout_s(32); -- Capture C flag (MSB)
       temp   <= dout_s(31 downto 0);
 
+    else
+      temp   <= din;
+      cout_s <= cin;
+
     end if;
   end process;
 

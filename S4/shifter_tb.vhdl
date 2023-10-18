@@ -68,6 +68,13 @@ begin
   process
   begin
 
+    cin_s       <= '0';
+    din_s       <= x"00000001";
+    shift_val_s <= "00000";
+    wait for 1 ns;
+    assert(dout_s = x"00000001") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(cout_s = '0') report "Incorrect carry out"severity error;
+
     -- No shift
     report "Logical Shift Left tests." severity note;
 
