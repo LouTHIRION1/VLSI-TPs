@@ -80,38 +80,6 @@ end EXec;
 architecture Behavior of EXec is
   -- COMPONENT DECLARATIONS
 
-  component mux2to1
-    port
-    (
-      a   : in std_logic_vector(31 downto 0);
-      b   : in std_logic_vector(31 downto 0);
-      cmd : in std_logic;
-      s   : out std_logic_vector(31 downto 0);
-      -- Global interface
-      vdd : in bit;
-      vss : in bit
-    );
-  end component;
-
-  component Alu
-    port
-    (
-      op1 : in std_logic_vector(31 downto 0);
-      op2 : in std_logic_vector(31 downto 0);
-      cin : in std_logic;
-
-      cmd : in std_logic_vector(1 downto 0);
-
-      res  : out std_logic_vector(31 downto 0);
-      cout : out std_logic;
-      z    : out std_logic;
-      n    : out std_logic;
-      v    : out std_logic;
-
-      vdd : in bit;
-      vss : in bit);
-  end component;
-
   component Shifter
     port
     (
@@ -129,6 +97,25 @@ architecture Behavior of EXec is
       dout : out std_logic_vector(31 downto 0); -- Data out
       cout : out std_logic := '0';              -- Carry out
       -- Global interface
+      vdd : in bit;
+      vss : in bit);
+  end component;
+
+  component Alu
+    port
+    (
+      op1 : in std_logic_vector(31 downto 0);
+      op2 : in std_logic_vector(31 downto 0);
+      cin : in std_logic;
+
+      cmd : in std_logic_vector(1 downto 0);
+
+      res  : out std_logic_vector(31 downto 0);
+      cout : out std_logic;
+      z    : out std_logic;
+      n    : out std_logic;
+      v    : out std_logic;
+
       vdd : in bit;
       vss : in bit);
   end component;
@@ -154,9 +141,37 @@ architecture Behavior of EXec is
     );
   end component;
 
+  component mux2to1
+    port
+    (
+      a   : in std_logic_vector(31 downto 0);
+      b   : in std_logic_vector(31 downto 0);
+      cmd : in std_logic;
+      s   : out std_logic_vector(31 downto 0);
+      -- Global interface
+      vdd : in bit;
+      vss : in bit
+    );
+  end component;
+
   -- SIGNAL DECLARATIONS
 
+  signal shift_c : std_logic;
+  signal alu_c   : std_logic;
+
+  signal op2       : std_logic_vector(31 downto 0);
+  signal op2_shift : std_logic_vector(31 downto 0);
+  signal op1       : std_logic_vector(31 downto 0);
+  signal alu_res   : std_logic_vector(31 downto 0);
+  signal res_reg   : std_logic_vector(31 downto 0);
+  signal mem_adr   : std_logic_vector(31 downto 0);
+
+  signal exe_push     : std_logic;
+  signal exe2mem_full : std_logic;
+  signal mem_acces    : std_logic;
+
 begin
+
   --  Component instantiation.
   -- TODO: Remplace 'x' by their respective signals
 
@@ -210,8 +225,8 @@ begin
   din       => dec_op2,
   cin       => dec_cy,
   -- Outputs
-  dout => dec_op2_shift,
-  cout => x,
+  dout => op2_shift,
+  cout => shift_c,
   -- Global interface
   vdd => vdd,
   vss => vss
@@ -222,14 +237,14 @@ begin
   map
   (
   -- Operandes + Retenue Carry in
-  op1 => mux_op1,
-  op2 => mux_op2,
-  cin => dec_alu_cys,
+  op1 => op1,
+  op2 => op2,
+  cin => dec_alu_cy,
   -- Commande pour le mux
   cmd => dec_alu_cmd,
   -- Resultat + retenue Carry out
-  res  => exe_res,
-  cout => exe_c,
+  res  => alu_res,
+  cout => alu_c,
   -- Flags
   z => exe_z,
   n => exe_n,
@@ -272,5 +287,12 @@ begin
   vdd     => vdd,
   vss     => vss);
 
-  -- TODO: Create MUX component & instantiate it
+  -- synchro
+  mem_adr <= xxx;
+  -- cout
+
+  -- ALU opearandes
+
+  -- Loop dec
+
 end Behavior;
