@@ -11,7 +11,12 @@ WORKDIR = work
 UNAME_S := $(shell uname -s)
 # Linux machine
 ifeq ($(UNAME_S), Linux)
-	GHDL = /usr/bin/ghdl
+	UNAME_N := $(shell uname -n)
+	ifeq ($(UNAME_S), louthirion-ThinkPad-L460)
+		GHDL = /snap/bin/ghdl
+	else
+		GHDL = /usr/bin/ghdl
+	endif
 	WAVEFORM_VIEWER = /usr/bin/gtkwave
 endif
 # Mac OS
