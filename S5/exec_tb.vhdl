@@ -81,55 +81,53 @@ architecture testbench of exec_tb is
       vdd     : in bit;
       vss     : in bit);
   end component;
-
-
--- Declaration des signaux
-signal exe_pop_s       : std_logic;
-signal dec2exe_empty_s : std_logic;
-signal dec_op1_s      : std_logic_vector(31 downto 0); -- first alu input
-signal dec_op2_s      : std_logic_vector(31 downto 0); -- shifter input
-signal dec_exe_dest_s : std_logic_vector(3 downto 0);  -- Rd destination
-signal dec_exe_wb_s   : std_logic;                     -- Rd destination write back
-signal dec_flag_wb_s  : std_logic;                     -- CSPR modifiy
-signal dec_mem_data_s  : std_logic_vector(31 downto 0); -- data to MEM W
-signal dec_mem_dest_s  : std_logic_vector(3 downto 0);  -- Destination MEM R
-signal dec_pre_index_s : std_logic;
-signal dec_mem_lw_s : std_logic;
-signal dec_mem_lb_s : std_logic;
-signal dec_mem_sw_s : std_logic;
-signal dec_mem_sb_s : std_logic;
-signal dec_shift_lsl_s : std_logic;
-signal dec_shift_lsr_s : std_logic;
-signal dec_shift_asr_s : std_logic;
-signal dec_shift_ror_s : std_logic;
-signal dec_shift_rrx_s : std_logic;
-signal dec_shift_val_s : std_logic_vector(4 downto 0);
-signal dec_cy_s        : std_logic;
-signal dec_comp_op1_s : std_logic;
-signal dec_comp_op2_s : std_logic;
-signal dec_alu_cy_s   : std_logic;
-signal dec_alu_cmd_s : std_logic_vector(1 downto 0);
-signal exe_res_s : std_logic_vector(31 downto 0);
-signal exe_c_s : std_logic;
-signal exe_v_s : std_logic;
-signal exe_n_s : std_logic;
-signal exe_z_s : std_logic;
-signal exe_dest_s    : std_logic_vector(3 downto 0); -- Rd destination
-signal exe_wb_s      : std_logic;                    -- Rd destination write back
-signal exe_flag_wb_s : std_logic;                    -- CSPR modifiy
-signal exe_mem_adr_s  : std_logic_vector(31 downto 0); -- Alu res register
-signal exe_mem_data_s : std_logic_vector(31 downto 0);
-signal exe_mem_dest_s : std_logic_vector(3 downto 0);
-signal exe_mem_lw_s : std_logic;
-signal exe_mem_lb_s : std_logic;
-signal exe_mem_sw_s : std_logic;
-signal exe_mem_sb_s : std_logic;
-signal exe2mem_empty_s : std_logic;
-signal mem_pop_s       : std_logic;
-signal ck_s      : std_logic;
-signal reset_n_s : std_logic;
-signal vdd_s     : bit;
-signal vss_s     : bit;
+  -- Declaration des signaux
+  signal exe_pop_s       : std_logic;
+  signal dec2exe_empty_s : std_logic;
+  signal dec_op1_s       : std_logic_vector(31 downto 0); -- first alu input
+  signal dec_op2_s       : std_logic_vector(31 downto 0); -- shifter input
+  signal dec_exe_dest_s  : std_logic_vector(3 downto 0);  -- Rd destination
+  signal dec_exe_wb_s    : std_logic;                     -- Rd destination write back
+  signal dec_flag_wb_s   : std_logic;                     -- CSPR modifiy
+  signal dec_mem_data_s  : std_logic_vector(31 downto 0); -- data to MEM W
+  signal dec_mem_dest_s  : std_logic_vector(3 downto 0);  -- Destination MEM R
+  signal dec_pre_index_s : std_logic;
+  signal dec_mem_lw_s    : std_logic;
+  signal dec_mem_lb_s    : std_logic;
+  signal dec_mem_sw_s    : std_logic;
+  signal dec_mem_sb_s    : std_logic;
+  signal dec_shift_lsl_s : std_logic;
+  signal dec_shift_lsr_s : std_logic;
+  signal dec_shift_asr_s : std_logic;
+  signal dec_shift_ror_s : std_logic;
+  signal dec_shift_rrx_s : std_logic;
+  signal dec_shift_val_s : std_logic_vector(4 downto 0);
+  signal dec_cy_s        : std_logic;
+  signal dec_comp_op1_s  : std_logic;
+  signal dec_comp_op2_s  : std_logic;
+  signal dec_alu_cy_s    : std_logic;
+  signal dec_alu_cmd_s   : std_logic_vector(1 downto 0);
+  signal exe_res_s       : std_logic_vector(31 downto 0);
+  signal exe_c_s         : std_logic;
+  signal exe_v_s         : std_logic;
+  signal exe_n_s         : std_logic;
+  signal exe_z_s         : std_logic;
+  signal exe_dest_s      : std_logic_vector(3 downto 0);  -- Rd destination
+  signal exe_wb_s        : std_logic;                     -- Rd destination write back
+  signal exe_flag_wb_s   : std_logic;                     -- CSPR modifiy
+  signal exe_mem_adr_s   : std_logic_vector(31 downto 0); -- Alu res register
+  signal exe_mem_data_s  : std_logic_vector(31 downto 0);
+  signal exe_mem_dest_s  : std_logic_vector(3 downto 0);
+  signal exe_mem_lw_s    : std_logic;
+  signal exe_mem_lb_s    : std_logic;
+  signal exe_mem_sw_s    : std_logic;
+  signal exe_mem_sb_s    : std_logic;
+  signal exe2mem_empty_s : std_logic;
+  signal mem_pop_s       : std_logic;
+  signal ck_s            : std_logic;
+  signal reset_n_s       : std_logic;
+  signal vdd_s           : bit;
+  signal vss_s           : bit;
 
 begin
 

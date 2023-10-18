@@ -6,74 +6,74 @@ entity EXec is
   port
   (
     -- Decode interface synchro
-    dec2exe_empty : in std_logic;
-    exe_pop       : out std_logic;
+    dec2exe_empty : in std_logic  := '0';
+    exe_pop       : out std_logic := '0';
 
     -- Decode interface operands
-    dec_op1      : in std_logic_vector(31 downto 0); -- first alu input
-    dec_op2      : in std_logic_vector(31 downto 0); -- shifter input
-    dec_exe_dest : in std_logic_vector(3 downto 0);  -- Rd destination
-    dec_exe_wb   : in std_logic;                     -- Rd destination write back
-    dec_flag_wb  : in std_logic;                     -- CSPR modifiy
+    dec_op1      : in std_logic_vector(31 downto 0) := x"00000000"; -- first alu input
+    dec_op2      : in std_logic_vector(31 downto 0) := x"00000000"; -- shifter input
+    dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";      -- Rd destination
+    dec_exe_wb   : in std_logic                     := '0';         -- Rd destination write back
+    dec_flag_wb  : in std_logic                     := '0';         -- CSPR modifiy
 
     -- Decode to mem interface 
-    dec_mem_data  : in std_logic_vector(31 downto 0); -- data to MEM W
-    dec_mem_dest  : in std_logic_vector(3 downto 0);  -- Destination MEM R
-    dec_pre_index : in std_logic;
+    dec_mem_data  : in std_logic_vector(31 downto 0) := x"00000000"; -- data to MEM W
+    dec_mem_dest  : in std_logic_vector(3 downto 0)  := "0000";      -- Destination MEM R
+    dec_pre_index : in std_logic                     := '0';
 
-    dec_mem_lw : in std_logic;
-    dec_mem_lb : in std_logic;
-    dec_mem_sw : in std_logic;
-    dec_mem_sb : in std_logic;
+    dec_mem_lw : in std_logic := '0';
+    dec_mem_lb : in std_logic := '0';
+    dec_mem_sw : in std_logic := '0';
+    dec_mem_sb : in std_logic := '0';
 
     -- Shifter command
-    dec_shift_lsl : in std_logic;
-    dec_shift_lsr : in std_logic;
-    dec_shift_asr : in std_logic;
-    dec_shift_ror : in std_logic;
-    dec_shift_rrx : in std_logic;
-    dec_shift_val : in std_logic_vector(4 downto 0);
-    dec_cy        : in std_logic;
+    dec_shift_lsl : in std_logic                    := '0';
+    dec_shift_lsr : in std_logic                    := '0';
+    dec_shift_asr : in std_logic                    := '0';
+    dec_shift_ror : in std_logic                    := '0';
+    dec_shift_rrx : in std_logic                    := '0';
+    dec_shift_val : in std_logic_vector(4 downto 0) := "00000";
+    dec_cy        : in std_logic                    := '0';
 
     -- Alu operand selection
-    dec_comp_op1 : in std_logic;
-    dec_comp_op2 : in std_logic;
-    dec_alu_cy   : in std_logic;
+    dec_comp_op1 : in std_logic := '0';
+    dec_comp_op2 : in std_logic := '0';
+    dec_alu_cy   : in std_logic := '0';
 
     -- Alu command
-    dec_alu_cmd : in std_logic_vector(1 downto 0);
+    dec_alu_cmd : in std_logic_vector(1 downto 0) := "00";
 
     -- Exe bypass to decod
-    exe_res : out std_logic_vector(31 downto 0);
+    exe_res : out std_logic_vector(31 downto 0) := x"00000000";
 
     -- flags
-    exe_c : out std_logic;
-    exe_v : out std_logic;
-    exe_n : out std_logic;
-    exe_z : out std_logic;
+    exe_c : out std_logic := '0';
+    exe_v : out std_logic := '0';
+    exe_n : out std_logic := '0';
+    exe_z : out std_logic := '0';
 
-    exe_dest    : out std_logic_vector(3 downto 0); -- Rd destination
-    exe_wb      : out std_logic;                    -- Rd destination write back
-    exe_flag_wb : out std_logic;                    -- CSPR modifiy
+    exe_dest    : out std_logic_vector(3 downto 0) := "0000"; -- Rd destination
+    exe_wb      : out std_logic                    := '0';    -- Rd destination write back
+    exe_flag_wb : out std_logic                    := '0';    -- CSPR modifiy
 
     -- Mem interface
-    exe_mem_adr  : out std_logic_vector(31 downto 0); -- Alu res register
-    exe_mem_data : out std_logic_vector(31 downto 0);
-    exe_mem_dest : out std_logic_vector(3 downto 0);
+    exe_mem_adr  : out std_logic_vector(31 downto 0) := x"00000000"; -- Alu res register
+    exe_mem_data : out std_logic_vector(31 downto 0) := x"00000000";
+    exe_mem_dest : out std_logic_vector(3 downto 0)  := "0000";
 
-    exe_mem_lw : out std_logic;
-    exe_mem_lb : out std_logic;
-    exe_mem_sw : out std_logic;
-    exe_mem_sb : out std_logic;
+    exe_mem_lw : out std_logic := '0';
+    exe_mem_lb : out std_logic := '0';
+    exe_mem_sw : out std_logic := '0';
+    exe_mem_sb : out std_logic := '0';
 
-    exe2mem_empty : out std_logic;
-    mem_pop       : in std_logic;
+    exe2mem_empty : out std_logic := '0';
+    mem_pop       : in std_logic  := '0';
 
     -- global interface
-    ck      : in std_logic;
-    reset_n : in std_logic;
-    vdd     : in bit;
-    vss     : in bit);
+    ck      : in std_logic := '0';
+    reset_n : in std_logic := '0';
+    vdd     : in bit       := '0';
+    vss     : in bit       := '0');
 end EXec;
 
 ----------------------------------------------------------------------
@@ -167,8 +167,8 @@ architecture Behavior of EXec is
   signal res_reg   : std_logic_vector(31 downto 0);
   signal mem_adr   : std_logic_vector(31 downto 0);
 
-  signal mux_op1_s   : std_logic_vector(31 downto 0);
-  signal mux_op2_s   : std_logic_vector(31 downto 0);
+  signal mux_op1_s : std_logic_vector(31 downto 0);
+  signal mux_op2_s : std_logic_vector(31 downto 0);
 
   signal exe_push     : std_logic;
   signal exe2mem_full : std_logic;
