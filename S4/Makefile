@@ -8,15 +8,23 @@ TB_FILE = ${TB}_tb
 WORKDIR = work
 
 # GHDL config
-# GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
-GHDL = /usr/bin/ghdl
+UNAME_S := $(shell uname -s)
+# Linux machine
+ifeq ($(UNAME_S), Linux)
+	GHDL = /usr/bin/ghdl
+	WAVEFORM_VIEWER = /usr/bin/gtkwave
+endif
+# Mac OS
+ifeq ($(UNAME_S), Darwin)
+	GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
+endif
+
 # VHDL 2008 standard lets us print the value of a signal in assertions (https://ghdl.github.io/ghdl/using/ImplementationOfVHDL.html#vhdl-standards)
 GHDL_FLAGS = --std=08 --workdir=$(WORKDIR)
 
 # Simulation options
 STOP_TIME = 100ns
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
-WAVEFORM_VIEWER = /usr/bin/gtkwave
 .PHONY: clean
 
 all : clean make run view
