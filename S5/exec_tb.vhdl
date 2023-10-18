@@ -185,6 +185,13 @@ begin
   begin
 
     report "Exec tests somme" severity note;
+    dec_op1_s      <= x"00000001";
+    dec_op2_s      <= x"00000001";
+    dec_comp_op1_s <= '0';
+    dec_comp_op2_s <= '0';
+    dec_alu_cmd_s  <= "00";
+    wait for 1 ns;
+    assert(exe_res_s = x"00000002") report "Incorrect res, expected 0x00000002, exe_res = 0x" & to_hstring(exe_res_s) severity error;
 
     wait;
   end process;
