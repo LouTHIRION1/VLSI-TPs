@@ -44,7 +44,7 @@ run :
 	@mv $(TB_FILE).vcd $(WORKDIR)/
 
 view:
-	@$(WAVEFORM_VIEWER) --dump=$(WORKDIR)/$(TESTBENCHFILE).vcd
+	@$(WAVEFORM_VIEWER) --dump=$(WORKDIR)/$(TB_FILE).vcd
 
 clean :
 # Remove the work directory
