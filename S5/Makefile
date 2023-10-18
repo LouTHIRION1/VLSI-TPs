@@ -31,7 +31,8 @@ endif
 # Create temporal work directory
 	@mkdir -p $(WORKDIR)
 # Analyze the files
-	@$(GHDL) -a -v $(GHDL_FLAGS) $(FILES)
+	@$(GHDL) -a -v $(GHDL_FLAGS) $(TB).vhdl
+	@$(GHDL) -a -v $(GHDL_FLAGS) $(TB)_tb.vhdl
 # Elaborate (create executable)
 	@$(GHDL) -e -v $(GHDL_FLAGS) $(TB_FILE) 
 
