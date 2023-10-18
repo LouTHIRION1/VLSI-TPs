@@ -12,7 +12,7 @@ UNAME_S := $(shell uname -s)
 # Linux machine
 ifeq ($(UNAME_S), Linux)
 	UNAME_N := $(shell uname -n)
-	ifeq ($(UNAME_S), louthirion-ThinkPad-L460)
+	ifeq ($(UNAME_N), louthirion-ThinkPad-L460)
 		GHDL = /snap/bin/ghdl
 	else
 		GHDL = /usr/bin/ghdl
