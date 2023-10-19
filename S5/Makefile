@@ -21,7 +21,10 @@ ifeq ($(UNAME_S), Linux)
 endif
 # Mac OS
 ifeq ($(UNAME_S), Darwin)
+# Stable Version
 	GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
+# Nighlty Version
+# GHDL = /opt/homebrew/Caskroom/ghdl/nightly/bin/ghdl 
 endif
 
 # VHDL 2008 standard lets us print the value of a signal in assertions (https://ghdl.github.io/ghdl/using/ImplementationOfVHDL.html#vhdl-standards)
