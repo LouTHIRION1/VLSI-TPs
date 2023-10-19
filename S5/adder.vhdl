@@ -13,11 +13,11 @@ entity adder32 is
   );
 end adder32;
 
-architecture behavioural of adder32 is
+architecture behavioral_adder of adder32 is
   signal temp : std_logic_vector(32 downto 0);
 begin
   -- Convert signals to 33 bits for carry in
   temp <= std_logic_vector(unsigned('0' & a) + unsigned('0' & b) + unsigned'('0' & cin));
   sum  <= temp(31 downto 0);
   cout <= temp(32);
-end behavioural;
+end behavioral_adder;

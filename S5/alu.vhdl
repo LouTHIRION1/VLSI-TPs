@@ -31,7 +31,7 @@ entity Alu is
 end Alu;
 
 -- Description de l'alu
-architecture Behavioral of alu is
+architecture behavioral_alu of alu is
 
   component adder32 is
     port
@@ -123,4 +123,4 @@ begin
   n    <= n_f;    -- Negative flag
   v    <= v_f;    -- Overflow flag
 
-end Behavioral;
+end behavioral_alu;

@@ -76,7 +76,7 @@ end EXec;
 
 ----------------------------------------------------------------------
 
-architecture Behavior of EXec is
+architecture behavioral_exec of EXec is
   -- COMPONENT DECLARATIONS
 
   component Shifter
@@ -298,4 +298,4 @@ begin
 
   -- Loop dec
 
-end Behavior;
+end behavioral_exec;
