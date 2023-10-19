@@ -72,6 +72,9 @@ entity EXec is
     reset_n : in std_logic := '0';
     vdd     : in bit       := '0';
     vss     : in bit       := '0');
+
+  -- Probe
+  -- probe : out std_logic_vector(31 downto 0));
 end EXec;
 
 ----------------------------------------------------------------------
@@ -297,5 +300,7 @@ begin
   -- ALU opearandes
 
   -- Loop dec
+
+  -- probe <= alu_res;
 
 end behavioral_exec;

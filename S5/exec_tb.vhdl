@@ -80,6 +80,8 @@ architecture testbench of exec_tb is
       reset_n : in std_logic;
       vdd     : in bit;
       vss     : in bit);
+    -- Probe
+    -- probe : out std_logic_vector(31 downto 0));
   end component;
   -- Declaration des signaux
   signal exe_pop_s       : std_logic;
@@ -128,6 +130,7 @@ architecture testbench of exec_tb is
   signal reset_n_s       : std_logic;
   signal vdd_s           : bit;
   signal vss_s           : bit;
+  -- signal probe_s         : std_logic_vector(31 downto 0);
 
 begin
 
@@ -179,6 +182,7 @@ begin
     reset_n       => reset_n_s,
     vdd           => vdd_s,
     vss           => vss_s
+    -- probe         => probe_s
   );
 
   process
@@ -187,17 +191,74 @@ begin
   begin
 
     report "EXEC stage tests" severity note;
-    report "Sum tests" severity note;
+    report "Sum 1+2 = 3" severity note;
     dec_op1_s       <= x"0000_0001";
-    dec_op2_s       <= x"0000_0001";
+    dec_op2_s       <= x"0000_0002";
+    dec_alu_cmd_s   <= "00"; -- Sum
     dec_shift_lsl_s <= '1';
     dec_shift_val_s <= "00000";
     dec_comp_op1_s  <= '0';
     dec_comp_op2_s  <= '0';
-    dec_alu_cmd_s   <= "00";
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
     wait for 1 ns;
-    assert(exe_res_s = x"0000_0002") report "Incorrect res, expected 0x00000002, exe_res = 0x" & to_hstring(exe_res_s) severity error;
-    -- assert(myalias = x"00000002") report "Error" severity error;
+    assert(exe_res_s = x"0000_0003") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+
+    report "Sum 1 + 2<<2 = 1 + 8 = 9" severity note;
+    dec_op1_s       <= x"0000_0001";
+    dec_op2_s       <= x"0000_0002";
+    dec_alu_cmd_s   <= "00"; -- Sum
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00010";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"0000_0009") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+
+    -- FIXME:
+    report "Set bits test" severity note;
+    dec_op1_s       <= x"0000_0000";
+    dec_op2_s       <= x"0030_0300";
+    dec_alu_cmd_s   <= "10"; -- OR
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00010";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"0030_0300") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+
+    -- FIXME:
+    report "Set bits test" severity note;
+    dec_op1_s       <= x"FFFF_FFFF";
+    dec_op2_s       <= x"0FF0_F00F";
+    dec_alu_cmd_s   <= "01"; -- AND
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00010";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"0FF0_F00F") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+
+    -- FIXME:
+    report "Set bits test" severity note;
+    dec_op1_s       <= x"FFFF_FFFF";
+    dec_op2_s       <= x"8000_0001";
+    dec_alu_cmd_s   <= "11"; -- XOR
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00010";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"0000_0000") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    -- assert(false) report "probe = 0x" & to_hstring(probe_s) severity error;
 
     wait;
   end process;
