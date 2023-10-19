@@ -21,12 +21,12 @@ entity EXec is
     dec_mem_dest  : in std_logic_vector(3 downto 0)  := "0000";      -- Destination MEM R
     dec_pre_index : in std_logic                     := '0';
 
-    dec_mem_lw : in std_logic := '0';
-    dec_mem_lb : in std_logic := '0';
-    dec_mem_sw : in std_logic := '0';
-    dec_mem_sb : in std_logic := '0';
+    dec_mem_lw : in std_logic := '0'; -- Load Word
+    dec_mem_lb : in std_logic := '0'; -- Load Byte
+    dec_mem_sw : in std_logic := '0'; -- Store Word
+    dec_mem_sb : in std_logic := '0'; -- Store Byte
 
-    -- Shifter command
+    ---- Shifter
     dec_shift_lsl : in std_logic                    := '0';
     dec_shift_lsr : in std_logic                    := '0';
     dec_shift_asr : in std_logic                    := '0';
@@ -35,18 +35,16 @@ entity EXec is
     dec_shift_val : in std_logic_vector(4 downto 0) := "00000";
     dec_cy        : in std_logic                    := '0';
 
-    -- Alu operand selection
-    dec_comp_op1 : in std_logic := '0';
-    dec_comp_op2 : in std_logic := '0';
-    dec_alu_cy   : in std_logic := '0';
+    ---- ALU
+    dec_comp_op1 : in std_logic                    := '0';  -- MUX Operand 1
+    dec_comp_op2 : in std_logic                    := '0';  -- MUX Operand 2
+    dec_alu_cy   : in std_logic                    := '0';  -- ALU Cin
+    dec_alu_cmd  : in std_logic_vector(1 downto 0) := "00"; -- ALU command
 
-    -- Alu command
-    dec_alu_cmd : in std_logic_vector(1 downto 0) := "00";
-
-    -- Exe bypass to decod
+    ---- Exe bypass to decod
     exe_res : out std_logic_vector(31 downto 0) := x"00000000";
 
-    -- flags
+    ---- Flags
     exe_c : out std_logic := '0';
     exe_v : out std_logic := '0';
     exe_n : out std_logic := '0';
@@ -209,7 +207,7 @@ begin
   a   => alu_res,
   b   => dec_op1,
   cmd => dec_pre_index,
-  s   => mem_adr,
+  s   => mem_adr, -- TODO: Verify if it's correct
   vdd => vdd,
   vss => vss
   );
@@ -230,7 +228,7 @@ begin
   cin       => dec_cy,
   -- Outputs
   dout => op2_shift,
-  cout => shift_c,
+  cout => shift_c, -- TODO: Verify it's correct (c flag?)
   -- Global interface
   vdd => vdd,
   vss => vss
@@ -240,13 +238,13 @@ begin
   port
   map
   (
-  -- Operandes + Retenue Carry in
+  -- Operandes + Carry in
   op1 => mux_op1_s,
   op2 => mux_op2_s,
   cin => dec_alu_cy,
-  -- Commande pour le mux
+  -- Commande pour le mux interne
   cmd => dec_alu_cmd,
-  -- Resultat + retenue Carry out
+  -- Resultat + Carry out
   res  => alu_res,
   cout => alu_c,
   -- Flags
@@ -289,7 +287,8 @@ begin
   reset_n => reset_n,
   ck      => ck,
   vdd     => vdd,
-  vss     => vss);
+  vss     => vss
+  );
 
   -- synchro
   exe_res <= alu_res;
