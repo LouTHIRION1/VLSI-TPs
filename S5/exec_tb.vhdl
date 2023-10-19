@@ -182,6 +182,8 @@ begin
   );
 
   process
+    -- alias myalias is << signal .exec_tb.DUT.alu_inst.res_s : std_logic_vector(31 downto 0) >> ;
+    -- alias myalias is << signal DUT.alu_inst.res_s : std_logic_vector(31 downto 0) >> ;
   begin
 
     report "EXEC stage tests" severity note;
@@ -195,7 +197,7 @@ begin
     dec_alu_cmd_s   <= "00";
     wait for 1 ns;
     assert(exe_res_s = x"0000_0002") report "Incorrect res, expected 0x00000002, exe_res = 0x" & to_hstring(exe_res_s) severity error;
-    -- assert( << signal .tb.uut.o_n : std_logic > >= x"00000002") report "Error" severity error;
+    -- assert(myalias = x"00000002") report "Error" severity error;
 
     wait;
   end process;
