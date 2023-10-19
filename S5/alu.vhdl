@@ -8,20 +8,20 @@ entity Alu is
   (
     ---- Inputs
     -- Operandes + Retenue Carry in
-    op1 : in std_logic_vector(31 downto 0);
-    op2 : in std_logic_vector(31 downto 0);
+    op1 : in std_logic_vector(31 downto 0) := x"0000_0000";
+    op2 : in std_logic_vector(31 downto 0) := x"0000_0000";
     cin : in std_logic;
     -- Commande pour le mux
-    cmd : in std_logic_vector(1 downto 0);
+    cmd : in std_logic_vector(1 downto 0) := "00";
 
     ---- Output
     -- Resultat + retenue Carry out
-    res  : out std_logic_vector(31 downto 0);
-    cout : out std_logic;
+    res  : out std_logic_vector(31 downto 0) := x"0000_0000";
+    cout : out std_logic                     := '0';
     -- Flags
-    z : out std_logic; -- Zero (1 if zero, 0 otherwise)
-    n : out std_logic; -- Negative (1 if negative, 0 if positive)
-    v : out std_logic; -- Overflow (1 if overflow, 0 otherwise)
+    z : out std_logic := '0'; -- Zero (1 if zero, 0 otherwise)
+    n : out std_logic := '0'; -- Negative (1 if negative, 0 if positive)
+    v : out std_logic := '0'; -- Overflow (1 if overflow, 0 otherwise)
 
     ---- 
     -- Tensions

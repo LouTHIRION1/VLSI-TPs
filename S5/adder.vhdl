@@ -5,11 +5,11 @@ use IEEE.numeric_std.all;
 entity adder32 is
   port
   (
-    a, b : in std_logic_vector(31 downto 0);
-    cin  : in std_logic;
+    a, b : in std_logic_vector(31 downto 0) := x"0000_0000";
+    cin  : in std_logic := '0';
 
-    sum  : out std_logic_vector(31 downto 0);
-    cout : out std_logic
+    sum  : out std_logic_vector(31 downto 0) := x"0000_0000";
+    cout : out std_logic := '0'
   );
 end adder32;
 
