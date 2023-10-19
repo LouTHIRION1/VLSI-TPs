@@ -69,41 +69,41 @@ begin
   begin
 
     cin_s       <= '0';
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00000";
     wait for 1 ns;
-    assert(dout_s = x"00000001") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0001") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- No shift
     report "Logical Shift Left tests." severity note;
 
     shift_lsl_s <= '1';
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00000";
     wait for 1 ns;
-    assert(dout_s = x"00000001") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0001") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     ---- LSL
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"00000002") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0002") report "Incorrect shift, expected 0x00000002, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- LSL
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00010";
     wait for 1 ns;
-    assert(dout_s = x"00000004") report "Incorrect shift, expected 0x00000004, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0004") report "Incorrect shift, expected 0x00000004, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- LSL
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"00000000") report "Incorrect shift, expected 0x00000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0000") report "Incorrect shift, expected 0x00000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     ---- LSR
@@ -111,24 +111,24 @@ begin
 
     shift_lsl_s <= '0';
     shift_lsr_s <= '1';
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"00000000") report "Incorrect shift, expected 00000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0000") report "Incorrect shift, expected 00000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- LSR
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"40000000") report "Incorrect shift, expected 40000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"4000_0000") report "Incorrect shift, expected 40000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- LSR
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00010";
     wait for 1 ns;
-    assert(dout_s = x"20000000") report "Incorrect shift, expected 20000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"2000_0000") report "Incorrect shift, expected 20000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     ---- ASR
@@ -136,24 +136,24 @@ begin
 
     shift_lsr_s <= '0';
     shift_asr_s <= '1';
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"00000000") report "Incorrect shift, expected 00000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"0000_0000") report "Incorrect shift, expected 00000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- ASR
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"C0000000") report "Incorrect shift, expected C0000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"C000_0000") report "Incorrect shift, expected C0000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- ASR
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00010";
     wait for 1 ns;
-    assert(dout_s = x"E0000000") report "Incorrect shift, expected E0000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"E000_0000") report "Incorrect shift, expected E0000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     ---- ROR
@@ -163,24 +163,24 @@ begin
     shift_ror_s <= '1';
 
     cin_s       <= '0';
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"80000000") report "Incorrect shift, expected 80000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"8000_0000") report "Incorrect shift, expected 80000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- ROR
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"40000000") report "Incorrect shift, expected 40000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"4000_0000") report "Incorrect shift, expected 40000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- ROR
-    din_s       <= x"0FFFFFFF";
+    din_s       <= x"0FFF_FFFF";
     shift_val_s <= "00100";
     wait for 1 ns;
-    assert(dout_s = x"F0FFFFFF") report "Incorrect shift, expected F0FFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"F0FF_FFFF") report "Incorrect shift, expected F0FFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     ---- RRX
@@ -191,27 +191,27 @@ begin
 
     -- 1 00000001 -> 1 10000000
     cin_s       <= '1';
-    din_s       <= x"00000001";
+    din_s       <= x"0000_0001";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"80000000") report "Incorrect shift, expected 80000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"8000_0000") report "Incorrect shift, expected 80000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- RRX
-    din_s       <= x"80000000";
+    din_s       <= x"8000_0000";
     shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"C0000000") report "Incorrect shift, expected C0000000, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"C000_0000") report "Incorrect shift, expected C0000000, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- RRX
     -- 0 11111111111111111111111111111111 -> 1 111101111111111111111111111111111
     -- 0 FFFFFFFF -> 1 BFFFFFFF
     cin_s       <= '0';
-    din_s       <= x"FFFFFFFF";
+    din_s       <= x"FFFF_FFFF";
     shift_val_s <= "00010";
     wait for 1 ns;
-    assert(dout_s = x"BFFFFFFF") report "Incorrect shift, expected BFFFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"BFFF_FFFF") report "Incorrect shift, expected BFFFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- Clear inputs
@@ -221,7 +221,7 @@ begin
     shift_ror_s <= '0';
     shift_rrx_s <= '0';
     shift_val_s <= "00000";
-    din_s       <= x"00000000";
+    din_s       <= x"0000_0000";
     cin_s       <= '0';
 
     report "Test done." severity note;

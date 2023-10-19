@@ -10,15 +10,15 @@ entity EXec is
     exe_pop       : out std_logic := '0';
 
     -- Decode interface operands
-    dec_op1      : in std_logic_vector(31 downto 0) := x"00000000"; -- first alu input
-    dec_op2      : in std_logic_vector(31 downto 0) := x"00000000"; -- shifter input
-    dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";      -- Rd destination
-    dec_exe_wb   : in std_logic                     := '0';         -- Rd destination write back
-    dec_flag_wb  : in std_logic                     := '0';         -- CSPR modifiy
+    dec_op1      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- first alu input
+    dec_op2      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- shifter input
+    dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";       -- Rd destination
+    dec_exe_wb   : in std_logic                     := '0';          -- Rd destination write back
+    dec_flag_wb  : in std_logic                     := '0';          -- CSPR modifiy
 
     -- Decode to mem interface 
-    dec_mem_data  : in std_logic_vector(31 downto 0) := x"00000000"; -- data to MEM W
-    dec_mem_dest  : in std_logic_vector(3 downto 0)  := "0000";      -- Destination MEM R
+    dec_mem_data  : in std_logic_vector(31 downto 0) := x"0000_0000"; -- data to MEM W
+    dec_mem_dest  : in std_logic_vector(3 downto 0)  := "0000";       -- Destination MEM R
     dec_pre_index : in std_logic                     := '0';
 
     dec_mem_lw : in std_logic := '0'; -- Load Word
@@ -42,7 +42,7 @@ entity EXec is
     dec_alu_cmd  : in std_logic_vector(1 downto 0) := "00"; -- ALU command
 
     ---- Exe bypass to decod
-    exe_res : out std_logic_vector(31 downto 0) := x"00000000";
+    exe_res : out std_logic_vector(31 downto 0) := x"0000_0000";
 
     ---- Flags
     exe_c : out std_logic := '0';
@@ -55,8 +55,8 @@ entity EXec is
     exe_flag_wb : out std_logic                    := '0';    -- CSPR modifiy
 
     -- Mem interface
-    exe_mem_adr  : out std_logic_vector(31 downto 0) := x"00000000"; -- Alu res register
-    exe_mem_data : out std_logic_vector(31 downto 0) := x"00000000";
+    exe_mem_adr  : out std_logic_vector(31 downto 0) := x"0000_0000"; -- Alu res register
+    exe_mem_data : out std_logic_vector(31 downto 0) := x"0000_0000";
     exe_mem_dest : out std_logic_vector(3 downto 0)  := "0000";
 
     exe_mem_lw : out std_logic := '0';

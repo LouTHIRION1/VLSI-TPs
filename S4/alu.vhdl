@@ -92,7 +92,7 @@ begin
 
     ---- Flag tests
     -- Zero flag
-    if (res_s = x"00000000") then -- Don't forget to include all zeroes, checking for "0" won't work!
+    if (res_s = x"0000_0000") then -- Don't forget to include all zeroes, checking for "0" won't work!
       z_f <= '1';
     else
       z_f <= '0';
@@ -107,6 +107,7 @@ begin
 
     -- Overflow flag (Does not matter for unsigned arithmetic)
     -- More info : http://teaching.idallen.com/dat2343/11w/notes/040_overflow.txt
+    -- More info : http://c-jump.com/CIS77/CPU/Overflow/lecture.html#O01_0090_signed_overflow
     -- Positive sum
     if (((op1(31) = '0') and (op2(31) = '0') and (res_s(31) = '1'))
       or ((op1(31) = '1') and (op2(31) = '1') and (res_s(31) = '0'))) then

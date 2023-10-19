@@ -35,48 +35,48 @@ begin
   begin
 
     -- Sum nothing
-    a_s   <= x"00000000";
-    b_s   <= x"00000000";
+    a_s   <= x"0000_0000";
+    b_s   <= x"0000_0000";
     cin_s <= '0';
     wait for 1 ns;
-    assert(sum_s = x"00000000") report "Incorrect sum" severity error;
+    assert(sum_s = x"0000_0000") report "Incorrect sum" severity error;
     assert(cout_s = '0') report "Incorrect carry out" severity error;
 
     -- Sum without Cin
-    a_s   <= x"00000001";
-    b_s   <= x"00000001";
+    a_s   <= x"0000_0001";
+    b_s   <= x"0000_0001";
     cin_s <= '0';
     wait for 1 ns;
-    assert(sum_s = x"00000002") report "Incorrect sum" severity error;
+    assert(sum_s = x"0000_0002") report "Incorrect sum" severity error;
     assert(cout_s = '0') report "Incorrect carry out" severity error;
 
     -- Sum without Cin and overflow (Cout)
-    a_s   <= x"80000001";
-    b_s   <= x"80000001";
+    a_s   <= x"8000_0001";
+    b_s   <= x"8000_0001";
     cin_s <= '0';
     wait for 1 ns;
-    assert(sum_s = x"00000002") report "Incorrect sum" severity error;
+    assert(sum_s = x"0000_0002") report "Incorrect sum" severity error;
     assert(cout_s = '1') report "Incorrect carry out" severity error;
 
     -- Sum only Cin
-    a_s   <= x"00000000";
-    b_s   <= x"00000000";
+    a_s   <= x"0000_0000";
+    b_s   <= x"0000_0000";
     cin_s <= '1';
     wait for 1 ns;
-    assert(sum_s = x"00000001") report "Incorrect sum" severity error;
+    assert(sum_s = x"0000_0001") report "Incorrect sum" severity error;
     assert(cout_s = '0') report "Incorrect carry out" severity error;
 
     -- Sum with Cin and overflow (Cout)
-    a_s   <= x"FFFFFFFF";
-    b_s   <= x"00000000";
+    a_s   <= x"FFFF_FFFF";
+    b_s   <= x"0000_0000";
     cin_s <= '1';
     wait for 1 ns;
-    assert(sum_s = x"00000000") report "Incorrect sum" severity error;
+    assert(sum_s = x"0000_0000") report "Incorrect sum" severity error;
     assert(cout_s = '1') report "Incorrect carry out" severity error;
 
     -- Clear inputs
-    a_s <= x"00000000";
-    b_s <= x"00000000";
+    a_s <= x"0000_0000";
+    b_s <= x"0000_0000";
 
     report "Test done." severity note;
     wait;

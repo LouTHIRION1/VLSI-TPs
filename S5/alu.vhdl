@@ -92,7 +92,7 @@ begin
 
     ---- Flag tests
     -- Zero flag
-    if (res_s = x"00000000") then -- Don't forget to include all zeroes, checking for "0" won't work!
+    if (res_s = x"0000_0000") then -- Don't forget to include all zeroes, checking for "0" won't work!
       z_f <= '1';
     else
       z_f <= '0';

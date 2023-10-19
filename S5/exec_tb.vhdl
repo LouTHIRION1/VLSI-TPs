@@ -154,8 +154,8 @@ begin
     dec_shift_rrx => dec_shift_rrx_s,
     dec_shift_val => dec_shift_val_s,
     dec_cy        => dec_cy_s,
-    dec_comp_op1  => dec_comp_op1_s,
-    dec_comp_op2  => dec_comp_op2_s,
+    dec_comp_op1  => dec_comp_op1_s, -- MUX cmd for ALU Op1
+    dec_comp_op2  => dec_comp_op2_s, -- MUX cmd for ALU Op1
     dec_alu_cy    => dec_alu_cy_s,
     dec_alu_cmd   => dec_alu_cmd_s,
     exe_res       => exe_res_s,
@@ -184,14 +184,18 @@ begin
   process
   begin
 
-    report "Exec tests somme" severity note;
-    dec_op1_s      <= x"00000001";
-    dec_op2_s      <= x"00000001";
-    dec_comp_op1_s <= '0';
-    dec_comp_op2_s <= '0';
-    dec_alu_cmd_s  <= "00";
+    report "EXEC stage tests" severity note;
+    report "Sum tests" severity note;
+    dec_op1_s       <= x"0000_0001";
+    dec_op2_s       <= x"0000_0001";
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00000";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_alu_cmd_s   <= "00";
     wait for 1 ns;
-    assert(exe_res_s = x"00000002") report "Incorrect res, expected 0x00000002, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_res_s = x"0000_0002") report "Incorrect res, expected 0x00000002, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    -- assert( << signal .tb.uut.o_n : std_logic > >= x"00000002") report "Error" severity error;
 
     wait;
   end process;
