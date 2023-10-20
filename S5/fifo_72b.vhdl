@@ -9,15 +9,15 @@ entity fifo is
     dout : out std_logic_vector(71 downto 0);
 
     -- commands
-    push : in std_logic;
-    pop  : in std_logic;
+    push : in std_logic; -- Push data into FIFO
+    pop  : in std_logic; -- Pop data from FIFO
 
-    -- flags
-    full  : out std_logic;
-    empty : out std_logic;
+    -- Flags
+    full  : out std_logic; -- 1 when FIFO is full, 0 otherwise
+    empty : out std_logic; -- 1 when FIFO is empty, 0 otherwise
 
-    reset_n : in std_logic;
-    ck      : in std_logic;
+    reset_n : in std_logic; -- Reset (active low)
+    ck      : in std_logic; -- Clock
     vdd     : in bit;
     vss     : in bit
   );
@@ -25,8 +25,8 @@ end fifo;
 
 architecture dataflow of fifo is
 
-  signal fifo_d : std_logic_vector(71 downto 0);
-  signal fifo_v : std_logic;
+  signal fifo_d : std_logic_vector(71 downto 0); -- FIFO data 
+  signal fifo_v : std_logic;                     -- Validité
 
 begin
 

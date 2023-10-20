@@ -10,8 +10,8 @@ entity EXec is
     exe_pop       : out std_logic := '0';
 
     -- Decode interface operands
-    dec_op1      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- first alu input
-    dec_op2      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- shifter input
+    dec_op1      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- first ALU input (Op1)
+    dec_op2      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- shifter input (into Op2)
     dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";       -- Rd destination
     dec_exe_wb   : in std_logic                     := '0';          -- Rd destination write back
     dec_flag_wb  : in std_logic                     := '0';          -- CSPR modifiy
@@ -41,10 +41,10 @@ entity EXec is
     dec_alu_cy   : in std_logic                    := '0';  -- ALU Cin
     dec_alu_cmd  : in std_logic_vector(1 downto 0) := "00"; -- ALU command
 
-    ---- Exe bypass to decod
+    ---- EXE bypass to DECOD
     exe_res : out std_logic_vector(31 downto 0) := x"0000_0000";
 
-    ---- Flags
+    -- Flags
     exe_c : out std_logic := '0';
     exe_v : out std_logic := '0';
     exe_n : out std_logic := '0';
@@ -263,6 +263,7 @@ begin
   port
   map
   (
+  -- Inputs
   din(71) => dec_mem_lw,
   din(70) => dec_mem_lb,
   din(69) => dec_mem_sw,
@@ -272,6 +273,7 @@ begin
   din(63 downto 32) => dec_mem_data,
   din(31 downto 0)  => mem_adr,
 
+  -- Outputs
   dout(71) => exe_mem_lw,
   dout(70) => exe_mem_lb,
   dout(69) => exe_mem_sw,
