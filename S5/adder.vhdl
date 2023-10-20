@@ -19,5 +19,5 @@ begin
   -- Convert signals to 33 bits for carry in
   temp <= std_logic_vector(unsigned('0' & a) + unsigned('0' & b) + unsigned'('0' & cin));
   sum  <= temp(31 downto 0);
-  cout <= temp(32);
+  cout <= temp(32); -- Unsigned overflow bit
 end behavioral_adder;
