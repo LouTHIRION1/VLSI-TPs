@@ -203,6 +203,10 @@ begin
     dec_alu_cy_s    <= '0';
     wait for 1 ns;
     assert(exe_res_s = x"0000_0003") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_c_s = '0') report "Incorrect C flag" severity error;
+    assert(exe_v_s = '0') report "Incorrect V flag" severity error;
+    assert(exe_n_s = '0') report "Incorrect N flag" severity error;
+    assert(exe_z_s = '0') report "Incorrect Z flag" severity error;
 
     report "Sum 1 + 2<<2 = 1 + 8 = 9" severity note;
     dec_op1_s       <= x"0000_0001";
@@ -216,48 +220,82 @@ begin
     dec_alu_cy_s    <= '0';
     wait for 1 ns;
     assert(exe_res_s = x"0000_0009") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_c_s = '0') report "Incorrect C flag" severity error;
+    assert(exe_v_s = '0') report "Incorrect V flag" severity error;
+    assert(exe_n_s = '0') report "Incorrect N flag" severity error;
+    assert(exe_z_s = '0') report "Incorrect Z flag" severity error;
 
-    -- FIXME:
-    report "Set bits test" severity note;
-    dec_op1_s       <= x"0000_0000";
-    dec_op2_s       <= x"0030_0300";
-    dec_alu_cmd_s   <= "10"; -- OR
+    report "Sum overflow" severity note;
+    report "8000_0000 + 4000_0000<<1 = 8000_0000 + 8000_0000 = 0000_0000 with Cout" severity note;
+    dec_op1_s       <= x"8000_0000";
+    dec_op2_s       <= x"4000_0000";
+    dec_alu_cmd_s   <= "00"; -- Sum
     dec_shift_lsl_s <= '1';
-    dec_shift_val_s <= "00010";
-    dec_comp_op1_s  <= '0';
-    dec_comp_op2_s  <= '0';
-    dec_cy_s        <= '0';
-    dec_alu_cy_s    <= '0';
-    wait for 1 ns;
-    assert(exe_res_s = x"0030_0300") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
-
-    -- FIXME:
-    report "Set bits test" severity note;
-    dec_op1_s       <= x"FFFF_FFFF";
-    dec_op2_s       <= x"0FF0_F00F";
-    dec_alu_cmd_s   <= "01"; -- AND
-    dec_shift_lsl_s <= '1';
-    dec_shift_val_s <= "00010";
-    dec_comp_op1_s  <= '0';
-    dec_comp_op2_s  <= '0';
-    dec_cy_s        <= '0';
-    dec_alu_cy_s    <= '0';
-    wait for 1 ns;
-    assert(exe_res_s = x"0FF0_F00F") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
-
-    -- FIXME:
-    report "Set bits test" severity note;
-    dec_op1_s       <= x"FFFF_FFFF";
-    dec_op2_s       <= x"8000_0001";
-    dec_alu_cmd_s   <= "11"; -- XOR
-    dec_shift_lsl_s <= '1';
-    dec_shift_val_s <= "00010";
+    dec_shift_val_s <= "00001";
     dec_comp_op1_s  <= '0';
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
     wait for 1 ns;
     assert(exe_res_s = x"0000_0000") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_c_s = '1') report "Incorrect C flag" severity error;
+    assert(exe_v_s = '1') report "Incorrect V flag" severity error;
+    assert(exe_n_s = '0') report "Incorrect N flag" severity error;
+    assert(exe_z_s = '1') report "Incorrect Z flag" severity error;
+
+    -- FIXME: Incorrect C flag
+    report "Logic OR test (set bitmask)" severity note;
+    dec_op1_s       <= x"0000_0000";
+    dec_op2_s       <= x"0030_0300";
+    dec_alu_cmd_s   <= "10"; -- OR
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00000";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"0030_0300") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_c_s = '0') report "Incorrect C flag" severity error;
+    assert(exe_v_s = '0') report "Incorrect V flag" severity error;
+    assert(exe_n_s = '0') report "Incorrect N flag" severity error;
+    assert(exe_z_s = '0') report "Incorrect Z flag" severity error;
+
+    -- FIXME: Incorrect C flag
+    report "Logic AND test (bitmask)" severity note;
+    dec_op1_s       <= x"FFFF_FFFF";
+    dec_op2_s       <= x"0FF0_F00F";
+    dec_alu_cmd_s   <= "01"; -- AND
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00000";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"0FF0_F00F") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_c_s = '0') report "Incorrect C flag" severity error;
+    assert(exe_v_s = '0') report "Incorrect V flag" severity error;
+    assert(exe_n_s = '0') report "Incorrect N flag" severity error;
+    assert(exe_z_s = '0') report "Incorrect Z flag" severity error;
+
+    -- FIXME: Incorrect C flag
+    report "Logic XOR test" severity note;
+    dec_op1_s       <= x"FFFF_FFFF";
+    dec_op2_s       <= x"8000_0001";
+    dec_alu_cmd_s   <= "11"; -- XOR
+    dec_shift_lsl_s <= '1';
+    dec_shift_val_s <= "00000";
+    dec_comp_op1_s  <= '0';
+    dec_comp_op2_s  <= '0';
+    dec_cy_s        <= '0';
+    dec_alu_cy_s    <= '0';
+    wait for 1 ns;
+    assert(exe_res_s = x"7FFF_FFFE") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
+    assert(exe_c_s = '0') report "Incorrect C flag" severity error;
+    assert(exe_v_s = '1') report "Incorrect V flag" severity error;
+    assert(exe_n_s = '0') report "Incorrect N flag" severity error;
+    assert(exe_z_s = '0') report "Incorrect Z flag" severity error;
     -- assert(false) report "probe = 0x" & to_hstring(probe_s) severity error;
 
     wait;
