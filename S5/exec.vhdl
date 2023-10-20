@@ -296,11 +296,11 @@ begin
   -- synchro
   exe_res <= alu_res;
   -- cout
-
+  exe_c <= alu_c or shift_c; --TODO: Verify it's correct
   -- ALU opearandes
 
   -- Loop dec
 
-  -- probe <= alu_res;
+  -- probe <= alu_res; -- Probe used for simulation purposes
 
 end behavioral_exec;
