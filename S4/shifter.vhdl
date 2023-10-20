@@ -58,9 +58,10 @@ begin
       cout_s <= dout_s(32); -- Capture C flag
       temp   <= dout_s(32 downto 1);
 
+      -- RRX is limited to 1 bit at a time
     elsif (shift_rrx = '1') then
       din_s  <= cin & din; -- Concatenate C flag at MSB
-      dout_s <= std_logic_vector(rotate_right(unsigned(din_s), shift_amount));
+      dout_s <= std_logic_vector(rotate_right(unsigned(din_s), 1));
       cout_s <= dout_s(32); -- Capture C flag (MSB)
       temp   <= dout_s(31 downto 0);
 

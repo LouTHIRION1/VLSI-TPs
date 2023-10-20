@@ -205,13 +205,13 @@ begin
     assert(cout_s = '0') report "Incorrect carry out"severity error;
 
     -- RRX
-    -- 0 11111111111111111111111111111111 -> 1 111101111111111111111111111111111
-    -- 0 FFFFFFFF -> 1 BFFFFFFF
+    -- 0 1111_1111 1111_1111 1111_1111 1111_1111 -> 1 0111_1111 1111_1111 1111_1111 1111_1111
+    -- 0 FFFF_FFFF -> 1 7FFF_FFFF
     cin_s       <= '0';
     din_s       <= x"FFFF_FFFF";
-    shift_val_s <= "00010";
+    shift_val_s <= "00001";
     wait for 1 ns;
-    assert(dout_s = x"BFFF_FFFF") report "Incorrect shift, expected BFFFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
+    assert(dout_s = x"7FFF_FFFF") report "Incorrect shift, expected BFFFFFFF, dout = 0x" & to_hstring(dout_s) severity error;
     assert(cout_s = '1') report "Incorrect carry out"severity error;
 
     -- Clear inputs
