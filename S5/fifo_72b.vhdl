@@ -33,19 +33,19 @@ begin
   process (ck)
   begin
     if rising_edge(ck) then
-      -- Valid bit
-      if reset_n = '0' then
+      -- Synchronous reset
+      if (reset_n = '0') then
         fifo_v <= '0';
       else
-        if fifo_v = '0' then
-          if push = '1' then
+        if (fifo_v = '0') then
+          if (push = '1') then
             fifo_v <= '1';
           else
             fifo_v <= '0';
           end if;
         else
-          if pop = '1' then
-            if push = '1' then
+          if (pop = '1') then
+            if (push = '1') then
               fifo_v <= '1';
             else
               fifo_v <= '0';
@@ -57,17 +57,17 @@ begin
       end if;
 
       -- data
-      if fifo_v = '0' then
-        if push = '1' then
+      if (fifo_v = '0') then
+        if (push = '1') then
           fifo_d <= din;
         end if;
-      elsif push = '1' and pop = '1' then
+      elsif (push = '1' and pop = '1') then
         fifo_d <= din;
       end if;
     end if;
   end process;
 
-  full <= '1' when fifo_v = '1' and pop = '0' else
+  full <= '1' when (fifo_v = '1' and pop = '0') else
     '0';
   empty <= not fifo_v;
   dout  <= fifo_d;
