@@ -72,6 +72,20 @@ architecture behavioral_reg of Reg is
   begin
     -- Synchronous
     if rising_edge(ck) then
+      if (reset_n = '0') then
+        -- Invalidate Register ports
+        reg_v1 <= '0';
+        reg_v2 <= '0';
+        reg_v3 <= '0';
+        -- Reset CPSR
+        reg_cry  <= '0';
+        reg_zero <= '0';
+        reg_neg  <= '0';
+        reg_ovr  <= '0';
+        reg_cznv <= '0';
+        reg_vv   <= '0';
+      else
+      end if;
     end if;
   end process;
 end behavioral_reg;
