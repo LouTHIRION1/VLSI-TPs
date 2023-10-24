@@ -5,16 +5,16 @@ use ieee.numeric_std.all;
 entity EXec is
   port
   (
-    -- Decode interface synchro
-    dec2exe_empty : in std_logic  := '0';
-    exe_pop       : out std_logic := '0';
+    -- Decode interface synchronization
+    dec2exe_empty : in std_logic  := '0'; -- '1' when DEC FIFO is empty
+    exe_pop       : out std_logic := '0'; -- Gere la FIFO de décode
 
     -- Decode interface operands
     dec_op1      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- first ALU input (Op1)
     dec_op2      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- shifter input (into Op2)
-    dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";       -- Rd destination
-    dec_exe_wb   : in std_logic                     := '0';          -- Rd destination write back
-    dec_flag_wb  : in std_logic                     := '0';          -- CSPR modifiy
+    dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";       -- Rd destination {!}
+    dec_exe_wb   : in std_logic                     := '0';          -- Rd destination write back {!}
+    dec_flag_wb  : in std_logic                     := '0';          -- CSPR modifiy {S}
 
     -- Decode to mem interface 
     dec_mem_data  : in std_logic_vector(31 downto 0) := x"0000_0000"; -- data to MEM W
@@ -149,17 +149,14 @@ architecture behavioral_exec of EXec is
       a   : in std_logic_vector(31 downto 0);
       b   : in std_logic_vector(31 downto 0);
       cmd : in std_logic;
-      s   : out std_logic_vector(31 downto 0);
-      -- Global interface
-      vdd : in bit;
-      vss : in bit
+      s   : out std_logic_vector(31 downto 0)
     );
   end component;
 
   -- SIGNAL DECLARATIONS
 
-  signal shift_c : std_logic;
-  signal alu_c   : std_logic;
+  signal shift_c, shift_c_wb                  : std_logic;
+  signal alu_c, alu_c_wb, alu_n, alu_z, alu_v : std_logic;
 
   signal op2       : std_logic_vector(31 downto 0);
   signal op2_shift : std_logic_vector(31 downto 0);
@@ -178,17 +175,14 @@ architecture behavioral_exec of EXec is
 begin
 
   --  Component instantiation.
-  -- TODO: Remplace 'x' by their respective signals
-
+  -- ALU operands
   mux_op1 : mux2to1
   port map
   (
     a   => dec_op1,
     b   => "not"(dec_op1),
     cmd => dec_comp_op1,
-    s   => mux_op1_s,
-    vdd => vdd,
-    vss => vss
+    s   => mux_op1_s
   );
 
   mux_op2 : mux2to1
@@ -198,9 +192,7 @@ begin
   a   => op2_shift,
   b   => "not"(op2_shift),
   cmd => dec_comp_op2,
-  s   => mux_op2_s,
-  vdd => vdd,
-  vss => vss
+  s   => mux_op2_s
   );
 
   mux_res : mux2to1
@@ -210,9 +202,7 @@ begin
   a   => alu_res,
   b   => dec_op1,
   cmd => dec_pre_index,
-  s   => mem_adr, -- TODO: Verify if it's correct
-  vdd => vdd,
-  vss => vss
+  s   => mem_adr -- TODO: Verify if it's correct
   );
 
   shifter_inst : Shifter
@@ -251,9 +241,9 @@ begin
   res  => alu_res,
   cout => alu_c,
   -- Flags
-  z => exe_z,
-  n => exe_n,
-  v => exe_v,
+  z => alu_z,
+  n => alu_n,
+  v => alu_v,
   -- Global interface
   vdd => vdd,
   vss => vss
@@ -295,13 +285,38 @@ begin
   vss     => vss
   );
 
-  -- synchro
-  exe_res <= alu_res;
-  -- cout
-  exe_c <= alu_c or shift_c; --TODO: Verify it's correct
-  -- ALU opearandes
+  -- Writeback (wb) of the ALU result
+  exe_res <= alu_res when (dec_exe_wb = '1') else
+    (others => '0');
+  exe_dest <= dec_exe_dest when(dec_exe_wb = '1') else
+    (others => '0');
+
+  -- Writeback for flags CVZN
+  exe_z <= alu_z when dec_flag_wb = '1' else
+    '0';
+  exe_n <= alu_n when dec_flag_wb = '1' else
+    '0';
+  exe_v <= alu_v when dec_flag_wb = '1' else
+    '0';
+  alu_c_wb <= alu_c when dec_flag_wb = '1' else
+    '0';
+  shift_c_wb <= shift_c when dec_flag_wb = '1' else
+    '0';
+
+  -- Carry out (cout) depends if it's a logic (shifter) or arithmetic (alu) instruction
+  exe_c <= alu_c when (dec_alu_cmd = "00") else
+    shift_c;
 
   -- Loop dec
+
+  -- MUX pre/post index
+  mem_adr <= alu_res;
+
+  exe_pop <= '1' when dec2exe_empty = '0' else
+    '0'; -- Only allow pop when the FIFO is not empty
+
+  exe_push <= '1' when exe2mem_full = '0' else
+    '0'; -- Only allow push when the FIFO is not full
 
   -- probe <= alu_res; -- Probe used for simulation purposes
 
