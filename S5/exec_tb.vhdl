@@ -202,6 +202,10 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
+
+    dec_exe_wb_s  <= '1';
+    dec_flag_wb_s <= '1';
+
     wait for 1 ns;
     assert(exe_res_s = x"0000_0003") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
@@ -284,7 +288,7 @@ begin
     report "RRX Test without carry" severity note;
     dec_op1_s       <= x"0000_0000";
     dec_op2_s       <= x"0000_0001";
-    dec_alu_cmd_s   <= "00"; -- Sum
+    dec_alu_cmd_s   <= "01";
     dec_shift_lsl_s <= '0';
     dec_shift_rrx_s <= '1';
     dec_shift_val_s <= "00001";
