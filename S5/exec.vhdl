@@ -174,57 +174,27 @@ architecture behavioral_exec of EXec is
 
 begin
 
-  --  Component instantiation.
-  -- ALU operands
-  mux_op1 : mux2to1
-  port map
-  (
-    a   => dec_op1,
-    b   => "not"(dec_op1),
-    cmd => dec_comp_op1,
-    s   => mux_op1_s
-  );
-
-  mux_op2 : mux2to1
-  port
-  map
-  (
-  a   => op2_shift,
-  b   => "not"(op2_shift),
-  cmd => dec_comp_op2,
-  s   => mux_op2_s
-  );
-
-  mux_res : mux2to1
-  port
-  map
-  (
-  a   => alu_res,
-  b   => dec_op1,
-  cmd => dec_pre_index,
-  s   => mem_adr -- TODO: Verify if it's correct
-  );
+  --  Component instantiation
 
   shifter_inst : Shifter
-  port
-  map
+  port map
   (
-  -- Type of instruction
-  shift_lsl => dec_shift_lsl,
-  shift_lsr => dec_shift_lsr,
-  shift_asr => dec_shift_asr,
-  shift_ror => dec_shift_ror,
-  shift_rrx => dec_shift_rrx,
-  -- Inputs
-  shift_val => dec_shift_val,
-  din       => dec_op2,
-  cin       => dec_cy,
-  -- Outputs
-  dout => op2_shift,
-  cout => shift_c, -- TODO: Verify it's correct (c flag?)
-  -- Global interface
-  vdd => vdd,
-  vss => vss
+    -- Type of instruction
+    shift_lsl => dec_shift_lsl,
+    shift_lsr => dec_shift_lsr,
+    shift_asr => dec_shift_asr,
+    shift_ror => dec_shift_ror,
+    shift_rrx => dec_shift_rrx,
+    -- Inputs
+    shift_val => dec_shift_val,
+    din       => dec_op2,
+    cin       => dec_cy,
+    -- Outputs
+    dout => op2_shift,
+    cout => shift_c, -- TODO: Verify it's correct (c flag?)
+    -- Global interface
+    vdd => vdd,
+    vss => vss
   );
 
   alu_inst : Alu
@@ -284,6 +254,18 @@ begin
   vdd     => vdd,
   vss     => vss
   );
+
+  -- MUX Operand 1
+  mux_op1_s <= dec_op1 when (dec_comp_op1 = '0') else
+    (not(dec_op1));
+
+  -- MUX Operand 2
+  mux_op2_s <= op2_shift when (dec_comp_op2 = '0') else
+    (not(op2_shift));
+
+  -- MUX ALU
+  mem_adr <= alu_res when (dec_pre_index = '0') else
+    (dec_op1);
 
   -- Writeback (wb) of the ALU result
   exe_res <= alu_res when (dec_exe_wb = '1') else
