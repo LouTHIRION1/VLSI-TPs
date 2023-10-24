@@ -61,14 +61,14 @@ entity Reg is
     inc_pc  : in std_logic;                      -- Increment PC +4
 
     -- global interface
-    ck      : in std_logic; -- Clock
+    clk     : in std_logic; -- Clock
     reset_n : in std_logic; -- Reset (active low)
     vdd     : in bit;
     vss     : in bit);
 end Reg;
 
 architecture behavioral_reg of Reg is
-  process (ck)
+  process (clk)
   begin
     -- Synchronous
     if rising_edge(ck) then
