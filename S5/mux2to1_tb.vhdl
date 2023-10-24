@@ -16,10 +16,7 @@ architecture behavior of mux2to1_tb is
       a   : in std_logic_vector(31 downto 0);
       b   : in std_logic_vector(31 downto 0);
       cmd : in std_logic;
-      s   : out std_logic_vector(31 downto 0);
-      -- Global interface
-      vdd : in bit;
-      vss : in bit
+      s   : out std_logic_vector(31 downto 0)
     );
   end component;
 
@@ -27,8 +24,6 @@ architecture behavior of mux2to1_tb is
   signal a_s   : std_logic_vector(31 downto 0) := x"00000000";
   signal b_s   : std_logic_vector(31 downto 0) := x"00000000";
   signal cmd_s : std_logic                     := '0';
-  signal vdd_s : bit;
-  signal vss_s : bit;
 
   --Outputs
   signal s_s : std_logic_vector(31 downto 0)
@@ -41,9 +36,7 @@ begin
     a   => a_s,
     b   => b_s,
     cmd => cmd_s,
-    s   => s_s,
-    vdd => vdd_s,
-    vss => vss_s
+    s   => s_s
   );
   process
   begin
