@@ -49,8 +49,8 @@ entity Reg is
     inval_adr1 : in std_logic_vector(3 downto 0); -- Invalidate address Register 1
     inval1     : in std_logic;                    -- Invalidate Register 1
 
-    inval_adr1 : in std_logic_vector(3 downto 0); -- Invalidate address Register 2
-    inval1     : in std_logic;                    -- Invalidate Register 2
+    inval_adr2 : in std_logic_vector(3 downto 0); -- Invalidate address Register 2
+    inval2     : in std_logic;                    -- Invalidate Register 2
 
     inval_czn : in std_logic; -- Invalidate C Z N flags (Logic instructions)
     inval_ovr : in std_logic; -- Invalidate V flag (Arithmetic instructions)
