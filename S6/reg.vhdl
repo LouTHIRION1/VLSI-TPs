@@ -68,10 +68,11 @@ entity Reg is
 end Reg;
 
 architecture behavioral_reg of Reg is
+begin
   process (clk)
   begin
     -- Synchronous
-    if rising_edge(ck) then
+    if rising_edge(clk) then
       if (reset_n = '0') then
         -- Invalidate Register ports
         reg_v1 <= '0';
