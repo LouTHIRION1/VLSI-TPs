@@ -255,15 +255,13 @@ begin
   vss     => vss
   );
 
-  -- MUX Operand 1
+  -- ALU Operands Multiplexors
   mux_op1_s <= dec_op1 when (dec_comp_op1 = '0') else
     (not(dec_op1));
-
-  -- MUX Operand 2
   mux_op2_s <= op2_shift when (dec_comp_op2 = '0') else
     (not(op2_shift));
 
-  -- MUX ALU
+  -- MUX ALU pre/post index
   mem_adr <= alu_res when (dec_pre_index = '0') else
     (dec_op1);
 
@@ -274,26 +272,22 @@ begin
     (others => '0');
 
   -- Writeback for flags CVZN
-  exe_z <= alu_z when dec_flag_wb = '1' else
+  exe_z <= alu_z when (dec_flag_wb = '1') else
     '0';
-  exe_n <= alu_n when dec_flag_wb = '1' else
+  exe_n <= alu_n when (dec_flag_wb = '1') else
     '0';
-  exe_v <= alu_v when dec_flag_wb = '1' else
+  exe_v <= alu_v when (dec_flag_wb = '1') else
     '0';
-  alu_c_wb <= alu_c when dec_flag_wb = '1' else
+  alu_c_wb <= alu_c when (dec_flag_wb = '1') else
     '0';
-  shift_c_wb <= shift_c when dec_flag_wb = '1' else
+  shift_c_wb <= shift_c when (dec_flag_wb = '1') else
     '0';
 
   -- Carry out (cout) depends if it's a logic (shifter) or arithmetic (alu) instruction
   exe_c <= alu_c when (dec_alu_cmd = "00") else
     shift_c;
 
-  -- Loop dec
-
-  -- MUX pre/post index
-  mem_adr <= alu_res;
-
+  -- Synchronization inteface
   exe_pop <= '1' when dec2exe_empty = '0' else
     '0'; -- Only allow pop when the FIFO is not empty
 
