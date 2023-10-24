@@ -76,13 +76,14 @@ architecture testbench of exec_tb is
       mem_pop       : in std_logic;
 
       -- global interface
-      ck      : in std_logic;
+      clk     : in std_logic;
       reset_n : in std_logic;
       vdd     : in bit;
       vss     : in bit);
     -- Probe
     -- probe : out std_logic_vector(31 downto 0));
   end component;
+
   -- Declaration des signaux
   signal exe_pop_s       : std_logic;
   signal dec2exe_empty_s : std_logic;
@@ -126,11 +127,14 @@ architecture testbench of exec_tb is
   signal exe_mem_sb_s    : std_logic;
   signal exe2mem_empty_s : std_logic;
   signal mem_pop_s       : std_logic;
-  signal ck_s            : std_logic;
+  signal clk_s           : std_logic;
   signal reset_n_s       : std_logic;
   signal vdd_s           : bit;
   signal vss_s           : bit;
   -- signal probe_s         : std_logic_vector(31 downto 0);
+
+  -- Clock period definitions
+  constant clk_period : time := 1 ns;
 
 begin
 
@@ -178,16 +182,22 @@ begin
     exe_mem_sb    => exe_mem_sb_s,
     exe2mem_empty => exe2mem_empty_s,
     mem_pop       => mem_pop_s,
-    ck            => ck_s,
+    clk           => clk_s,
     reset_n       => reset_n_s,
     vdd           => vdd_s,
     vss           => vss_s
     -- probe         => probe_s
   );
 
-  process
-    -- alias myalias is << signal .exec_tb.DUT.alu_inst.res_s : std_logic_vector(31 downto 0) >> ;
-    -- alias myalias is << signal DUT.alu_inst.res_s : std_logic_vector(31 downto 0) >> ;
+  clk_process : process
+  begin
+    clk_s <= '0';
+    wait for clk_period/2; --for 0.5 ns signal is '0'.
+    clk_s <= '1';
+    wait for clk_period/2; --for next 0.5 ns signal is '1'.
+  end process;
+
+  stim_proc : process
   begin
 
     report "EXEC stage tests" severity note;
@@ -206,7 +216,7 @@ begin
     dec_exe_wb_s  <= '1';
     dec_flag_wb_s <= '1';
 
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0000_0003") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -224,7 +234,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0000_0009") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -242,7 +252,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0000_0000") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '1') report "Incorrect C flag" severity error;
     assert(exe_v_s = '1') report "Incorrect V flag" severity error;
@@ -260,7 +270,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0000_0000") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '1') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -278,7 +288,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '1';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"8000_0000") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -296,7 +306,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0000_0000") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '1') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -313,7 +323,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0030_0300") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -330,7 +340,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"0FF0_F00F") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
     assert(exe_v_s = '0') report "Incorrect V flag" severity error;
@@ -347,7 +357,7 @@ begin
     dec_comp_op2_s  <= '0';
     dec_cy_s        <= '0';
     dec_alu_cy_s    <= '0';
-    wait for 1 ns;
+    wait for clk_period;
     assert(exe_res_s = x"7FFF_FFFE") report "Incorrect res, exe_res = 0x" & to_hstring(exe_res_s) severity error;
     assert(exe_c_s = '0') report "Incorrect C flag" severity error;
     assert(exe_v_s = '1') report "Incorrect V flag" severity error;

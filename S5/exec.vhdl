@@ -68,7 +68,7 @@ entity EXec is
     mem_pop       : in std_logic  := '0';
 
     -- global interface
-    ck      : in std_logic := '0';
+    clk     : in std_logic := '0';
     reset_n : in std_logic := '0';
     vdd     : in bit       := '0';
     vss     : in bit       := '0');
@@ -137,7 +137,7 @@ architecture behavioral_exec of EXec is
       empty : out std_logic;
 
       reset_n : in std_logic;
-      ck      : in std_logic;
+      clk     : in std_logic;
       vdd     : in bit;
       vss     : in bit
     );
@@ -280,7 +280,7 @@ begin
   full  => exe2mem_full,
 
   reset_n => reset_n,
-  ck      => ck,
+  clk     => clk,
   vdd     => vdd,
   vss     => vss
   );
