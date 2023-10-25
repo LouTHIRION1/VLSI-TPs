@@ -24,17 +24,17 @@ entity Reg is
     cpsr_wb : in std_logic; -- CPSR register writeback enable {S}
 
     ---- Read interface
-    -- Read Port 1 32 bits (Rd)
+    -- Read Port 1 32 bits
     reg_rd1 : out std_logic_vector(31 downto 0); -- Register 1
     radr1   : in std_logic_vector(3 downto 0);   -- Register 1 address (0 - 16)
     reg_v1  : out std_logic;                     -- Register 1 validity bit
 
-    -- Read Port 2 32 bits (Rs)
+    -- Read Port 2 32 bits
     reg_rd2 : out std_logic_vector(31 downto 0); -- Register 2
     radr2   : in std_logic_vector(3 downto 0);   -- Register 2 address (0 - 16)
     reg_v2  : out std_logic;                     -- Register 2 validity bit
 
-    -- Read Port 3 32 bits (Rt)
+    -- Read Port 3 32 bits
     reg_rd3 : out std_logic_vector(31 downto 0); -- Register 3
     radr3   : in std_logic_vector(3 downto 0);   -- Register 3 address (0 - 16)
     reg_v3  : out std_logic;                     -- Register 3 validity bit
@@ -142,6 +142,206 @@ begin
             reg_vv_s = '1'; -- Validate after affecting values
           end if;
         end if;
+
+        -- Take address of the register to be written, save the data and validate the register afterwards
+        -- TODO: à completer pour wadr2
+        case (wadr1) is
+          when x"0" =>
+            -- Verify if the regiter is invalid
+            if (regs_v and not ("0000_0000_0000_0001"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0000_0001";
+            end if;
+
+          when x"1" =>
+            if (regs_v and not ("0000_0000_0000_0010"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0000_0010";
+            end if;
+
+          when x"2" =>
+            if (regs_v and not ("0000_0000_0000_0100"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0000_0100";
+            end if;
+
+          when x"3" =>
+            if (regs_v and not ("0000_0000_0000_1000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0000_1000";
+            end if;
+
+          when x"4" =>
+            if (regs_v and not ("0000_0000_0001_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0001_0000";
+            end if;
+
+          when x"5" =>
+            if (regs_v and not ("0000_0000_0010_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0010_0000";
+            end if;
+
+          when x"6" =>
+            if (regs_v and not ("0000_0000_0100_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_0100_0000";
+            end if;
+
+          when x"7" =>
+            if (regs_v and not ("0000_0000_1000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0000_1000_0000";
+            end if;
+
+          when x"8" =>
+            if (regs_v and not ("0000_0001_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0001_0000_0000";
+            end if;
+
+          when x"9" =>
+            if (regs_v and not ("0000_0010_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0010_0000_0000";
+            end if;
+
+          when x"A" =>
+            if (regs_v and not ("0000_0100_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_0100_0000_0000";
+            end if;
+
+          when x"B" =>
+            if (regs_v and not ("0000_1000_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0000_1000_0000_0000";
+            end if;
+
+          when x"C" =>
+            if (regs_v and not ("0001_0000_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0001_0000_0000_0000";
+            end if;
+
+          when x"D" =>
+            if (regs_v and not ("0010_0000_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0010_0000_0000_0000";
+            end if;
+
+          when x"E" =>
+            if (regs_v and not ("0100_0000_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "0100_0000_0000_0000";
+            end if;
+
+          when x"F" =>
+            if (regs_v and not ("1000_0000_0000_0000"))
+              reg0   <= wdata1;
+              regs_v <= regs_v or "1000_0000_0000_0000";
+            end if;
+        end case;
+
+        case (wadr2) is
+          when x"0" =>
+            -- Verify if the regiter is invalid
+            if (regs_v and not ("0000_0000_0000_0001"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0000_0001";
+            end if;
+
+          when x"1" =>
+            if (regs_v and not ("0000_0000_0000_0010"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0000_0010";
+            end if;
+
+          when x"2" =>
+            if (regs_v and not ("0000_0000_0000_0100"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0000_0100";
+            end if;
+
+          when x"3" =>
+            if (regs_v and not ("0000_0000_0000_1000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0000_1000";
+            end if;
+
+          when x"4" =>
+            if (regs_v and not ("0000_0000_0001_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0001_0000";
+            end if;
+
+          when x"5" =>
+            if (regs_v and not ("0000_0000_0010_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0010_0000";
+            end if;
+
+          when x"6" =>
+            if (regs_v and not ("0000_0000_0100_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_0100_0000";
+            end if;
+
+          when x"7" =>
+            if (regs_v and not ("0000_0000_1000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0000_1000_0000";
+            end if;
+
+          when x"8" =>
+            if (regs_v and not ("0000_0001_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0001_0000_0000";
+            end if;
+
+          when x"9" =>
+            if (regs_v and not ("0000_0010_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0010_0000_0000";
+            end if;
+
+          when x"A" =>
+            if (regs_v and not ("0000_0100_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_0100_0000_0000";
+            end if;
+
+          when x"B" =>
+            if (regs_v and not ("0000_1000_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0000_1000_0000_0000";
+            end if;
+
+          when x"C" =>
+            if (regs_v and not ("0001_0000_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0001_0000_0000_0000";
+            end if;
+
+          when x"D" =>
+            if (regs_v and not ("0010_0000_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0010_0000_0000_0000";
+            end if;
+
+          when x"E" =>
+            if (regs_v and not ("0100_0000_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "0100_0000_0000_0000";
+            end if;
+
+          when x"F" =>
+            if (regs_v and not ("1000_0000_0000_0000"))
+              reg0   <= wdata2;
+              regs_v <= regs_v or "1000_0000_0000_0000";
+            end if;
+        end case;
       end if;
     end if;
   end process;
