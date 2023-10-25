@@ -191,7 +191,7 @@ begin
     cin       => dec_cy,
     -- Outputs
     dout => op2_shift,
-    cout => shift_c, -- TODO: Verify it's correct (c flag?)
+    cout => shift_c,
     -- Global interface
     vdd => vdd,
     vss => vss
