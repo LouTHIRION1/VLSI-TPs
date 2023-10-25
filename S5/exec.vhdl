@@ -295,6 +295,8 @@ begin
   exe_push <= '1' when exe2mem_full = '0' else
     '0'; -- Only allow push when the FIFO is not full
 
+  -- TODO: Test FIFO
+
   -- probe <= alu_res; -- Probe used for simulation purposes
 
 end behavioral_exec;
