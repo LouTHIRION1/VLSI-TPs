@@ -266,6 +266,7 @@ begin
     (dec_op1);
 
   -- Writeback (wb) of the ALU result
+  -- TODO: Verify 
   exe_res <= alu_res when (dec_exe_wb = '1') else
     (others => '0');
   exe_dest <= dec_exe_dest when(dec_exe_wb = '1') else
