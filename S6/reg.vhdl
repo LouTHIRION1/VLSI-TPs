@@ -44,9 +44,9 @@ entity Reg is
     reg_neg  : out std_logic; -- Read N flag
     reg_zero : out std_logic; -- Read Z flag
     reg_cry  : out std_logic; -- Read C flag
-    reg_cznv : out std_logic; -- CZN flag validity (for logic instructions)
+    reg_cznv : out std_logic; -- CZN flag validity (Logic instructions)
     reg_ovr  : out std_logic; -- Read V flag
-    reg_vv   : out std_logic; -- V flag validity(for arithmetic instructions)
+    reg_vv   : out std_logic; -- V flag validity (Arithmetic instructions)
 
     ---- Invalidation
     -- Invalidate Port 1
@@ -92,14 +92,25 @@ architecture behavioral_reg of Reg is
   signal reg14 : std_logic_vector(31 downto 0);
   -- Register PC
   signal reg15 : std_logic_vector(31 downto 0);
+  -- Validity bits for each register
+  signal regs_v : std_logic_vector(15 downto 0);
 
-  signal CPSR : std_logic_vector(3 downto 0);
+  -- CPSR
+  signal n_s : std_logic;
+  signal c_s : std_logic;
+  signal z_s : std_logic;
+  signal v_s : std_logic;
+  -- CPSR Validity bits
+  -- TODO: Affect signals correctly
+  signal reg_cznv_s : std_logic;
+  signal reg_vv_s   : std_logic;
 
 begin
   process (clk)
   begin
     -- Synchronous
     if rising_edge(clk) then
+      -- Reset
       if (reset_n = '0') then
         -- Invalidate Register ports
         reg_v1 <= '1';
@@ -110,8 +121,10 @@ begin
         reg_zero <= '0'; -- Z flag
         reg_neg  <= '0'; -- N flag
         reg_ovr  <= '0'; -- V flag
-        reg_cznv <= '0'; -- CZN Validity bit (arithmetic)
-        reg_vv   <= '0'; -- V Validity bit (logic)
+        reg_cznv <= '0'; -- CZN Validity bit (logic)
+        reg_vv   <= '0'; -- V Validity bit (arithmetic)
+
+        reg_v <= x"F_F_F_F"; -- Validate all registers regardless of what's stored inside them 
       else
         -- Write CPSR register when writeback is enabled
         if (cpsr_wb = '1') then
@@ -128,7 +141,6 @@ begin
             reg_ovr <= wovr;
             reg_vv_s = '1'; -- Validate after affecting values
           end if;
-
         end if;
       end if;
     end if;
