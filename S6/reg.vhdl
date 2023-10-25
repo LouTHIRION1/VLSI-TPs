@@ -21,7 +21,7 @@ entity Reg is
     wzero   : in std_logic; -- Write Z flag
     wcry    : in std_logic; -- Write C flag
     wovr    : in std_logic; -- Write V flag
-    cpsr_wb : in std_logic; -- CPSR register writeback enable
+    cpsr_wb : in std_logic; -- CPSR register writeback enable {S}
 
     ---- Read interface
     -- Read Port 1 32 bits (Rd)
@@ -73,25 +73,25 @@ end Reg;
 
 architecture behavioral_reg of Reg is
   -- Registers 1 - 12
-  signal registre0  : std_logic_vector(31 downto 0);
-  signal registre1  : std_logic_vector(31 downto 0);
-  signal registre2  : std_logic_vector(31 downto 0);
-  signal registre3  : std_logic_vector(31 downto 0);
-  signal registre4  : std_logic_vector(31 downto 0);
-  signal registre5  : std_logic_vector(31 downto 0);
-  signal registre6  : std_logic_vector(31 downto 0);
-  signal registre7  : std_logic_vector(31 downto 0);
-  signal registre8  : std_logic_vector(31 downto 0);
-  signal registre9  : std_logic_vector(31 downto 0);
-  signal registre10 : std_logic_vector(31 downto 0);
-  signal registre11 : std_logic_vector(31 downto 0);
-  signal registre12 : std_logic_vector(31 downto 0);
+  signal reg0  : std_logic_vector(31 downto 0);
+  signal reg1  : std_logic_vector(31 downto 0);
+  signal reg2  : std_logic_vector(31 downto 0);
+  signal reg3  : std_logic_vector(31 downto 0);
+  signal reg4  : std_logic_vector(31 downto 0);
+  signal reg5  : std_logic_vector(31 downto 0);
+  signal reg6  : std_logic_vector(31 downto 0);
+  signal reg7  : std_logic_vector(31 downto 0);
+  signal reg8  : std_logic_vector(31 downto 0);
+  signal reg9  : std_logic_vector(31 downto 0);
+  signal reg10 : std_logic_vector(31 downto 0);
+  signal reg11 : std_logic_vector(31 downto 0);
+  signal reg12 : std_logic_vector(31 downto 0);
   -- Register SP
-  signal registre13 : std_logic_vector(31 downto 0);
+  signal reg13 : std_logic_vector(31 downto 0);
   -- Register LR
-  signal registre14 : std_logic_vector(31 downto 0);
+  signal reg14 : std_logic_vector(31 downto 0);
   -- Register PC
-  signal registre15 : std_logic_vector(31 downto 0);
+  signal reg15 : std_logic_vector(31 downto 0);
 
   signal CPSR : std_logic_vector(3 downto 0);
 
@@ -115,18 +115,19 @@ begin
       else
         -- Write CPSR register when writeback is enabled
         if (cpsr_wb = '1') then
-          -- N flag
-          reg_neg <= wneg when (reg_cznv_s = '1') else
-            reg_neg;
-          -- Z flag
-          reg_zero <= wzero when (reg_cznv_s = '1') else
-            reg_zero;
-          -- C flag
-          reg_cry <= wcry when (reg_cznv_s = '1') else
-            reg_cry;
-          -- V flag
-          reg_ovr <= wovr when (reg_vv_s = '1') else
-            reg_ovr;
+          -- When CZN is invalid
+          if (reg_cznv_s = '0') then
+            reg_neg  <= wneg;
+            reg_zero <= wzero;
+            reg_cry  <= wcry;
+            reg_cznv_s = '1'; -- Validate after affecting values
+          end if;
+
+          -- When V is invalid
+          if (reg_vv_s = '0') then
+            reg_ovr <= wovr;
+            reg_vv_s = '1'; -- Validate after affecting values
+          end if;
 
         end if;
       end if;
