@@ -68,6 +68,10 @@ entity Reg is
 end Reg;
 
 architecture behavioral_reg of Reg is
+  -- Registers 1 - 12
+  -- Register SP
+  -- Register LR
+  -- Register PC
 begin
   process (clk)
   begin
