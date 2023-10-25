@@ -69,9 +69,28 @@ end Reg;
 
 architecture behavioral_reg of Reg is
   -- Registers 1 - 12
+  signal registre0  : std_logic_vector(31 downto 0);
+  signal registre1  : std_logic_vector(31 downto 0);
+  signal registre2  : std_logic_vector(31 downto 0);
+  signal registre3  : std_logic_vector(31 downto 0);
+  signal registre4  : std_logic_vector(31 downto 0);
+  signal registre5  : std_logic_vector(31 downto 0);
+  signal registre6  : std_logic_vector(31 downto 0);
+  signal registre7  : std_logic_vector(31 downto 0);
+  signal registre8  : std_logic_vector(31 downto 0);
+  signal registre9  : std_logic_vector(31 downto 0);
+  signal registre10 : std_logic_vector(31 downto 0);
+  signal registre11 : std_logic_vector(31 downto 0);
+  signal registre12 : std_logic_vector(31 downto 0);
   -- Register SP
+  signal registre13 : std_logic_vector(31 downto 0);
   -- Register LR
+  signal registre14 : std_logic_vector(31 downto 0);
   -- Register PC
+  signal registre15 : std_logic_vector(31 downto 0);
+
+  signal CPSR : std_logic_vector(3 downto 0);
+
 begin
   process (clk)
   begin
@@ -79,9 +98,9 @@ begin
     if rising_edge(clk) then
       if (reset_n = '0') then
         -- Invalidate Register ports
-        reg_v1 <= '0';
-        reg_v2 <= '0';
-        reg_v3 <= '0';
+        reg_v1 <= '1';
+        reg_v2 <= '1';
+        reg_v3 <= '1';
         -- Reset CPSR
         reg_cry  <= '0';
         reg_zero <= '0';
