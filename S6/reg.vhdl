@@ -5,6 +5,7 @@ use ieee.numeric_std.all;
 entity Reg is
   port
   (
+    ---- Write interface
     -- Write Port 1 prioritaire (EXEC stage)
     wdata1 : in std_logic_vector(31 downto 0);
     wadr1  : in std_logic_vector(3 downto 0); -- Register address (0 - 16)
@@ -20,8 +21,9 @@ entity Reg is
     wzero   : in std_logic; -- Write Z flag
     wcry    : in std_logic; -- Write C flag
     wovr    : in std_logic; -- Write V flag
-    cspr_wb : in std_logic; -- CSPR register writeback enable
+    cpsr_wb : in std_logic; -- CPSR register writeback enable
 
+    ---- Read interface
     -- Read Port 1 32 bits (Rd)
     reg_rd1 : out std_logic_vector(31 downto 0); -- Register 1
     radr1   : in std_logic_vector(3 downto 0);   -- Register 1 address (0 - 16)
@@ -37,25 +39,27 @@ entity Reg is
     radr3   : in std_logic_vector(3 downto 0);   -- Register 3 address (0 - 16)
     reg_v3  : out std_logic;                     -- Register 3 validity bit
 
+    ---- CPSR
     -- Read CPSR (Current Program Status Register) Port
     reg_neg  : out std_logic; -- Read N flag
     reg_zero : out std_logic; -- Read Z flag
     reg_cry  : out std_logic; -- Read C flag
-    reg_ovr  : out std_logic; -- Read V flag
     reg_cznv : out std_logic; -- CZN flag validity (for logic instructions)
+    reg_ovr  : out std_logic; -- Read V flag
     reg_vv   : out std_logic; -- V flag validity(for arithmetic instructions)
 
-    -- Invalidate Port 
+    ---- Invalidation
+    -- Invalidate Port 1
     inval_adr1 : in std_logic_vector(3 downto 0); -- Invalidate address Register 1 (0 - 16)
     inval1     : in std_logic;                    -- Invalidate Register 1
-
+    -- Invalidate Port 2
     inval_adr2 : in std_logic_vector(3 downto 0); -- Invalidate address Register 2 (0 - 16)
     inval2     : in std_logic;                    -- Invalidate Register 2
-
+    -- Invalidate Flags
     inval_czn : in std_logic; -- Invalidate C Z N flags (Logic instructions)
     inval_ovr : in std_logic; -- Invalidate V flag (Arithmetic instructions)
 
-    -- PC
+    ---- Program Counter (PC)
     reg_pc  : out std_logic_vector(31 downto 0); -- Program Counter register
     reg_pcv : out std_logic;                     -- Program Counter validity
     inc_pc  : in std_logic;                      -- Increment PC +4
@@ -102,13 +106,29 @@ begin
         reg_v2 <= '1';
         reg_v3 <= '1';
         -- Reset CPSR
-        reg_cry  <= '0';
-        reg_zero <= '0';
-        reg_neg  <= '0';
-        reg_ovr  <= '0';
-        reg_cznv <= '0';
-        reg_vv   <= '0';
+        reg_cry  <= '0'; -- C fag
+        reg_zero <= '0'; -- Z flag
+        reg_neg  <= '0'; -- N flag
+        reg_ovr  <= '0'; -- V flag
+        reg_cznv <= '0'; -- CZN Validity bit (arithmetic)
+        reg_vv   <= '0'; -- V Validity bit (logic)
       else
+        -- Write CPSR register when writeback is enabled
+        if (cpsr_wb = '1') then
+          -- N flag
+          reg_neg <= wneg when (reg_cznv_s = '1') else
+            reg_neg;
+          -- Z flag
+          reg_zero <= wzero when (reg_cznv_s = '1') else
+            reg_zero;
+          -- C flag
+          reg_cry <= wcry when (reg_cznv_s = '1') else
+            reg_cry;
+          -- V flag
+          reg_ovr <= wovr when (reg_vv_s = '1') else
+            reg_ovr;
+
+        end if;
       end if;
     end if;
   end process;
