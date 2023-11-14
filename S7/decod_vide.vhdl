@@ -190,23 +190,25 @@ architecture Behavior of Decod is
   end component;
 
   signal cond  : std_logic; -- Condition (Predicat) based on valid flags
-  signal condv : std_logic; -- 
-  signal operv : std_logic;
+  signal condv : std_logic; -- Wait until valid
+  signal operv : std_logic; -- Wait until source operands are valid (controls stall cycles)
 
-  signal regop_t  : std_logic;
-  signal mult_t   : std_logic;
-  signal swap_t   : std_logic;
-  signal trans_t  : std_logic;
-  signal mtrans_t : std_logic;
-  signal branch_t : std_logic;
+  -- Instruction Type
+  signal regop_t  : std_logic; -- Operand registre
+  signal mult_t   : std_logic; -- Multiplication
+  signal swap_t   : std_logic; -- 
+  signal trans_t  : std_logic; -- Transfert mémoire
+  signal mtrans_t : std_logic; -- Transfert mémoire multiple
+  signal branch_t : std_logic; -- Branch
 
-  -- regop instructions
-  signal and_i : std_logic;
-  signal eor_i : std_logic;
-  signal sub_i : std_logic;
-  signal rsb_i : std_logic;
-  signal add_i : std_logic;
-  signal adc_i : std_logic;
+  ---- Instruction type (only 1 signal is enabled at a time!)
+  -- Regop instructions
+  signal and_i : std_logic; -- AND
+  signal eor_i : std_logic; -- XOR
+  signal sub_i : std_logic; -- SUBstraction
+  signal rsb_i : std_logic; -- 
+  signal add_i : std_logic; -- ADDition
+  signal adc_i : std_logic; -- ADdition with Carry
   signal sbc_i : std_logic;
   signal rsc_i : std_logic;
   signal tst_i : std_logic;
@@ -229,18 +231,23 @@ architecture Behavior of Decod is
   signal strb_i : std_logic;
 
   -- mtrans instruction
-  signal ldm_i : std_logic;
-  signal stm_i : std_logic;
+  signal ldm_i : std_logic; -- Load Multiple
+  signal stm_i : std_logic; -- Store Multiple
 
   -- branch instruction
   signal b_i  : std_logic;
   signal bl_i : std_logic;
 
   -- link
-  signal blink : std_logic;
+  signal blink : std_logic; -- Branch and Link
 
   -- Multiple transferts
-  signal mtrans_shift : std_logic;
+  signal mtrans_shift : std_logic; -- 16 bits qui indiquent le registre a transferer, on fait un decalage pour identifier les registres qui sont a transferer
+
+  signal mtrans_ia : std_logic;
+  signal mtrans_ib : std_logic;
+  signal mtrans_da : std_logic;
+  signal mtrans_da : std_logic;
 
   signal mtrans_mask_shift : std_logic_vector(15 downto 0);
   signal mtrans_mask       : std_logic_vector(15 downto 0);
@@ -248,9 +255,9 @@ architecture Behavior of Decod is
   signal mtrans_1un        : std_logic;
   signal mtrans_loop_adr   : std_logic;
   signal mtrans_nbr        : std_logic_vector(4 downto 0);
-  signal mtrans_rd         : std_logic_vector(3 downto 0);
+  signal mtrans_rd         : std_logic_vector(3 downto 0); -- Numero de registre de destination (Read port)
 
-  -- RF read ports
+  -- Register File (RF) read ports
   signal radr1   : std_logic_vector(3 downto 0);
   signal rdata1  : std_logic_vector(31 downto 0);
   signal rvalid1 : std_logic;
@@ -263,7 +270,7 @@ architecture Behavior of Decod is
   signal rdata3  : std_logic_vector(31 downto 0);
   signal rvalid3 : std_logic;
 
-  -- RF inval ports
+  -- Register File (RF) inval ports
   signal inval_exe_adr : std_logic_vector(3 downto 0);
   signal inval_exe     : std_logic;
 
@@ -279,16 +286,16 @@ architecture Behavior of Decod is
   signal reg_cznv : std_logic;
   signal reg_vv   : std_logic;
 
-  signal inval_czn : std_logic;
-  signal inval_ovr : std_logic;
+  signal inval_czn : std_logic; -- Signal d'invalidation
+  signal inval_ovr : std_logic; -- Signal d'invalidation
 
-  -- PC
+  -- Program Coounter (PC)
   signal reg_pc  : std_logic_vector(31 downto 0);
-  signal reg_pcv : std_logic;
+  signal reg_pcv : std_logic; -- Valid bit
   signal inc_pc  : std_logic;
 
   -- FIFOs
-  signal dec2if_full : std_logic;
+  signal dec2if_full : std_logic; -- Operands vers EXEC
   signal dec2if_push : std_logic;
 
   signal dec2exe_full : std_logic;
@@ -690,3 +697,11 @@ begin
 
   dec_pop <= if2dec_pop;
 end Behavior;
+
+-- Mult instruction
+mul_i <= '1' when mult_t = '1' and if_ir(21) = '0' else
+  '0';
+
+-- Trans instruction
+ldr_i <= '1' when trans_t = '1' and if_ir(22) = '0' and if_ir(20) = '1' else
+  '0';
