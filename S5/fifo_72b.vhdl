@@ -33,9 +33,11 @@ begin
   process (ck)
   begin
     if rising_edge(ck) then
+      report "fifo_v : " & std_logic'image(fifo_v)(2);
+
       -- Synchronous reset
       if (reset_n = '0') then
-        fifo_v <= '0';
+        fifo_v <= '0'; -- Empty FIFO
       else
         if (fifo_v = '0') then
           if (push = '1') then

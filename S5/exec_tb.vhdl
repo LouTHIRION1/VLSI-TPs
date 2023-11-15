@@ -199,6 +199,10 @@ begin
 
   stim_proc : process
   begin
+    report "Empty FIFO test" severity note;
+    reset_n_s <= '0';
+    wait for clk_period;
+    -- exe_push <= '1';
 
     report "EXEC stage tests" severity note;
     report "Sum without shift" severity note;
