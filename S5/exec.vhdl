@@ -143,16 +143,6 @@ architecture behavioral_exec of EXec is
     );
   end component;
 
-  component mux2to1
-    port
-    (
-      a   : in std_logic_vector(31 downto 0);
-      b   : in std_logic_vector(31 downto 0);
-      cmd : in std_logic;
-      s   : out std_logic_vector(31 downto 0)
-    );
-  end component;
-
   -- SIGNAL DECLARATIONS
 
   signal shift_c, shift_c_wb                  : std_logic;
