@@ -144,7 +144,6 @@ begin
         end if;
 
         -- Take address of the register to be written, save the data and validate the register afterwards
-        -- TODO: à completer pour wadr2
         case (wadr1) is
           when x"0" =>
             -- Verify if the regiter is invalid
