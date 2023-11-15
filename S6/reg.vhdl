@@ -153,115 +153,99 @@ begin
         case (wadr1) is
           when x"0" =>
             -- Verify if the regiter is invalid
-            test_validtyBit := regs_v and b"0000_0000_0000_0001";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0000_0001";
+            if (regs_v(0) = '0') then
+              reg0      <= wdata1;
+              regs_v(0) <= '1';
             end if;
 
           when x"1" =>
-            test_validtyBit := regs_v and b"0000_0000_0000_0010";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0000_0010";
+            if (regs_v(1) = '0') then
+              reg1      <= wdata1;
+              regs_v(1) <= '1';
             end if;
 
           when x"2" =>
-            test_validtyBit := regs_v and b"0000_0000_0000_0100";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0000_0100";
+            if (regs_v(2) = '0') then
+              reg2      <= wdata1;
+              regs_v(2) <= '1';
             end if;
 
           when x"3" =>
-            test_validtyBit := regs_v and b"0000_0000_0000_1000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0000_1000";
+            if (regs_v(3) = '0') then
+              reg3      <= wdata1;
+              regs_v(3) <= '1';
             end if;
 
           when x"4" =>
-            test_validtyBit := regs_v and b"0000_0000_0001_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0001_0000";
+            if (regs_v(4) = '0') then
+              reg4      <= wdata1;
+              regs_v(4) <= '1';
             end if;
 
           when x"5" =>
-            test_validtyBit := regs_v and b"0000_0000_0010_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0010_0000";
+            if (regs_v(5) = '0') then
+              reg5      <= wdata1;
+              regs_v(5) <= '1';
             end if;
 
           when x"6" =>
-            test_validtyBit := regs_v and b"0000_0000_0100_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_0100_0000";
+            if (regs_v(6) = '0') then
+              reg6      <= wdata1;
+              regs_v(6) <= '1';
             end if;
 
           when x"7" =>
-            test_validtyBit := regs_v and b"0000_0000_1000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0000_1000_0000";
+            if (regs_v(7) = '0') then
+              reg7      <= wdata1;
+              regs_v(7) <= '1';
             end if;
 
           when x"8" =>
-            test_validtyBit := regs_v and b"0000_0001_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0001_0000_0000";
+            if (regs_v(8) = '0') then
+              reg8      <= wdata1;
+              regs_v(8) <= '1';
             end if;
 
           when x"9" =>
-            test_validtyBit := regs_v and b"0000_0010_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0010_0000_0000";
+            if (regs_v(9) = '0') then
+              reg9      <= wdata1;
+              regs_v(9) <= '1';
             end if;
 
           when x"A" =>
-            test_validtyBit := regs_v and b"0000_0100_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_0100_0000_0000";
+            if (regs_v(10) = '0') then
+              reg10      <= wdata1;
+              regs_v(10) <= '1';
             end if;
 
           when x"B" =>
-            test_validtyBit := regs_v and b"0000_1000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0000_1000_0000_0000";
+            if (regs_v(11) = '0') then
+              reg11      <= wdata1;
+              regs_v(11) <= '1';
             end if;
 
           when x"C" =>
-            test_validtyBit := regs_v and b"0001_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0001_0000_0000_0000";
+            if (regs_v(12) = '0') then
+              reg12      <= wdata1;
+              regs_v(12) <= '1';
             end if;
 
           when x"D" =>
-            test_validtyBit := regs_v and b"0010_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0010_0000_0000_0000";
+            if (regs_v(13) = '0') then
+              reg13      <= wdata1;
+              regs_v(13) <= '1';
             end if;
 
           when x"E" =>
-            test_validtyBit := regs_v and b"0100_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"0100_0000_0000_0000";
+            if (regs_v(14) = '0') then
+              reg14      <= wdata1;
+              regs_v(14) <= '1';
             end if;
 
           when x"F" =>
-            test_validtyBit := regs_v and b"1000_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata1;
-              regs_v <= regs_v or b"1000_0000_0000_0000";
+            if (regs_v(15) = '0') then
+              reg15      <= wdata1;
+              regs_v(15) <= '1';
             end if;
 
           when others =>
@@ -271,115 +255,99 @@ begin
         case (wadr2) is
           when x"0" =>
             -- Verify if the regiter is invalid
-            test_validtyBit := regs_v and b"0000_0000_0000_0001";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0000_0001";
+            if (regs_v(0) = '0') then
+              reg0      <= wdata2;
+              regs_v(0) <= '1';
             end if;
 
           when x"1" =>
-            test_validtyBit := regs_v and b"0000_0000_0000_0010";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0000_0010";
+            if (regs_v(1) = '0') then
+              reg1      <= wdata2;
+              regs_v(1) <= '1';
             end if;
 
           when x"2" =>
-            test_validtyBit := regs_v and b"0000_0000_0000_0100";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0000_0100";
+            if (regs_v(2) = '0') then
+              reg2      <= wdata2;
+              regs_v(2) <= '1';
             end if;
 
           when x"3" =>
-            test_validtyBit := regs_v and b"0000_0000_0000_1000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0000_1000";
+            if (regs_v(3) = '0') then
+              reg3      <= wdata2;
+              regs_v(3) <= '1';
             end if;
 
           when x"4" =>
-            test_validtyBit := regs_v and b"0000_0000_0001_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0001_0000";
+            if (regs_v(4) = '0') then
+              reg4      <= wdata2;
+              regs_v(4) <= '1';
             end if;
 
           when x"5" =>
-            test_validtyBit := regs_v and b"0000_0000_0010_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0010_0000";
+            if (regs_v(5) = '0') then
+              reg5      <= wdata2;
+              regs_v(5) <= '1';
             end if;
 
           when x"6" =>
-            test_validtyBit := regs_v and b"0000_0000_0100_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_0100_0000";
+            if (regs_v(6) = '0') then
+              reg6      <= wdata2;
+              regs_v(6) <= '1';
             end if;
 
           when x"7" =>
-            test_validtyBit := regs_v and b"0000_0000_1000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0000_1000_0000";
+            if (regs_v(7) = '0') then
+              reg7      <= wdata2;
+              regs_v(7) <= '1';
             end if;
 
           when x"8" =>
-            test_validtyBit := regs_v and b"0000_0001_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0001_0000_0000";
+            if (regs_v(8) = '0') then
+              reg8      <= wdata2;
+              regs_v(8) <= '1';
             end if;
 
           when x"9" =>
-            test_validtyBit := regs_v and b"0000_0010_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0010_0000_0000";
+            if (regs_v(9) = '0') then
+              reg9      <= wdata2;
+              regs_v(9) <= '1';
             end if;
 
           when x"A" =>
-            test_validtyBit := regs_v and b"0000_0100_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_0100_0000_0000";
+            if (regs_v(10) = '0') then
+              reg10      <= wdata2;
+              regs_v(10) <= '1';
             end if;
 
           when x"B" =>
-            test_validtyBit := regs_v and b"0000_1000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0000_1000_0000_0000";
+            if (regs_v(11) = '0') then
+              reg11      <= wdata2;
+              regs_v(11) <= '1';
             end if;
 
           when x"C" =>
-            test_validtyBit := regs_v and b"0001_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0001_0000_0000_0000";
+            if (regs_v(12) = '0') then
+              reg12      <= wdata2;
+              regs_v(12) <= '1';
             end if;
 
           when x"D" =>
-            test_validtyBit := regs_v and b"0010_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0010_0000_0000_0000";
+            if (regs_v(13) = '0') then
+              reg13      <= wdata2;
+              regs_v(13) <= '1';
             end if;
 
           when x"E" =>
-            test_validtyBit := regs_v and b"0100_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"0100_0000_0000_0000";
+            if (regs_v(14) = '0') then
+              reg14      <= wdata2;
+              regs_v(14) <= '1';
             end if;
 
           when x"F" =>
-            test_validtyBit := regs_v and b"1000_0000_0000_0000";
-            if (not(test_validtyBit = b"0000_0000_0000_0000")) then
-              reg0   <= wdata2;
-              regs_v <= regs_v or b"1000_0000_0000_0000";
+            if (regs_v(15) = '0') then
+              reg15      <= wdata2;
+              regs_v(15) <= '1';
             end if;
 
           when others =>
