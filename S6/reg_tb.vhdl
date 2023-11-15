@@ -26,7 +26,7 @@ architecture testbench of reg_tb is
       wzero   : in std_logic; -- Write Z flag
       wneg    : in std_logic; -- Write N flag
       wovr    : in std_logic; -- Write V flag
-      cspr_wb : in std_logic; -- CSPR register writeback enable
+      cpsr_wb : in std_logic; -- CSPR register writeback enable
 
       -- Read Port 1 32 bits (Rd)
       reg_rd1 : out std_logic_vector(31 downto 0); -- Register 1
@@ -84,7 +84,7 @@ architecture testbench of reg_tb is
   signal wzero_s      : std_logic;                     -- Write Z flag
   signal wneg_s       : std_logic;                     -- Write N flag
   signal wovr_s       : std_logic;                     -- Write V flag
-  signal cspr_wb_s    : std_logic;                     -- CSPR register writeback enable
+  signal cpsr_wb_s    : std_logic;                     -- CSPR register writeback enable
   signal reg_rd1_s    : std_logic_vector(31 downto 0); -- Register 1
   signal radr1_s      : std_logic_vector(3 downto 0);  -- Register 1 address
   signal reg_v1_s     : std_logic;                     -- Register 1 validity bit
@@ -131,7 +131,7 @@ begin
     wzero      => wzero_s,
     wneg       => wneg_s,
     wovr       => wovr_s,
-    cspr_wb    => cspr_wb_s,
+    cpsr_wb    => cpsr_wb_s,
     reg_rd1    => reg_rd1_s,
     radr1      => radr1_s,
     reg_v1     => reg_v1_s,
