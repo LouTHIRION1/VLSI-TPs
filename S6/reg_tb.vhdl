@@ -70,7 +70,10 @@ architecture testbench of reg_tb is
       clk     : in std_logic; -- Clock
       reset_n : in std_logic; -- Reset (active low)
       vdd     : in bit;
-      vss     : in bit);
+      vss     : in bit;
+
+      -- Probe
+      probe : out std_logic_vector(15 downto 0));
   end component;
 
   -- Declaration des signaux
@@ -113,6 +116,7 @@ architecture testbench of reg_tb is
   signal reset_n_s    : std_logic;                     -- Reset (active low)
   signal vdd_s        : bit;
   signal vss_s        : bit;
+  signal probe_s      : std_logic_vector(15 downto 0);
 
   -- Clock period definitions
   constant clk_period : time := 1 ns;
@@ -159,7 +163,9 @@ begin
     clk        => clk_s,
     reset_n    => reset_n_s,
     vdd        => vdd_s,
-    vss        => vss_s
+    vss        => vss_s,
+
+    probe => probe_s
   );
 
   clk_process : process
@@ -172,9 +178,16 @@ begin
 
   stim_proc : process
   begin
+
+    -- Test Reset
     reset_n_s <= '0';
     wait for clk_period;
-
+    assert(reg_v1_s = '1') report "Invalidate validity bit value" severity error;
+    assert(reg_v2_s = '1') report "Invalidate validity bit value" severity error;
+    assert(reg_v3_s = '1') report "Invalidate validity bit value" severity error;
+    assert(probe_s = x"FFFF") report "Invalidate validity bit map value" severity error;
+    reset_n_s <= '1';
+    wait for clk_period;
     wait;
   end process;
 end testbench;

@@ -68,7 +68,11 @@ entity Reg is
     clk     : in std_logic; -- Clock
     reset_n : in std_logic; -- Reset (active low)
     vdd     : in bit;
-    vss     : in bit);
+    vss     : in bit;
+
+    -- Probe
+    probe : out std_logic_vector(15 downto 0)
+  );
 end Reg;
 
 architecture behavioral_reg of Reg is
@@ -126,6 +130,7 @@ begin
         reg_vv   <= '0'; -- V Validity bit (arithmetic)
 
         regs_v <= x"F_F_F_F"; -- Validate all registers regardless of what's stored inside them 
+        probe  <= regs_v;
       else
         -- Write CPSR register when writeback is enabled
         if (cpsr_wb = '1') then
