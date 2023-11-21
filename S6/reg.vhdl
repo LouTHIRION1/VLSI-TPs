@@ -77,28 +77,9 @@ end Reg;
 
 architecture behavioral_reg of Reg is
   -- TODO: Implement loops instead 
+  -- TODO: Implement R16 PC behaviour
   type reg_arr is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
-  signal reg : reg_arr;
-  -- Registers 1 - 12
-  signal reg0  : std_logic_vector(31 downto 0);
-  signal reg1  : std_logic_vector(31 downto 0);
-  signal reg2  : std_logic_vector(31 downto 0);
-  signal reg3  : std_logic_vector(31 downto 0);
-  signal reg4  : std_logic_vector(31 downto 0);
-  signal reg5  : std_logic_vector(31 downto 0);
-  signal reg6  : std_logic_vector(31 downto 0);
-  signal reg7  : std_logic_vector(31 downto 0);
-  signal reg8  : std_logic_vector(31 downto 0);
-  signal reg9  : std_logic_vector(31 downto 0);
-  signal reg10 : std_logic_vector(31 downto 0);
-  signal reg11 : std_logic_vector(31 downto 0);
-  signal reg12 : std_logic_vector(31 downto 0);
-  -- Register SP
-  signal reg13 : std_logic_vector(31 downto 0);
-  -- Register LR
-  signal reg14 : std_logic_vector(31 downto 0);
-  -- Register PC
-  signal reg15 : std_logic_vector(31 downto 0);
+  signal registre : reg_arr;
 
   -- Validity bits for each register
   signal regs_v : std_logic_vector(15 downto 0);
@@ -114,9 +95,14 @@ architecture behavioral_reg of Reg is
   signal reg_vv_s   : std_logic;
 
   signal exec_conflict : std_logic; -- 1 when conflict between EXEC and MEM address 
+  signal wadr1_int     : integer;
+  signal wadr2_int     : integer;
 begin
+
+  wadr1_int <= to_integer(unsigned(wadr1));
+  wadr2_int <= to_integer(unsigned(wadr2));
+
   process (clk)
-    variable test_validtyBit : std_logic_vector(15 downto 0);
   begin
     -- Synchronous
     if rising_edge(clk) then
@@ -130,11 +116,11 @@ begin
         reg_vv   <= '1'; -- V Validity bit (arithmetic)
         -- TODO: Empty all registers
         -- Reset CPSR
-        reg_cry  <= '0';        -- C fag
-        reg_zero <= '0';        -- Z flag
-        reg_neg  <= '0';        -- N flag
-        reg_ovr  <= '0';        -- V flag
-        regs_v   <= x"F_F_F_F"; -- Validate all registers regardless of what's stored inside them 
+        reg_cry  <= '0';             -- C fag
+        reg_zero <= '0';             -- Z flag
+        reg_neg  <= '0';             -- N flag
+        reg_ovr  <= '0';             -- V flag
+        regs_v   <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
 
         probe <= regs_v; -- Probe (comment if unused)
       else
@@ -155,219 +141,22 @@ begin
           end if;
         end if;
 
-        -- If there is a conflict between EXEC and MEM, ignore MEM
-        if (wadr1 = wadr2) then
-          exec_conflict <= '1';
-        else
-          exec_conflict <= '0';
-        end if;
-
         -- Take address of the register to be written, save the data and validate the register afterwards
-        if (wen1 = '1') then
-          case (wadr1) is
-            when x"0" =>
-              -- Verify if the regiter is invalid
-              if (regs_v(0) = '0') then
-                reg0      <= wdata1;
-                regs_v(0) <= '1';
-              end if;
 
-            when x"1" =>
-              if (regs_v(1) = '0') then
-                reg1      <= wdata1;
-                regs_v(1) <= '1';
-              end if;
-
-            when x"2" =>
-              if (regs_v(2) = '0') then
-                reg2      <= wdata1;
-                regs_v(2) <= '1';
-              end if;
-
-            when x"3" =>
-              if (regs_v(3) = '0') then
-                reg3      <= wdata1;
-                regs_v(3) <= '1';
-              end if;
-
-            when x"4" =>
-              if (regs_v(4) = '0') then
-                reg4      <= wdata1;
-                regs_v(4) <= '1';
-              end if;
-
-            when x"5" =>
-              if (regs_v(5) = '0') then
-                reg5      <= wdata1;
-                regs_v(5) <= '1';
-              end if;
-
-            when x"6" =>
-              if (regs_v(6) = '0') then
-                reg6      <= wdata1;
-                regs_v(6) <= '1';
-              end if;
-
-            when x"7" =>
-              if (regs_v(7) = '0') then
-                reg7      <= wdata1;
-                regs_v(7) <= '1';
-              end if;
-
-            when x"8" =>
-              if (regs_v(8) = '0') then
-                reg8      <= wdata1;
-                regs_v(8) <= '1';
-              end if;
-
-            when x"9" =>
-              if (regs_v(9) = '0') then
-                reg9      <= wdata1;
-                regs_v(9) <= '1';
-              end if;
-
-            when x"A" =>
-              if (regs_v(10) = '0') then
-                reg10      <= wdata1;
-                regs_v(10) <= '1';
-              end if;
-
-            when x"B" =>
-              if (regs_v(11) = '0') then
-                reg11      <= wdata1;
-                regs_v(11) <= '1';
-              end if;
-
-            when x"C" =>
-              if (regs_v(12) = '0') then
-                reg12      <= wdata1;
-                regs_v(12) <= '1';
-              end if;
-
-            when x"D" =>
-              if (regs_v(13) = '0') then
-                reg13      <= wdata1;
-                regs_v(13) <= '1';
-              end if;
-
-            when x"E" =>
-              if (regs_v(14) = '0') then
-                reg14      <= wdata1;
-                regs_v(14) <= '1';
-              end if;
-
-            when x"F" =>
-              if (regs_v(15) = '0') then
-                reg15      <= wdata1;
-                regs_v(15) <= '1';
-              end if;
-
-            when others =>
-
-          end case;
-        elsif (wen2 = '1') then
-          case (wadr2) is
-            when x"0" =>
-              -- Verify if the regiter is invalid
-              if (regs_v(0) = '0') then
-                reg0      <= wdata2;
-                regs_v(0) <= '1';
-              end if;
-
-            when x"1" =>
-              if (regs_v(1) = '0') then
-                reg1      <= wdata2;
-                regs_v(1) <= '1';
-              end if;
-
-            when x"2" =>
-              if (regs_v(2) = '0') then
-                reg2      <= wdata2;
-                regs_v(2) <= '1';
-              end if;
-
-            when x"3" =>
-              if (regs_v(3) = '0') then
-                reg3      <= wdata2;
-                regs_v(3) <= '1';
-              end if;
-
-            when x"4" =>
-              if (regs_v(4) = '0') then
-                reg4      <= wdata2;
-                regs_v(4) <= '1';
-              end if;
-
-            when x"5" =>
-              if (regs_v(5) = '0') then
-                reg5      <= wdata2;
-                regs_v(5) <= '1';
-              end if;
-
-            when x"6" =>
-              if (regs_v(6) = '0') then
-                reg6      <= wdata2;
-                regs_v(6) <= '1';
-              end if;
-
-            when x"7" =>
-              if (regs_v(7) = '0') then
-                reg7      <= wdata2;
-                regs_v(7) <= '1';
-              end if;
-
-            when x"8" =>
-              if (regs_v(8) = '0') then
-                reg8      <= wdata2;
-                regs_v(8) <= '1';
-              end if;
-
-            when x"9" =>
-              if (regs_v(9) = '0') then
-                reg9      <= wdata2;
-                regs_v(9) <= '1';
-              end if;
-
-            when x"A" =>
-              if (regs_v(10) = '0') then
-                reg10      <= wdata2;
-                regs_v(10) <= '1';
-              end if;
-
-            when x"B" =>
-              if (regs_v(11) = '0') then
-                reg11      <= wdata2;
-                regs_v(11) <= '1';
-              end if;
-
-            when x"C" =>
-              if (regs_v(12) = '0') then
-                reg12      <= wdata2;
-                regs_v(12) <= '1';
-              end if;
-
-            when x"D" =>
-              if (regs_v(13) = '0') then
-                reg13      <= wdata2;
-                regs_v(13) <= '1';
-              end if;
-
-            when x"E" =>
-              if (regs_v(14) = '0') then
-                reg14      <= wdata2;
-                regs_v(14) <= '1';
-              end if;
-
-            when x"F" =>
-              if (regs_v(15) = '0') then
-                reg15      <= wdata2;
-                regs_v(15) <= '1';
-              end if;
-
-            when others =>
-
-          end case;
-        end if;
+        for i in 0 to 15 loop
+          -- Verify register is invalidated
+          if (regs_v(i) = '0') then
+            -- Check if there is a conflict between wadr1 and wadr2
+            if (wadr1 = wadr2) then
+              -- Discard MEM result in case of conflict as it's older than the result from EXEC
+              registre(wadr1_int) <= wdata1 when (wen1 = '1');
+            else
+              -- No conflict, save both MEM and EXEC results
+              registre(wadr1_int) <= wdata1 when (wen1 = '1');
+              registre(wadr2_int) <= wdata2 when (wen2 = '1');
+            end if;
+          end if;
+        end loop;
       end if;
     end if;
   end process;
