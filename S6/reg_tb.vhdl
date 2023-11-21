@@ -70,10 +70,7 @@ architecture testbench of reg_tb is
       clk     : in std_logic; -- Clock
       reset_n : in std_logic; -- Reset (active low)
       vdd     : in bit;
-      vss     : in bit;
-
-      -- Probe
-      probe : out std_logic_vector(15 downto 0));
+      vss     : in bit);
   end component;
 
   -- Declaration des signaux
@@ -116,7 +113,6 @@ architecture testbench of reg_tb is
   signal reset_n_s    : std_logic;                     -- Reset (active low)
   signal vdd_s        : bit;
   signal vss_s        : bit;
-  signal probe_s      : std_logic_vector(15 downto 0);
 
   -- Clock period definitions
   constant clk_period : time := 1 ns;
@@ -163,9 +159,7 @@ begin
     clk        => clk_s,
     reset_n    => reset_n_s,
     vdd        => vdd_s,
-    vss        => vss_s,
-
-    probe => probe_s
+    vss        => vss_s
   );
 
   clk_process : process
@@ -182,39 +176,42 @@ begin
     -- Test Reset
     report "Reset test" severity note;
     reset_n_s <= '0';
+
+    wneg_s    <= '0';
+    wzero_s   <= '0';
+    wcry_s    <= '0';
+    wovr_s    <= '0';
+    cpsr_wb_s <= '0';
+
+    inval1_s <= '1'; -- Mark as valid
+    inval2_s <= '1'; -- Mark as valid
+
     wait for clk_period;
 
     assert(reg_v1_s = '1') report "Invalidate validity bit value" severity error;
     assert(reg_v2_s = '1') report "Invalidate validity bit value" severity error;
     assert(reg_v3_s = '1') report "Invalidate validity bit value" severity error;
-    -- assert(probe_s = x"FFFF") report "Invalidate validity bit map value" severity error;
 
     reset_n_s <= '1';
+    wdata1_s  <= x"AAAA_0000";
+    wadr1_s   <= x"A";
+    wen1_s    <= '1';
 
-    wadr1_s      <= x"A";
-    inval_adr1_s <= x"A";
-    inval1_s     <= '0';
-    wen1_s       <= '1';
-    wdata1_s     <= x"AAAA_0000";
-    wait for clk_period;
-
-    wadr2_s  <= x"5";
-    wen2_s   <= '1';
-    wdata2_s <= x"5555_0000";
-    wait for clk_period;
-
-    wadr1_s  <= x"A";
-    wen1_s   <= '1';
-    wdata1_s <= x"0000_0000";
+    wdata2_s <= x"0000_0000";
     wadr2_s  <= x"A";
-    wen2_s   <= '1';
-    wdata2_s <= x"AAAA_AAAA";
+    wen2_s   <= '0';
+
+    inval_adr1_s <= x"A";
+    inval_adr2_s <= x"0";
+    inval1_s     <= '0'; -- Mark as invalid
+
+    radr1_s <= x"A";
     wait for clk_period;
 
-    -- inval_adr1_s <=
-    -- regs_v(10) <= '1';
-    -- wdata1_s
-    -- regsv
+    assert(reg_rd1_s = x"AAAA_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+
+    inval1_s <= '1'; -- Mark as valid
     wait;
   end process;
 end testbench;
