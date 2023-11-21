@@ -23,8 +23,9 @@ endif
 ifeq ($(UNAME_S), Darwin)
 # Stable Version
   GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
-# Nighlty Version
+# Nightly Version
 # GHDL = /opt/homebrew/Caskroom/ghdl/nightly/bin/ghdl 
+# https://github.com/gtkwave/gtkwave/issues/250
   WAVEFORM_VIEWER = /opt/homebrew/bin/gtkwave
 endif
 
@@ -32,11 +33,11 @@ endif
 GHDL_FLAGS = --std=08 --workdir=$(WORKDIR)
 
 # Simulation options
-STOP_TIME = 50ns
+STOP_TIME = 30ns
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
 .PHONY: clean
 
-all : clean make run view
+all : clean make run
 
 make : 
 # strip removes whitespace from TB argument
