@@ -68,10 +68,7 @@ entity Reg is
     clk     : in std_logic; -- Clock
     reset_n : in std_logic; -- Reset (active low)
     vdd     : in bit;
-    vss     : in bit;
-
-    -- Probe (Comment if unused)
-    probe : out std_logic_vector(15 downto 0)
+    vss     : in bit
   );
 end Reg;
 
@@ -79,7 +76,7 @@ architecture behavioral_reg of Reg is
   -- TODO: Implement loops instead 
   -- TODO: Implement R16 PC behaviour
   type reg_arr is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
-  signal registre : reg_arr;
+  signal regfile : reg_arr;
 
   -- Validity bits for each register
   signal regs_v : std_logic_vector(15 downto 0);
@@ -94,14 +91,16 @@ architecture behavioral_reg of Reg is
   signal reg_cznv_s : std_logic;
   signal reg_vv_s   : std_logic;
 
-  signal exec_conflict : std_logic; -- 1 when conflict between EXEC and MEM address 
-  signal wadr1_int     : integer;
-  signal wadr2_int     : integer;
-  signal radr1_int     : integer;
-  signal radr2_int     : integer;
-  signal radr3_int     : integer;
+  -- Signals used for integer conversion
+  signal wadr1_int      : integer;
+  signal wadr2_int      : integer;
+  signal radr1_int      : integer;
+  signal radr2_int      : integer;
+  signal radr3_int      : integer;
+  signal inval_adr1_int : integer;
+  signal inval_adr2_int : integer;
 begin
-
+  -- Convert addresses to integers to access bits of std_logic_vector conveniently
   wadr1_int <= to_integer(unsigned(wadr1));
   wadr2_int <= to_integer(unsigned(wadr2));
 
@@ -109,18 +108,20 @@ begin
   radr2_int <= to_integer(unsigned(radr2));
   radr3_int <= to_integer(unsigned(radr3));
 
+  inval_adr1_int <= to_integer(unsigned(inval_adr1));
+  inval_adr2_int <= to_integer(unsigned(inval_adr2));
+
   process (clk)
   begin
-    -- Synchronous
     if rising_edge(clk) then
-      -- Reset
+      -- Synchronous Reset (active low)
       if (reset_n = '0') then
         -- Validate Register ports
         reg_v1   <= '1';
         reg_v2   <= '1';
         reg_v3   <= '1';
-        reg_cznv <= '1'; -- CZN Validity bit (logic)
-        reg_vv   <= '1'; -- V Validity bit (arithmetic)
+        reg_cznv <= '1'; -- CZN Validity bit (logic instruction)
+        reg_vv   <= '1'; -- V Validity bit (arithmetic instruction)
         -- TODO: Empty all registers
         -- Reset CPSR
         reg_cry  <= '0';             -- C fag
@@ -128,7 +129,8 @@ begin
         reg_neg  <= '0';             -- N flag
         reg_ovr  <= '0';             -- V flag
         regs_v   <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
-
+        -- PC
+        reg_pcv <= '1';
       else
         -- Write CPSR register when writeback is enabled
         if (cpsr_wb = '1') then
@@ -148,26 +150,9 @@ begin
         end if;
 
         -- Assign invalidation bit to the register corresponding to the address
-        regs_v(to_integer(unsigned(inval_adr1))) <= inval1;
-        regs_v(to_integer(unsigned(inval_adr2))) <= inval2;
-
-        -- Take address of the register to be written, save the data and validate the register afterwards
-        -- for i in 0 to 15 loop
-        --   -- Verify register is invalidated TODO: Verify
-        --   if (regs_v(i) = '0') then
-        --     -- Check if there is a conflict between wadr1 and wadr2
-        --     if (wadr1 = wadr2) then
-        --       -- Discard MEM result in case of conflict as it's older than the result from EXEC
-        --       registre(wadr1_int) <= wdata1 when (wen1 = '1' and i = wadr1_int);
-        --     else
-        --       -- No conflict, save both MEM and EXEC results
-        --       registre(wadr1_int) <= wdata1 when (wen1 = '1');
-        --       registre(wadr2_int) <= wdata2 when (wen2 = '1');
-        --     end if;
-        --     -- Validate after writing
-        --     regs_v(i) <= '1';
-        --   end if;
-        -- end loop;
+        -- TODO: active low or high?
+        regs_v(inval_adr1_int) <= inval1;
+        regs_v(inval_adr2_int) <= inval2;
 
         -- Take address of the register to be written, save the data and validate the register afterwards
         -- Verify register is invalidated TODO: Verify
@@ -175,34 +160,35 @@ begin
         if (wadr1 = wadr2) then
           -- Discard MEM result in case of conflict as it's older than the result from EXEC
           if (regs_v(wadr1_int) = '0') then
-            registre(wadr1_int) <= wdata1 when (wen1 = '1');
+            regfile(wadr1_int) <= wdata1 when (wen1 = '1');
             -- Validate after writing
             regs_v(wadr1_int) <= '1';
           end if;
         else
-          -- No conflict, save both MEM and EXEC results
+          -- No conflict, save both EXEC and MEM results
           if (regs_v(wadr1_int) = '0') then
-            registre(wadr1_int) <= wdata1 when (wen1 = '1');
+            regfile(wadr1_int) <= wdata1 when (wen1 = '1');
             -- Validate after writing
             regs_v(wadr1_int) <= '1';
           end if;
           if (regs_v(wadr2_int) = '0') then
-            registre(wadr2_int) <= wdata2 when (wen2 = '1');
+            regfile(wadr2_int) <= wdata2 when (wen2 = '1');
             -- Validate after writing
             regs_v(wadr2_int) <= '1';
           end if;
-        end if;
+        end if; -- (wadr1 = wadr2)
+
         -- Read register corresponding to the read address
-        reg_rd1 <= registre(radr1_int);
-        reg_rd2 <= registre(radr2_int);
-        reg_rd3 <= registre(radr3_int);
+        reg_rd1 <= regfile(radr1_int);
+        reg_rd2 <= regfile(radr2_int);
+        reg_rd3 <= regfile(radr3_int);
 
         -- Read the validity bit corresponding to the read address
         reg_v1 <= regs_v(radr1_int);
         reg_v2 <= regs_v(radr2_int);
         reg_v3 <= regs_v(radr3_int);
+
       end if; -- Reset
     end if; -- Rising edge
   end process;
-
 end behavioral_reg;
