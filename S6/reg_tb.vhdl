@@ -190,9 +190,12 @@ begin
     -- assert(probe_s = x"FFFF") report "Invalidate validity bit map value" severity error;
 
     reset_n_s <= '1';
-    wadr1_s   <= x"A";
-    wen1_s    <= '1';
-    wdata1_s  <= x"AAAA_0000";
+
+    wadr1_s      <= x"A";
+    inval_adr1_s <= x"A";
+    inval1_s     <= '0';
+    wen1_s       <= '1';
+    wdata1_s     <= x"AAAA_0000";
     wait for clk_period;
 
     wadr2_s  <= x"5";

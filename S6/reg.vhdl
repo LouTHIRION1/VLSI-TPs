@@ -122,7 +122,6 @@ begin
         reg_ovr  <= '0';             -- V flag
         regs_v   <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
 
-        -- probe <= regs_v; -- Probe (comment if unused)
       else
         -- Write CPSR register when writeback is enabled
         if (cpsr_wb = '1') then
@@ -141,24 +140,35 @@ begin
           end if;
         end if;
 
+        -- Assign invalidation bit to the register corresponding to the address
         regs_v(to_integer(unsigned(inval_adr1))) <= inval1;
         regs_v(to_integer(unsigned(inval_adr2))) <= inval2;
 
         -- Take address of the register to be written, save the data and validate the register afterwards
         for i in 0 to 15 loop
-          -- Verify register is invalidated
+          -- Verify register is invalidated TODO: Verify
           if (regs_v(i) = '0') then
             -- Check if there is a conflict between wadr1 and wadr2
             if (wadr1 = wadr2) then
               -- Discard MEM result in case of conflict as it's older than the result from EXEC
-              registre(wadr1_int) <= wdata1 when (wen1 = '1');
+              registre(wadr1_int) <= wdata1 when (wen1 = '1' and i = wadr1_int);
             else
               -- No conflict, save both MEM and EXEC results
               registre(wadr1_int) <= wdata1 when (wen1 = '1');
               registre(wadr2_int) <= wdata2 when (wen2 = '1');
             end if;
+            -- Validate after writing
+            regs_v(i) <= '1';
           end if;
         end loop;
+
+        reg_rd1 <= registre(to_integer(unsigned(radr1)));
+        reg_rd2 <= registre(to_integer(unsigned(radr2)));
+        reg_rd3 <= registre(to_integer(unsigned(radr3)));
+
+        reg_v1 <= regs_v(to_integer(unsigned(radr1)));
+        reg_v2 <= regs_v(to_integer(unsigned(radr2)));
+        reg_v3 <= regs_v(to_integer(unsigned(radr3)));
 
       end if; -- Reset
     end if; -- Rising edge

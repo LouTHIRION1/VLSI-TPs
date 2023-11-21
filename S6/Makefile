@@ -31,7 +31,7 @@ endif
 GHDL_FLAGS = --std=08 --workdir=$(WORKDIR)
 
 # Simulation options
-STOP_TIME = 100ns
+STOP_TIME = 50ns
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
 .PHONY: clean
 
