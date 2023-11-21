@@ -145,32 +145,58 @@ begin
         regs_v(to_integer(unsigned(inval_adr2))) <= inval2;
 
         -- Take address of the register to be written, save the data and validate the register afterwards
-        for i in 0 to 15 loop
-          -- Verify register is invalidated TODO: Verify
-          if (regs_v(i) = '0') then
-            -- Check if there is a conflict between wadr1 and wadr2
-            if (wadr1 = wadr2) then
-              -- Discard MEM result in case of conflict as it's older than the result from EXEC
-              registre(wadr1_int) <= wdata1 when (wen1 = '1' and i = wadr1_int);
-            else
-              -- No conflict, save both MEM and EXEC results
-              registre(wadr1_int) <= wdata1 when (wen1 = '1');
-              registre(wadr2_int) <= wdata2 when (wen2 = '1');
-            end if;
+        -- for i in 0 to 15 loop
+        --   -- Verify register is invalidated TODO: Verify
+        --   if (regs_v(i) = '0') then
+        --     -- Check if there is a conflict between wadr1 and wadr2
+        --     if (wadr1 = wadr2) then
+        --       -- Discard MEM result in case of conflict as it's older than the result from EXEC
+        --       registre(wadr1_int) <= wdata1 when (wen1 = '1' and i = wadr1_int);
+        --     else
+        --       -- No conflict, save both MEM and EXEC results
+        --       registre(wadr1_int) <= wdata1 when (wen1 = '1');
+        --       registre(wadr2_int) <= wdata2 when (wen2 = '1');
+        --     end if;
+        --     -- Validate after writing
+        --     regs_v(i) <= '1';
+        --   end if;
+        -- end loop;
+
+        -- Take address of the register to be written, save the data and validate the register afterwards
+        -- Verify register is invalidated TODO: Verify
+        -- Check if there is a conflict between wadr1 and wadr2
+        if (wadr1 = wadr2) then
+          -- Discard MEM result in case of conflict as it's older than the result from EXEC
+          if (regs_v(to_integer(unsigned(wadr1))) = '0') then
+            registre(wadr1_int) <= wdata1 when (wen1 = '1');
             -- Validate after writing
-            regs_v(i) <= '1';
+            regs_v(to_integer(unsigned(wadr1))) <= '1';
           end if;
-        end loop;
+        else
+          -- No conflict, save both MEM and EXEC results
+          if (regs_v(to_integer(unsigned(wadr1))) = '0') then
+            registre(wadr1_int) <= wdata1 when (wen1 = '1');
+            -- Validate after writing
+            regs_v(to_integer(unsigned(wadr1))) <= '1';
+          end if;
+          if (regs_v(to_integer(unsigned(wadr2))) = '0') then
+            registre(wadr2_int) <= wdata2 when (wen2 = '1');
+            -- Validate after writing
+            regs_v(to_integer(unsigned(wadr2))) <= '1';
+          end if;
+        end if;
+        -- regs_v(i) <= '1';
+      end if;
 
-        reg_rd1 <= registre(to_integer(unsigned(radr1)));
-        reg_rd2 <= registre(to_integer(unsigned(radr2)));
-        reg_rd3 <= registre(to_integer(unsigned(radr3)));
+      reg_rd1 <= registre(to_integer(unsigned(radr1)));
+      reg_rd2 <= registre(to_integer(unsigned(radr2)));
+      reg_rd3 <= registre(to_integer(unsigned(radr3)));
 
-        reg_v1 <= regs_v(to_integer(unsigned(radr1)));
-        reg_v2 <= regs_v(to_integer(unsigned(radr2)));
-        reg_v3 <= regs_v(to_integer(unsigned(radr3)));
+      reg_v1 <= regs_v(to_integer(unsigned(radr1)));
+      reg_v2 <= regs_v(to_integer(unsigned(radr2)));
+      reg_v3 <= regs_v(to_integer(unsigned(radr3)));
 
-      end if; -- Reset
-    end if; -- Rising edge
-  end process;
+    end if; -- Reset
+  end if; -- Rising edge
+end process;
 end behavioral_reg;
