@@ -97,10 +97,17 @@ architecture behavioral_reg of Reg is
   signal exec_conflict : std_logic; -- 1 when conflict between EXEC and MEM address 
   signal wadr1_int     : integer;
   signal wadr2_int     : integer;
+  signal radr1_int     : integer;
+  signal radr2_int     : integer;
+  signal radr3_int     : integer;
 begin
 
   wadr1_int <= to_integer(unsigned(wadr1));
   wadr2_int <= to_integer(unsigned(wadr2));
+
+  radr1_int <= to_integer(unsigned(radr1));
+  radr2_int <= to_integer(unsigned(radr2));
+  radr3_int <= to_integer(unsigned(radr3));
 
   process (clk)
   begin
@@ -167,36 +174,35 @@ begin
         -- Check if there is a conflict between wadr1 and wadr2
         if (wadr1 = wadr2) then
           -- Discard MEM result in case of conflict as it's older than the result from EXEC
-          if (regs_v(to_integer(unsigned(wadr1))) = '0') then
+          if (regs_v(wadr1_int) = '0') then
             registre(wadr1_int) <= wdata1 when (wen1 = '1');
             -- Validate after writing
-            regs_v(to_integer(unsigned(wadr1))) <= '1';
+            regs_v(wadr1_int) <= '1';
           end if;
         else
           -- No conflict, save both MEM and EXEC results
-          if (regs_v(to_integer(unsigned(wadr1))) = '0') then
+          if (regs_v(wadr1_int) = '0') then
             registre(wadr1_int) <= wdata1 when (wen1 = '1');
             -- Validate after writing
-            regs_v(to_integer(unsigned(wadr1))) <= '1';
+            regs_v(wadr1_int) <= '1';
           end if;
-          if (regs_v(to_integer(unsigned(wadr2))) = '0') then
+          if (regs_v(wadr2_int) = '0') then
             registre(wadr2_int) <= wdata2 when (wen2 = '1');
             -- Validate after writing
-            regs_v(to_integer(unsigned(wadr2))) <= '1';
+            regs_v(wadr2_int) <= '1';
           end if;
         end if;
-        -- regs_v(i) <= '1';
-      end if;
+        -- Read register corresponding to the read address
+        reg_rd1 <= registre(radr1_int);
+        reg_rd2 <= registre(radr2_int);
+        reg_rd3 <= registre(radr3_int);
 
-      reg_rd1 <= registre(to_integer(unsigned(radr1)));
-      reg_rd2 <= registre(to_integer(unsigned(radr2)));
-      reg_rd3 <= registre(to_integer(unsigned(radr3)));
+        -- Read the validity bit corresponding to the read address
+        reg_v1 <= regs_v(radr1_int);
+        reg_v2 <= regs_v(radr2_int);
+        reg_v3 <= regs_v(radr3_int);
+      end if; -- Reset
+    end if; -- Rising edge
+  end process;
 
-      reg_v1 <= regs_v(to_integer(unsigned(radr1)));
-      reg_v2 <= regs_v(to_integer(unsigned(radr2)));
-      reg_v3 <= regs_v(to_integer(unsigned(radr3)));
-
-    end if; -- Reset
-  end if; -- Rising edge
-end process;
 end behavioral_reg;
