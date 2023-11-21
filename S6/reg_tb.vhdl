@@ -180,14 +180,38 @@ begin
   begin
 
     -- Test Reset
+    report "Reset test" severity note;
     reset_n_s <= '0';
     wait for clk_period;
+
     assert(reg_v1_s = '1') report "Invalidate validity bit value" severity error;
     assert(reg_v2_s = '1') report "Invalidate validity bit value" severity error;
     assert(reg_v3_s = '1') report "Invalidate validity bit value" severity error;
-    assert(probe_s = x"FFFF") report "Invalidate validity bit map value" severity error;
+    -- assert(probe_s = x"FFFF") report "Invalidate validity bit map value" severity error;
+
     reset_n_s <= '1';
+    wadr1_s   <= x"A";
+    wen1_s    <= '1';
+    wdata1_s  <= x"AAAA_0000";
     wait for clk_period;
+
+    wadr2_s  <= x"5";
+    wen2_s   <= '1';
+    wdata2_s <= x"5555_0000";
+    wait for clk_period;
+
+    wadr1_s  <= x"A";
+    wen1_s   <= '1';
+    wdata1_s <= x"0000_0000";
+    wadr2_s  <= x"A";
+    wen2_s   <= '1';
+    wdata2_s <= x"AAAA_AAAA";
+    wait for clk_period;
+
+    -- inval_adr1_s <=
+    -- regs_v(10) <= '1';
+    -- wdata1_s
+    -- regsv
     wait;
   end process;
 end testbench;

@@ -122,7 +122,7 @@ begin
         reg_ovr  <= '0';             -- V flag
         regs_v   <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
 
-        probe <= regs_v; -- Probe (comment if unused)
+        -- probe <= regs_v; -- Probe (comment if unused)
       else
         -- Write CPSR register when writeback is enabled
         if (cpsr_wb = '1') then
@@ -141,8 +141,10 @@ begin
           end if;
         end if;
 
-        -- Take address of the register to be written, save the data and validate the register afterwards
+        regs_v(to_integer(unsigned(inval_adr1))) <= inval1;
+        regs_v(to_integer(unsigned(inval_adr2))) <= inval2;
 
+        -- Take address of the register to be written, save the data and validate the register afterwards
         for i in 0 to 15 loop
           -- Verify register is invalidated
           if (regs_v(i) = '0') then
@@ -157,7 +159,8 @@ begin
             end if;
           end if;
         end loop;
-      end if;
-    end if;
+
+      end if; -- Reset
+    end if; -- Rising edge
   end process;
 end behavioral_reg;
