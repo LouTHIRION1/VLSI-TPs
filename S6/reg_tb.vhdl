@@ -196,6 +196,8 @@ begin
     inval1_s     <= '0';
     wen1_s       <= '1';
     wdata1_s     <= x"AAAA_0000";
+    radr1_s      <= x"A";
+    radr2_s      <= x"5";
     wait for clk_period;
 
     wadr2_s  <= x"5";
