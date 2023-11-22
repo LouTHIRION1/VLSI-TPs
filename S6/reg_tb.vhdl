@@ -174,7 +174,7 @@ begin
   begin
 
     -- Test Reset
-    report "Reset test" severity note;
+    report "Test signals at reset" severity note;
     reset_n_s <= '0';
 
     wneg_s    <= '0';
@@ -188,10 +188,18 @@ begin
 
     wait for clk_period;
 
-    assert(reg_v1_s = '1') report "Invalidate validity bit value" severity error;
-    assert(reg_v2_s = '1') report "Invalidate validity bit value" severity error;
-    assert(reg_v3_s = '1') report "Invalidate validity bit value" severity error;
+    assert (reg_v1_s = '1') report "Error!" severity error;
+    assert (reg_v2_s = '1') report "Error!" severity error;
+    assert (reg_v3_s = '1') report "Error!" severity error;
+    assert (reg_cznv_s = '1') report "Error!" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
+    assert (reg_cry_s = '0') report "Error!" severity error;  -- C fag
+    assert (reg_zero_s = '0') report "Error!" severity error; -- Z flag
+    assert (reg_neg_s = '0') report "Error!" severity error;  -- N flag
+    assert (reg_ovr_s = '0') report "Error!" severity error;  -- V flag
+    assert (reg_pcv_s = '1') report "Error!" severity error;
 
+    report "Test Read Address 1" severity note;
     reset_n_s <= '1';
     wdata1_s  <= x"AAAA_0000";
     wadr1_s   <= x"A";
