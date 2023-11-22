@@ -490,9 +490,21 @@ begin
 
   -- Execution condition
 
-  cond <= '1' when (if_ir(31 downto 28) = X"0" and zero = '1') or
+  cond <= '1' when
+    (if_ir(31 downto 28) = X"0" and zero = '1') or
     (if_ir(31 downto 28) = X"1" and zero = '0') or
-    ....
+    (if_ir(31 downto 28) = X"2" and cry = '1') or
+    (if_ir(31 downto 28) = X"3" and cry = '0') or
+    (if_ir(31 downto 28) = X"4" and neg = '1') or
+    (if_ir(31 downto 28) = X"5" and neg = '0') or
+    (if_ir(31 downto 28) = X"6" and ovr = '1') or
+    (if_ir(31 downto 28) = X"7" and ovr = '0') or
+    (if_ir(31 downto 28) = X"8" and (cry = '1' and zero = '0')) or
+    (if_ir(31 downto 28) = X"9" and (cry = '0' or zero = '1')) or
+    (if_ir(31 downto 28) = X"A" and neg = ovr) or
+    (if_ir(31 downto 28) = X"B" and neg /= ovr) or
+    (if_ir(31 downto 28) = X"C" and (zero = '0' and neg = ovr)) or
+    (if_ir(31 downto 28) = X"D" and (zero = '1' or neg /= ovr)) or
     (if_ir(31 downto 28) = X"E") else
     '0';
 
