@@ -159,7 +159,9 @@ begin
         end if;
 
         -- Program Counter
-        reg_bank(15) <= reg_bank(15) + 4;
+        reg_bank(15) <= std_logic_vector(to_unsigned(4, reg_bank(15)'length)) when inc_pc = '1';
+        reg_pc       <= reg_bank(15);
+        reg_pcv      <= regs_v(15);
 
         -- Read register corresponding to the read address
         reg_rd1 <= reg_bank(radr1_int);
