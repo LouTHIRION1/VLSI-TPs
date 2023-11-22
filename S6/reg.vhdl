@@ -75,10 +75,8 @@ end Reg;
 architecture behavioral_reg of Reg is
   -- TODO: Implement R16 PC behaviour
   type reg_arr is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
-  signal regfile : reg_arr;
-
-  -- Validity bits for each register
-  signal regs_v : std_logic_vector(15 downto 0);
+  signal reg_bank : reg_arr;
+  signal regs_v   : std_logic_vector(15 downto 0); -- Validity bits for each register
 
   -- CPSR
   signal n_s : std_logic;
@@ -109,14 +107,6 @@ begin
   inval_adr1_int <= to_integer(unsigned(inval_adr1));
   inval_adr2_int <= to_integer(unsigned(inval_adr2));
 
-  -- relie les flags à leurs signaux de sorties
-  reg_cry  <= c_s;
-  reg_neg  <= n_s;
-  reg_zero <= z_s;
-  reg_ovr  <= v_s;
-  reg_cznv <= reg_cznv_s;
-  reg_vv   <= reg_vv_s;
-
   process (clk)
   begin
 
@@ -130,26 +120,16 @@ begin
         reg_cznv <= '1'; -- CZN Validity bit (logic instruction)
         reg_vv   <= '1'; -- V Validity bit (arithmetic instruction)
         -- TODO: Empty all registers
+        reg_bank <= (others => (others => '0'));
         -- Reset CPSR
         reg_cry  <= '0';             -- C fag
         reg_zero <= '0';             -- Z flag
         reg_neg  <= '0';             -- N flag
         reg_ovr  <= '0';             -- V flag
         regs_v   <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
-        -- PC
+        -- Program Counter (PC)
         reg_pcv <= '1';
       else
-
-        -- flags CZN
-        if (inval_czn = '1') then
-          reg_cznv_s <= '0';
-        end if;
-
-        -- flag V
-        if (inval_ovr = '1') then
-          reg_vv_s <= '0';
-        end if;
-
         if (cpsr_wb = '1') then
           n_s        <= wneg;
           z_s        <= wzero;
@@ -158,43 +138,49 @@ begin
           v_s        <= wovr;
           reg_vv_s   <= '1'; -- Validate after affecting values
         end if;
+
         -- Assign invalidation bit to the register corresponding to the address
         -- TODO: active low or high?
-        regs_v(inval_adr1_int) <= inval1;
-        regs_v(inval_adr2_int) <= inval2;
+        regs_v(inval_adr1_int) <= '0' when inval1 = '1';
+        regs_v(inval_adr2_int) <= '0' when inval2 = '1';
 
         -- Take address of the register to be written, save the data and validate the register afterwards
-        -- Check if there is a conflict between wadr1 and wadr2
-        if (wadr1 = wadr2) then
-          -- Discard MEM result in case of conflict as it's older than the result from EXEC
-          if (regs_v(wadr1_int) = '0') then
-            regfile(wadr1_int) <= wdata1 when (wen1 = '1');
-            -- Validate after writing
-            regs_v(wadr1_int) <= '1';
-          end if;
-        else
-          -- No conflict, save both EXEC and MEM results
-          if (regs_v(wadr1_int) = '0') then
-            regfile(wadr1_int) <= wdata1 when (wen1 = '1');
-            -- Validate after writing
-            regs_v(wadr1_int) <= '1';
-          end if;
-          if (regs_v(wadr2_int) = '0') then
-            regfile(wadr2_int) <= wdata2 when (wen2 = '1');
-            -- Validate after writing
-            regs_v(wadr2_int) <= '1';
-          end if;
-        end if; -- (wadr1 = wadr2)
+        -- Always save EXEC result
+        if (wen1 = '1') then
+          reg_bank(wadr1_int) <= wdata1 when (regs_v(wadr1_int) = '0');
+          -- Validate after writing
+          regs_v(wadr1_int) <= '1';
+        end if;
+        -- No conflict, save MEM result
+        if (wen2 = '1' and wadr1 /= wadr2) then
+          reg_bank(wadr2_int) <= wdata2 when (regs_v(wadr2_int) = '0');
+          -- Validate after writing
+          regs_v(wadr2_int) <= '1';
+        end if;
 
+        -- Program Counter
+        reg_bank(15) <= reg_bank(15) + 4;
         -- Read register corresponding to the read address
-        reg_rd1 <= regfile(radr1_int);
-        reg_rd2 <= regfile(radr2_int);
-        reg_rd3 <= regfile(radr3_int);
-
+        reg_rd1 <= reg_bank(radr1_int);
+        reg_rd2 <= reg_bank(radr2_int);
+        reg_rd3 <= reg_bank(radr3_int);
         -- Read the validity bit corresponding to the read address
         reg_v1 <= regs_v(radr1_int);
         reg_v2 <= regs_v(radr2_int);
         reg_v3 <= regs_v(radr3_int);
+
+        -- relie les flags à leurs signaux de sorties
+        reg_cry  <= c_s;
+        reg_neg  <= n_s;
+        reg_zero <= z_s;
+        reg_ovr  <= v_s;
+        reg_cznv <= reg_cznv_s;
+        reg_vv   <= reg_vv_s;
+
+        -- CZN Flags validity
+        reg_cznv_s <= '0' when (inval_czn = '1' and reset_n = '1');
+        -- V Flag validity
+        reg_vv_s <= '0' when (inval_ovr = '1' and reset_n = '1');
 
       end if; -- Reset
     end if; -- Rising edge

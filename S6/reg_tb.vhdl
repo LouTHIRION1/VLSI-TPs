@@ -192,7 +192,8 @@ begin
     reset_n_s <= '1';
 
     -- Test Flags CPSR
-    report "Test signals at falgs CPSR" severity note;
+    report "Test CPSR flags" severity note;
+
     inval_czn_s <= '1';
     cpsr_wb_s   <= '1';
     --reg_cznv_s <= '0';
