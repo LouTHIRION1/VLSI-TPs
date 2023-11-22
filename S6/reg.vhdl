@@ -160,6 +160,7 @@ begin
 
         -- Program Counter
         reg_bank(15) <= reg_bank(15) + 4;
+
         -- Read register corresponding to the read address
         reg_rd1 <= reg_bank(radr1_int);
         reg_rd2 <= reg_bank(radr2_int);
@@ -168,21 +169,21 @@ begin
         reg_v1 <= regs_v(radr1_int);
         reg_v2 <= regs_v(radr2_int);
         reg_v3 <= regs_v(radr3_int);
-
-        -- relie les flags à leurs signaux de sorties
-        reg_cry  <= c_s;
-        reg_neg  <= n_s;
-        reg_zero <= z_s;
-        reg_ovr  <= v_s;
-        reg_cznv <= reg_cznv_s;
-        reg_vv   <= reg_vv_s;
-
         -- CZN Flags validity
-        reg_cznv_s <= '0' when (inval_czn = '1' and reset_n = '1');
+        reg_cznv_s <= '0' when inval_czn = '1';
         -- V Flag validity
-        reg_vv_s <= '0' when (inval_ovr = '1' and reset_n = '1');
+        reg_vv_s <= '0' when inval_ovr = '1';
 
       end if; -- Reset
     end if; -- Rising edge
   end process;
+
+  -- relie les flags à leurs signaux de sorties
+  reg_cry  <= c_s;
+  reg_neg  <= n_s;
+  reg_zero <= z_s;
+  reg_ovr  <= v_s;
+  reg_cznv <= reg_cznv_s;
+  reg_vv   <= reg_vv_s;
+
 end behavioral_reg;
