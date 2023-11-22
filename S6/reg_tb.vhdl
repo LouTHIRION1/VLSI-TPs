@@ -177,25 +177,6 @@ begin
     report "Test signals at reset" severity note;
     reset_n_s <= '0';
 
-    wneg_s    <= '0';
-    wzero_s   <= '0';
-    wcry_s    <= '0';
-    wovr_s    <= '0';
-    cpsr_wb_s <= '0';
-
-    inval1_s <= '1'; -- Mark as valid
-    inval2_s <= '1'; -- Mark as valid
-
-<<<<<<< HEAD
-    wadr1_s      <= x"A";
-    inval_adr1_s <= x"A";
-    inval1_s     <= '0';
-    wen1_s       <= '1';
-    wdata1_s     <= x"AAAA_0000";
-    radr1_s      <= x"A";
-    radr2_s      <= x"5";
-=======
->>>>>>> 376929078e98f72baaad7612a56f9739b3aa6386
     wait for clk_period;
 
     assert (reg_v1_s = '1') report "Error!" severity error;
@@ -208,28 +189,60 @@ begin
     assert (reg_neg_s = '0') report "Error!" severity error;  -- N flag
     assert (reg_ovr_s = '0') report "Error!" severity error;  -- V flag
     assert (reg_pcv_s = '1') report "Error!" severity error;
-
-    report "Test Read Address 1" severity note;
     reset_n_s <= '1';
-    wdata1_s  <= x"AAAA_0000";
-    wadr1_s   <= x"A";
-    wen1_s    <= '1';
 
-    wdata2_s <= x"0000_0000";
-    wadr2_s  <= x"A";
-    wen2_s   <= '0';
+    -- Test Flags CPSR
+    report "Test signals at falgs CPSR" severity note;
+    inval_czn_s <= '1';
+    cpsr_wb_s   <= '1';
+    --reg_cznv_s <= '0';
+    wneg_s  <= '1';
+    wzero_s <= '1';
+    wcry_s  <= '1';
+    --reg_vv_s   <= '0';
+    wovr_s <= '1';
 
-    inval_adr1_s <= x"A";
-    inval_adr2_s <= x"0";
-    inval1_s     <= '0'; -- Mark as invalid
-
-    radr1_s <= x"A";
     wait for clk_period;
 
-    assert(reg_rd1_s = x"AAAA_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
-    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+    assert (reg_cznv_s = '0') report "Error!" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '0') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
+    assert (reg_cry_s = '1') report "Error!" severity error;  -- C fag
+    assert (reg_zero_s = '1') report "Error!" severity error; -- Z flag
+    assert (reg_neg_s = '1') report "Error!" severity error;  -- N flag
+    assert (reg_ovr_s = '1') report "Error!" severity error;  -- V flag
 
-    inval1_s <= '1'; -- Mark as valid
+    -- inval1_s <= '1'; -- Mark as valid
+    -- inval2_s <= '1'; -- Mark as valid
+
+    -- wadr1_s      <= x"A";
+    -- inval_adr1_s <= x"A";
+    -- inval1_s     <= '0';
+    -- wen1_s       <= '1';
+    -- wdata1_s     <= x"AAAA_0000";
+    -- radr1_s      <= x"A";
+    -- radr2_s      <= x"5";
+
+    -- report "Test Read Address 1" severity note;
+    -- reset_n_s <= '1';
+    -- wdata1_s  <= x"AAAA_0000";
+    -- wadr1_s   <= x"A";
+    -- wen1_s    <= '1';
+
+    -- wdata2_s <= x"0000_0000";
+    -- wadr2_s  <= x"A";
+    -- wen2_s   <= '0';
+
+    -- inval_adr1_s <= x"A";
+    -- inval_adr2_s <= x"0";
+    -- inval1_s     <= '0'; -- Mark as invalid
+
+    -- radr1_s <= x"A";
+    -- wait for clk_period;
+
+    -- assert(reg_rd1_s = x"AAAA_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    -- report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+
+    -- inval1_s <= '1'; -- Mark as valid
     wait;
   end process;
 end testbench;

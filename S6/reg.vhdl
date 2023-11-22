@@ -109,8 +109,17 @@ begin
   inval_adr1_int <= to_integer(unsigned(inval_adr1));
   inval_adr2_int <= to_integer(unsigned(inval_adr2));
 
+  -- relie les flags à leurs signaux de sorties
+  reg_cry  <= c_s;
+  reg_neg  <= n_s;
+  reg_zero <= z_s;
+  reg_ovr  <= v_s;
+  reg_cznv <= reg_cznv_s;
+  reg_vv   <= reg_vv_s;
+
   process (clk)
   begin
+
     if rising_edge(clk) then
       -- Synchronous Reset (active low)
       if (reset_n = '0') then
@@ -130,20 +139,25 @@ begin
         -- PC
         reg_pcv <= '1';
       else
-        -- When CZN is invalid
-        if (reg_cznv_s = '0') then
-          reg_neg    <= wneg when (cpsr_wb = '1');
-          reg_zero   <= wzero when (cpsr_wb = '1');
-          reg_cry    <= wcry when (cpsr_wb = '1');
+
+        -- flags CZN
+        if (inval_czn = '1') then
+          reg_cznv_s <= '0';
+        end if;
+
+        -- flag V
+        if (inval_ovr = '1') then
+          reg_vv_s <= '0';
+        end if;
+
+        if (cpsr_wb = '1') then
+          n_s        <= wneg;
+          z_s        <= wzero;
+          c_s        <= wcry;
           reg_cznv_s <= '1'; -- Validate after affecting values
+          v_s        <= wovr;
+          reg_vv_s   <= '1'; -- Validate after affecting values
         end if;
-
-        -- When V is invalid
-        if (reg_vv_s = '0') then
-          reg_ovr  <= wovr when (cpsr_wb = '1');
-          reg_vv_s <= '1'; -- Validate after affecting values
-        end if;
-
         -- Assign invalidation bit to the register corresponding to the address
         -- TODO: active low or high?
         regs_v(inval_adr1_int) <= inval1;
