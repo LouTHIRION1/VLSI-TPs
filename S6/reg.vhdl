@@ -73,7 +73,6 @@ entity Reg is
 end Reg;
 
 architecture behavioral_reg of Reg is
-  -- TODO: Implement loops instead 
   -- TODO: Implement R16 PC behaviour
   type reg_arr is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
   signal regfile : reg_arr;
@@ -87,7 +86,6 @@ architecture behavioral_reg of Reg is
   signal z_s : std_logic;
   signal v_s : std_logic;
   -- CPSR Validity bits
-  -- TODO: Affect signals correctly
   signal reg_cznv_s : std_logic;
   signal reg_vv_s   : std_logic;
 
@@ -132,21 +130,18 @@ begin
         -- PC
         reg_pcv <= '1';
       else
-        -- Write CPSR register when writeback is enabled
-        if (cpsr_wb = '1') then
-          -- When CZN is invalid
-          if (reg_cznv_s = '0') then
-            reg_neg    <= wneg;
-            reg_zero   <= wzero;
-            reg_cry    <= wcry;
-            reg_cznv_s <= '1'; -- Validate after affecting values
-          end if;
+        -- When CZN is invalid
+        if (reg_cznv_s = '0') then
+          reg_neg    <= wneg when (cpsr_wb = '1');
+          reg_zero   <= wzero when (cpsr_wb = '1');
+          reg_cry    <= wcry when (cpsr_wb = '1');
+          reg_cznv_s <= '1'; -- Validate after affecting values
+        end if;
 
-          -- When V is invalid
-          if (reg_vv_s = '0') then
-            reg_ovr  <= wovr;
-            reg_vv_s <= '1'; -- Validate after affecting values
-          end if;
+        -- When V is invalid
+        if (reg_vv_s = '0') then
+          reg_ovr  <= wovr when (cpsr_wb = '1');
+          reg_vv_s <= '1'; -- Validate after affecting values
         end if;
 
         -- Assign invalidation bit to the register corresponding to the address
@@ -155,7 +150,6 @@ begin
         regs_v(inval_adr2_int) <= inval2;
 
         -- Take address of the register to be written, save the data and validate the register afterwards
-        -- Verify register is invalidated TODO: Verify
         -- Check if there is a conflict between wadr1 and wadr2
         if (wadr1 = wadr2) then
           -- Discard MEM result in case of conflict as it's older than the result from EXEC
