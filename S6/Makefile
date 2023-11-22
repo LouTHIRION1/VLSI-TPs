@@ -11,31 +11,33 @@ WORKDIR = work
 UNAME_S := $(shell uname -s)
 # Linux machine
 ifeq ($(UNAME_S), Linux)
-	UNAME_N := $(shell uname -n)
+  UNAME_N := $(shell uname -n)
 	ifeq ($(UNAME_N), louthirion-ThinkPad-L460)
-		GHDL = /snap/bin/ghdl
+    GHDL = /snap/bin/ghdl
 	else
-		GHDL = /usr/bin/ghdl
+    GHDL = /usr/bin/ghdl
 	endif
-	WAVEFORM_VIEWER = /usr/bin/gtkwave
+  WAVEFORM_VIEWER = /usr/bin/gtkwave
 endif
 # Mac OS
 ifeq ($(UNAME_S), Darwin)
 # Stable Version
-	GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
-# Nighlty Version
+  GHDL = /opt/homebrew/Caskroom/ghdl/3.0.0/bin/ghdl
+# Nightly Version
 # GHDL = /opt/homebrew/Caskroom/ghdl/nightly/bin/ghdl 
+# https://github.com/gtkwave/gtkwave/issues/250
+  WAVEFORM_VIEWER = /opt/homebrew/bin/gtkwave
 endif
 
 # VHDL 2008 standard lets us print the value of a signal in assertions (https://ghdl.github.io/ghdl/using/ImplementationOfVHDL.html#vhdl-standards)
 GHDL_FLAGS = --std=08 --workdir=$(WORKDIR)
 
 # Simulation options
-STOP_TIME = 50ns
+STOP_TIME = 30ns
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
 .PHONY: clean
 
-all : clean make run view
+all : clean make run
 
 make : 
 # strip removes whitespace from TB argument
@@ -60,7 +62,7 @@ run :
 	@mv $(TB_FILE).vcd $(WORKDIR)/
 
 view:
-	@$(WAVEFORM_VIEWER) --dump=$(WORKDIR)/$(TB_FILE).vcd
+	@$(WAVEFORM_VIEWER) --dump=$(WORKDIR)/$(TB_FILE).vcd &
 
 clean :
 # Remove the work directory

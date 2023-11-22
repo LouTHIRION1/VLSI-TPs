@@ -2,4 +2,5 @@
 *.png
 *.cf
 *.vcd
+*.gtkw
 work/
