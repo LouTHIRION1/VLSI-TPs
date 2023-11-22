@@ -114,20 +114,20 @@ begin
       -- Synchronous Reset (active low)
       if (reset_n = '0') then
         -- Validate Register ports
-        reg_v1   <= '1';
-        reg_v2   <= '1';
-        reg_v3   <= '1';
-        reg_cznv <= '1'; -- CZN Validity bit (logic instruction)
-        reg_vv   <= '1'; -- V Validity bit (arithmetic instruction)
+        reg_v1     <= '1';
+        reg_v2     <= '1';
+        reg_v3     <= '1';
+        reg_cznv_s <= '1'; -- CZN Validity bit (logic instruction)
+        reg_vv_s   <= '1'; -- V Validity bit (arithmetic instruction)
         -- TODO: Empty all registers
         reg_bank <= (others => (others => '0'));
         -- Reset CPSR
-        reg_cry  <= '0';             -- C fag
-        reg_zero <= '0';             -- Z flag
-        reg_neg  <= '0';             -- N flag
-        reg_ovr  <= '0';             -- V flag
-        regs_v   <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
-        -- Program Counter (PC)
+        c_s    <= '0';             -- C fag
+        z_s    <= '0';             -- Z flag
+        n_s    <= '0';             -- N flag
+        v_s    <= '0';             -- V flag
+        regs_v <= (others => '1'); -- Validate all registers regardless of what's stored inside them 
+        -- PC
         reg_pcv <= '1';
       else
         if (cpsr_wb = '1') then

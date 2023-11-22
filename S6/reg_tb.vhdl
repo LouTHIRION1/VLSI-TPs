@@ -191,22 +191,28 @@ begin
     assert (reg_pcv_s = '1') report "Error!" severity error;
     reset_n_s <= '1';
 
-    -- Test Flags CPSR
-    report "Test CPSR flags" severity note;
-
+    -- Test invalidation Flags CPSR
+    report "Test signals at invalidation falgs CPSR" severity note;
     inval_czn_s <= '1';
-    cpsr_wb_s   <= '1';
-    --reg_cznv_s <= '0';
-    wneg_s  <= '1';
-    wzero_s <= '1';
-    wcry_s  <= '1';
-    --reg_vv_s   <= '0';
-    wovr_s <= '1';
-
+    inval_ovr_s <= '1';
     wait for clk_period;
 
     assert (reg_cznv_s = '0') report "Error!" severity error; -- CZN Validity bit (logic instruction)
     assert (reg_vv_s = '0') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
+    -- Test Flags CPSR
+    report "Test signals at falgs CPSR" severity note;
+    inval_czn_s <= '0';
+    inval_ovr_s <= '0';
+    cpsr_wb_s   <= '1';
+    wneg_s      <= '1';
+    wzero_s     <= '1';
+    wcry_s      <= '1';
+    wovr_s      <= '1';
+
+    wait for clk_period;
+
+    assert (reg_cznv_s = '1') report "Error!" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
     assert (reg_cry_s = '1') report "Error!" severity error;  -- C fag
     assert (reg_zero_s = '1') report "Error!" severity error; -- Z flag
     assert (reg_neg_s = '1') report "Error!" severity error;  -- N flag
