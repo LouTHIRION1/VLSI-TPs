@@ -542,21 +542,51 @@ begin
     (if_ir(31 downto 28) = x"E") else
     '0';
 
-  -- DECOD Instruction Type
+  ---- Instruction Type
 
-  regop_t <= '1' when if_ir(27 downto 26) = "00" and
+  -- Data Processing (Bits 27 downto 26) = "00"
+  regop_t <= '1' when if_ir(27 downto 26) = b"00" and
     mult_t = '0' and swap_t = '0' else
     '0';
-  mult_t <= '1' when if_ir(27 downto 22) = "000000" and
-    if_ir(7 downto 4) = "1001" else
+  -- Multiplication (Bits 27 downto 22) = "000000" and (Bits 7 downto 4) = "1001"
+  mult_t <= '1' when
+    if_ir(27 downto 22) = b"000000" and
+    if_ir(7 downto 4) = b"1001" else
     '0';
-  swap_t <= '1' when if_ir(27 downto 23) = "00010" and
-    if_ir(11 downto 4) = "00001001" else
+  -- Swap (Bits 27 downto 23) = "00010" and (Bits 11 downto 4) = "00001001"
+  swap_t <= '1' when
+    if_ir(27 downto 23) = b"00010" and
+    if_ir(11 downto 4) = b"00001001" else
+    '0';
+  -- Branch (Bits 27 downto 25) = "101"
+  branch_t <= '1' when if_ir(27 downto 25) = b"101" else
+    '0';
+  -- Simple memory access (Bits 27 downto 26) = "01"
+  trans_t <= '1' when if_ir(27 downto 26) = b"01" else
+    '0';
+  -- Multiple memory access (Bits 27 downto 25) = "100"
+  mtrans_t <= '1' when if_ir(27 downto 25) = b"100" else
     '0';
 
-  -- decod regop opcode
+  ---- decod regop Opcodes (Bits 24 downto 21)
+  -- 0000 - x"0" : AND : Rd <= Rn and Op2
+  -- 0001 - x"1" : EOR : Rd <= Rn xor Op2
+  -- 0010 - x"2" : SUB : Rd <= Rn − Op2
+  -- 0011 - x"3" : RSB : Rd <= Op2 − Rn
+  -- 0100 - x"4" : ADD : Rd <= Rn + Op2
+  -- 0101 - x"5" : ADC : Rd <= Rn + Op2 + C
+  -- 0110 - x"6" : SBC : Rd <= Rn − Op2 + C − 1
+  -- 0111 - x"7" : RSC : Rd <= Op2 − Rn + C − 1
+  -- 1000 - x"8" : TST : Positionne les flags pour Rn and Op2
+  -- 1001 - x"9" : TEQ : Positionne les flags pour Rn xor Op2
+  -- 1010 - x"A" : CMP : Positionne les flags pour Rn − Op2
+  -- 1011 - x"B" : CMN : Positionne les flags pour Rn + Op2
+  -- 1100 - x"C" : ORR : Rd <= Rn or Op2
+  -- 1101 - x"D" : MOV : Rd <= Op2
+  -- 1110 - x"E" : BIC : Rd <= Rn and not Op2
+  -- 1111 - x"F" : MVN : Rd <= not Op2
 
-  and_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = X"0" else
+  and_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"0" else
     '0';
   ....
   -- mult instruction
