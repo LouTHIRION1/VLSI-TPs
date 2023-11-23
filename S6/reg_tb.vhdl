@@ -174,49 +174,146 @@ begin
   begin
 
     -- Test Reset
-    report "Test signals at reset" severity note;
-    reset_n_s <= '0';
-
+    report "--- Test signals at reset ---" severity note;
+      reset_n_s <= '0';
+    -- CPSR
+    inval_czn_s <= '0';
+    inval_ovr_s <= '0';
+    wneg_s      <= '0';
+    wzero_s     <= '0';
+    wcry_s      <= '0';
+    wovr_s      <= '0';
     wait for clk_period;
 
-    assert (reg_v1_s = '1') report "Error!" severity error;
-    assert (reg_v2_s = '1') report "Error!" severity error;
-    assert (reg_v3_s = '1') report "Error!" severity error;
-    assert (reg_cznv_s = '1') report "Error!" severity error; -- CZN Validity bit (logic instruction)
-    assert (reg_vv_s = '1') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
-    assert (reg_cry_s = '0') report "Error!" severity error;  -- C fag
-    assert (reg_zero_s = '0') report "Error!" severity error; -- Z flag
-    assert (reg_neg_s = '0') report "Error!" severity error;  -- N flag
-    assert (reg_ovr_s = '0') report "Error!" severity error;  -- V flag
-    assert (reg_pcv_s = '1') report "Error!" severity error;
-    reset_n_s <= '1';
+    -- Register Bank
+    assert (reg_v1_s = '1') report "Register port 1 should be valid" severity error;
+    assert (reg_v2_s = '1') report "Register port 2 should be valid" severity error;
+    assert (reg_v3_s = '1') report "Register port 3 should be valid" severity error;
+    assert (reg_pcv_s = '1') report "PC should be valid" severity error;
 
-    -- Test invalidation Flags CPSR
-    report "Test signals at invalidation falgs CPSR" severity note;
+    reset_n_s <= '1';
+    wait for clk_period;
+
+    -- CPSR tests
+    report "--- CPSR Tests ---" severity note;
+      report "Invalid CZN V and Writeback" severity note;
     inval_czn_s <= '1';
     inval_ovr_s <= '1';
+    cpsr_wb_s   <= '1';
+    wneg_s      <= '0';
+    wzero_s     <= '0';
+    wcry_s      <= '0';
+    wovr_s      <= '0';
+    wait for clk_period;
+    -- Flags are validated after being written
+    assert (reg_cznv_s = '1') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
+
+    assert (reg_neg_s = '0') report "Wrong N" severity error;  -- N flag
+    assert (reg_zero_s = '0') report "Wrong Z" severity error; -- Z flag
+    assert (reg_cry_s = '0') report "Wrong C" severity error;  -- C fag
+    assert (reg_ovr_s = '0') report "Wrong V" severity error;  -- V flag
+
+    inval_czn_s <= '1';
+    inval_ovr_s <= '1';
+    cpsr_wb_s   <= '1';
+
+    wneg_s  <= '1';
+    wzero_s <= '1';
+    wcry_s  <= '1';
+    wovr_s  <= '1';
     wait for clk_period;
 
-    assert (reg_cznv_s = '0') report "Error!" severity error; -- CZN Validity bit (logic instruction)
-    assert (reg_vv_s = '0') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
-    -- Test Flags CPSR
-    report "Test signals at falgs CPSR" severity note;
+    -- Flags are validated after being written
+    assert (reg_cznv_s = '1') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
+
+    assert (reg_neg_s = '1') report "Wrong N" severity error;  -- N flag
+    assert (reg_zero_s = '1') report "Wrong Z" severity error; -- Z flag
+    assert (reg_cry_s = '1') report "Wrong C" severity error;  -- C fag
+    assert (reg_ovr_s = '1') report "Wrong V" severity error;  -- V flag
+
+    report "Invalid CZN V and No Writeback" severity note;
+
+    inval_czn_s <= '1';
+    inval_ovr_s <= '1';
+    cpsr_wb_s   <= '0';
+
+    wneg_s  <= '0';
+    wzero_s <= '0';
+    wcry_s  <= '0';
+    wovr_s  <= '0';
+    wait for clk_period;
+
+    -- Flags are not validated since they were not written (no writeback)
+    assert (reg_cznv_s = '0') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '0') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
+    -- Flags keep their old value (no writeback)
+    assert (reg_neg_s = '1') report "Wrong N" severity error;  -- N flag
+    assert (reg_zero_s = '1') report "Wrong Z" severity error; -- Z flag
+    assert (reg_cry_s = '1') report "Wrong C" severity error;  -- C fag
+    assert (reg_ovr_s = '1') report "Wrong V" severity error;  -- V flag
+
+    inval_czn_s <= '1';
+    inval_ovr_s <= '1';
+    cpsr_wb_s   <= '0';
+
+    wneg_s  <= '1';
+    wzero_s <= '1';
+    wcry_s  <= '1';
+    wovr_s  <= '1';
+    wait for clk_period;
+
+    -- Flags are not validated since they were not written (no writeback)
+    assert (reg_cznv_s = '0') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '0') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
+    -- Flags keep their old value (no writeback)
+    assert (reg_neg_s = '1') report "Wrong N" severity error;  -- N flag
+    assert (reg_zero_s = '1') report "Wrong Z" severity error; -- Z flag
+    assert (reg_cry_s = '1') report "Wrong C" severity error;  -- C fag
+    assert (reg_ovr_s = '1') report "Wrong V" severity error;  -- V flag
+
+    report "Valid CZN V and Writeback" severity note;
+
     inval_czn_s <= '0';
     inval_ovr_s <= '0';
     cpsr_wb_s   <= '1';
-    wneg_s      <= '1';
-    wzero_s     <= '1';
-    wcry_s      <= '1';
-    wovr_s      <= '1';
 
+    wneg_s  <= '0';
+    wzero_s <= '0';
+    wcry_s  <= '0';
+    wovr_s  <= '0';
     wait for clk_period;
 
-    assert (reg_cznv_s = '1') report "Error!" severity error; -- CZN Validity bit (logic instruction)
-    assert (reg_vv_s = '1') report "Error!" severity error;   -- V Validity bit (arithmetic instruction)
-    assert (reg_cry_s = '1') report "Error!" severity error;  -- C fag
-    assert (reg_zero_s = '1') report "Error!" severity error; -- Z flag
-    assert (reg_neg_s = '1') report "Error!" severity error;  -- N flag
-    assert (reg_ovr_s = '1') report "Error!" severity error;  -- V flag
+    -- Flags are validated after being written
+    assert (reg_cznv_s = '1') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
+
+    assert (reg_neg_s = '0') report "Wrong N" severity error;  -- N flag
+    assert (reg_zero_s = '0') report "Wrong Z" severity error; -- Z flag
+    assert (reg_cry_s = '0') report "Wrong C" severity error;  -- C fag
+    assert (reg_ovr_s = '0') report "Wrong V" severity error;  -- V flag
+
+    report "Valid CZN V and No Writeback" severity note;
+
+    inval_czn_s <= '0';
+    inval_ovr_s <= '0';
+    cpsr_wb_s   <= '0';
+
+    wneg_s  <= '0';
+    wzero_s <= '0';
+    wcry_s  <= '0';
+    wovr_s  <= '0';
+    wait for clk_period;
+
+    -- Flags are validated after being written
+    assert (reg_cznv_s = '1') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
+
+    assert (reg_neg_s = '0') report "Wrong N" severity error;  -- N flag
+    assert (reg_zero_s = '0') report "Wrong Z" severity error; -- Z flag
+    assert (reg_cry_s = '0') report "Wrong C" severity error;  -- C fag
+    assert (reg_ovr_s = '0') report "Wrong V" severity error;  -- V flag
 
     -- inval1_s <= '1'; -- Mark as valid
     -- inval2_s <= '1'; -- Mark as valid
@@ -229,11 +326,10 @@ begin
     -- radr1_s      <= x"A";
     -- radr2_s      <= x"5";
 
-    -- report "Test Read Address 1" severity note;
-    -- reset_n_s <= '1';
-    -- wdata1_s  <= x"AAAA_0000";
-    -- wadr1_s   <= x"A";
-    -- wen1_s    <= '1';
+    -- report "--- Test Read Address 1 ---" severity note;
+    --   wdata1_s <= x"AAAA_0000";
+    -- wadr1_s  <= x"A";
+    -- wen1_s   <= '1';
 
     -- wdata2_s <= x"0000_0000";
     -- wadr2_s  <= x"A";
