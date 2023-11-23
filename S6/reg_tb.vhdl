@@ -316,45 +316,34 @@ begin
 
     -- report "--- Register Tests ---" severity note;
     --   inval1_s <= '1'; -- Mark as valid
-    -- -- inval2_s <= '1'; -- Mark as valid
+    -- inval2_s <= '1'; -- Mark as valid
 
-    -- wadr1_s      <= x"A";
-    -- inval_adr1_s <= x"A";
-    -- inval1_s     <= '0';
     -- wen1_s       <= '1';
-    -- wdata1_s     <= x"AAAA_0000";
-    -- radr1_s      <= x"A";
-    -- radr2_s      <= x"5";
-
-    -- report "--- Test Read Address 1 ---" severity note;
-    --   wdata1_s <= x"AAAA_0000";
-    -- wadr1_s  <= x"A";
-    -- wen1_s   <= '1';
-
-    -- wdata2_s <= x"0000_0000";
-    -- wadr2_s  <= x"A";
-    -- wen2_s   <= '0';
-
-    -- inval_adr1_s <= x"A";
-    -- inval_adr2_s <= x"0";
-    -- inval1_s     <= '0'; -- Mark as invalid
-
-    -- radr1_s <= x"A";
+    -- wen2_s       <= '0';
+    -- wadr1_s      <= x"1";
+    -- wadr2_s      <= x"2";
+    -- inval1_s     <= '1';
+    -- inval2_s     <= '0';
+    -- inval_adr1_s <= x"F";
+    -- inval_adr2_s <= x"F";
+    -- wdata1_s     <= x"0000_AAAA";
+    -- wdata2_s     <= x"0000_BBBB";
+    -- radr1_s      <= x"1";
+    -- radr2_s      <= x"2";
+    -- radr2_s      <= x"3";
     -- wait for clk_period;
 
     -- assert(reg_rd1_s = x"AAAA_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
     -- report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
 
-    -- inval1_s <= '1'; -- Mark as valid
-
     report "--- Program Counter Tests ---" severity note;
-      wen1_s   <= '0';
+      inc_pc_s <= '1';
+    wen1_s   <= '0';
     wen2_s   <= '0';
-    inc_pc_s <= '1';
 
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_0004") report "Wrong value for PC" severity error;
+    assert(reg_pc_s = x"0000_0004") report "Expected PC = 00000004" severity error;
     report "Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     inc_pc_s     <= '0';
@@ -362,15 +351,24 @@ begin
     wen2_s       <= '0';
     wadr1_s      <= x"F";
     wadr2_s      <= x"F";
-    inval1_s     <= '0';
-    inval2_s     <= '1';
+    inval1_s     <= '1';
+    inval2_s     <= '0';
     inval_adr1_s <= x"F";
     inval_adr2_s <= x"F";
     wdata1_s     <= x"0000_1111";
     wdata2_s     <= x"0000_2222";
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_2222") report "Wrong value for PC" severity error;
+    assert(reg_pc_s = x"0000_1111") report "Expected PC = 00001111" severity error;
+    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+
+    wen1_s   <= '0';
+    wen2_s   <= '0';
+    inval1_s <= '0';
+    inval2_s <= '0';
+    wait for clk_period;
+
+    assert(reg_pc_s = x"0000_1111") report "Expected PC = 00001111" severity error;
     report "Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     inc_pc_s <= '1';
@@ -378,7 +376,7 @@ begin
     inval2_s <= '0';
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_2226") report "Wrong value for PC" severity error;
+    assert(reg_pc_s = x"0000_1115") report "Expected PC = 00001115" severity error;
     report "Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     wait;
