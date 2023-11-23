@@ -313,29 +313,6 @@ begin
     assert (reg_zero_s = '0') report "Wrong Z" severity error; -- Z flag
     assert (reg_cry_s = '0') report "Wrong C" severity error;  -- C fag
     assert (reg_ovr_s = '0') report "Wrong V" severity error;  -- V flag
-
-    -- report "--- Register Tests ---" severity note;
-    --   inval1_s <= '1'; -- Mark as valid
-    -- inval2_s <= '1'; -- Mark as valid
-
-    -- wen1_s       <= '1';
-    -- wen2_s       <= '0';
-    -- wadr1_s      <= x"1";
-    -- wadr2_s      <= x"2";
-    -- inval1_s     <= '1';
-    -- inval2_s     <= '0';
-    -- inval_adr1_s <= x"F";
-    -- inval_adr2_s <= x"F";
-    -- wdata1_s     <= x"0000_AAAA";
-    -- wdata2_s     <= x"0000_BBBB";
-    -- radr1_s      <= x"1";
-    -- radr2_s      <= x"2";
-    -- radr2_s      <= x"3";
-    -- wait for clk_period;
-
-    -- assert(reg_rd1_s = x"AAAA_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
-    -- report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
-
     report "--- Program Counter Tests ---" severity note;
       inc_pc_s <= '1';
     wen1_s   <= '0';
@@ -343,8 +320,8 @@ begin
 
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_0004") report "Expected PC = 00000004" severity error;
-    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+    assert(reg_pc_s = x"0000_0004") report "1Expected PC = 00000004" severity error;
+    report "1Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     inc_pc_s     <= '0';
     wen1_s       <= '1';
@@ -359,8 +336,8 @@ begin
     wdata2_s     <= x"0000_2222";
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_1111") report "Expected PC = 00001111" severity error;
-    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+    assert(reg_pc_s = x"0000_1111") report "2Expected PC = 00001111" severity error;
+    report "2Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     wen1_s   <= '0';
     wen2_s   <= '0';
@@ -368,17 +345,128 @@ begin
     inval2_s <= '0';
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_1111") report "Expected PC = 00001111" severity error;
-    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+    assert(reg_pc_s = x"0000_1111") report "3Expected PC = 00001111" severity error;
+    report "3Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     inc_pc_s <= '1';
     inval1_s <= '0';
     inval2_s <= '0';
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_1115") report "Expected PC = 00001115" severity error;
-    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+    assert(reg_pc_s = x"0000_1115") report "4Expected PC = 00001115" severity error;
+    report "4Program Counter = " & to_hstring(reg_pc_s) severity note;
 
+    report "--- Register Tests ---" severity note;
+
+      report "Enable Write port 1, Invalidate port 1, No conflict" severity note;
+
+    wen1_s       <= '1';
+    wen2_s       <= '0';
+    wadr1_s      <= x"1";
+    wadr2_s      <= x"2";
+    inval1_s     <= '1';
+    inval2_s     <= '0';
+    inval_adr1_s <= x"1";
+    inval_adr2_s <= x"2";
+    wdata1_s     <= x"0000_1111";
+    wdata2_s     <= x"0000_2222";
+    radr1_s      <= x"1";
+    radr2_s      <= x"2";
+    radr3_s      <= x"3";
+    wait for clk_period;
+
+    assert(reg_rd1_s = x"0000_1111") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+    assert(reg_rd2_s = x"0000_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    report "reg_rd2=" & to_hstring(reg_rd2_s) severity note;
+    assert(reg_rd3_s = x"0000_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    report "reg_rd3=" & to_hstring(reg_rd3_s) severity note;
+
+    report "Enable Write port 2, Invalidate port 2, No conflict" severity note;
+    wen1_s       <= '0';
+    wen2_s       <= '1';
+    wadr1_s      <= x"1";
+    wadr2_s      <= x"2";
+    inval1_s     <= '0';
+    inval2_s     <= '1';
+    inval_adr1_s <= x"1";
+    inval_adr2_s <= x"2";
+    wdata1_s     <= x"0000_1111";
+    wdata2_s     <= x"0000_2222";
+    radr1_s      <= x"1";
+    radr2_s      <= x"2";
+    radr3_s      <= x"3";
+    wait for clk_period;
+
+    assert(reg_rd1_s = x"0000_1111") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+    assert(reg_rd2_s = x"0000_2222") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    report "reg_rd2=" & to_hstring(reg_rd2_s) severity note;
+
+    report "Enable Write port 1 & 2, Invalidate port 1 & 2, No conflict" severity note;
+    wen1_s       <= '1';
+    wen2_s       <= '1';
+    wadr1_s      <= x"1";
+    wadr2_s      <= x"2";
+    inval1_s     <= '1';
+    inval2_s     <= '1';
+    inval_adr1_s <= x"1";
+    inval_adr2_s <= x"2";
+    wdata1_s     <= x"0000_1111";
+    wdata2_s     <= x"0000_2222";
+    radr1_s      <= x"1";
+    radr2_s      <= x"2";
+    radr3_s      <= x"3";
+    wait for clk_period;
+
+    assert(reg_rd1_s = x"0000_1111") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+    assert(reg_rd2_s = x"0000_2222") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    report "reg_rd2=" & to_hstring(reg_rd2_s) severity note;
+
+    report "Enable Write port 1 & 2, Invalidate port 1 & 2, Conflict" severity note;
+
+    wen1_s       <= '1';
+    wen2_s       <= '1';
+    wadr1_s      <= x"2";
+    wadr2_s      <= x"2";
+    inval1_s     <= '1';
+    inval2_s     <= '1';
+    inval_adr1_s <= x"1";
+    inval_adr2_s <= x"2";
+    wdata1_s     <= x"0000_EEEE";
+    wdata2_s     <= x"0000_2222";
+    radr1_s      <= x"1";
+    radr2_s      <= x"2";
+    radr3_s      <= x"3";
+    wait for clk_period;
+
+    assert(reg_rd1_s = x"0000_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+    assert(reg_rd2_s = x"0000_EEEE") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    report "reg_rd2=" & to_hstring(reg_rd2_s) severity note;
+
+    report "Enable Write port 1 & 2, Validate port 1 & 2, Conflict" severity note;
+
+    wen1_s       <= '1';
+    wen2_s       <= '1';
+    wadr1_s      <= x"2";
+    wadr2_s      <= x"2";
+    inval1_s     <= '0';
+    inval2_s     <= '0';
+    inval_adr1_s <= x"1";
+    inval_adr2_s <= x"2";
+    wdata1_s     <= x"0000_EEEE";
+    wdata2_s     <= x"0000_2222";
+    radr1_s      <= x"1";
+    radr2_s      <= x"2";
+    radr3_s      <= x"3";
+    wait for clk_period;
+
+    assert(reg_rd1_s = x"0000_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
+    report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
+    assert(reg_rd2_s = x"0000_EEEE") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    report "reg_rd2=" & to_hstring(reg_rd2_s) severity note;
     wait;
   end process;
 end testbench;
