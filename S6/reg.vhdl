@@ -89,29 +89,29 @@ architecture behavioral_reg of Reg is
   signal reg_vv_s   : std_logic; -- V Validity bit
 
   -- Signals used for integer conversion
-  signal wadr1_int      : integer range 0 to 15 := 0;
-  signal wadr2_int      : integer range 0 to 15 := 0;
-  signal radr1_int      : integer range 0 to 15 := 0;
-  signal radr2_int      : integer range 0 to 15 := 0;
-  signal radr3_int      : integer range 0 to 15 := 0;
-  signal inval_adr1_int : integer range 0 to 15 := 0;
-  signal inval_adr2_int : integer range 0 to 15 := 0;
+  signal wadr1_i   : integer range 0 to 15 := 0;
+  signal wadr2_i   : integer range 0 to 15 := 0;
+  signal radr1_i   : integer range 0 to 15 := 0;
+  signal radr2_i   : integer range 0 to 15 := 0;
+  signal radr3_i   : integer range 0 to 15 := 0;
+  signal invadr1_i : integer range 0 to 15 := 0;
+  signal invadr2_i : integer range 0 to 15 := 0;
 begin
   -- Convert addresses to integers to conveniently access bits of std_logic_vector 
   -- Note: Be sure to constrain the values!
-  wadr1_int <= to_integer(unsigned(wadr1)) when (wadr1 >= x"0" and wadr1 <= x"F") else
+  wadr1_i <= to_integer(unsigned(wadr1)) when (wadr1 >= x"0" and wadr1 <= x"F") else
     0;
-  wadr2_int <= to_integer(unsigned(wadr2)) when (wadr2 >= x"0" and wadr2 <= x"F") else
+  wadr2_i <= to_integer(unsigned(wadr2)) when (wadr2 >= x"0" and wadr2 <= x"F") else
     0;
-  radr1_int <= to_integer(unsigned(radr1)) when (radr1 >= x"0" and radr1 <= x"F") else
+  radr1_i <= to_integer(unsigned(radr1)) when (radr1 >= x"0" and radr1 <= x"F") else
     0;
-  radr2_int <= to_integer(unsigned(radr2)) when (radr2 >= x"0" and radr2 <= x"F") else
+  radr2_i <= to_integer(unsigned(radr2)) when (radr2 >= x"0" and radr2 <= x"F") else
     0;
-  radr3_int <= to_integer(unsigned(radr3)) when (radr3 >= x"0" and radr3 <= x"F") else
+  radr3_i <= to_integer(unsigned(radr3)) when (radr3 >= x"0" and radr3 <= x"F") else
     0;
-  inval_adr1_int <= to_integer(unsigned(inval_adr1)) when (inval_adr1 >= x"0" and inval_adr1 <= x"F") else
+  invadr1_i <= to_integer(unsigned(inval_adr1)) when (inval_adr1 >= x"0" and inval_adr1 <= x"F") else
     0;
-  inval_adr2_int <= to_integer(unsigned(inval_adr2)) when (inval_adr2 >= x"0" and inval_adr2 <= x"F") else
+  invadr2_i <= to_integer(unsigned(inval_adr2)) when (inval_adr2 >= x"0" and inval_adr2 <= x"F") else
     0;
 
   -- Increment PC by 4
@@ -132,23 +132,23 @@ begin
       else
         ---- Register Bank
         -- Assign invalidation bit to the register corresponding to the address
-        reg_bank_validity(inval_adr1_int) <= '0' when (inval1 = '1');
-        reg_bank_validity(inval_adr2_int) <= '0' when (inval2 = '1');
+        reg_bank_validity(invadr1_i) <= '0' when (inval1 = '1');
+        reg_bank_validity(invadr2_i) <= '0' when (inval2 = '1');
 
         -- Always save EXEC result
         if (wen1 = '1') then
-          if (reg_bank_validity(wadr1_int) = '0') then
-            reg_bank(wadr1_int) <= wdata1;
+          if (reg_bank_validity(wadr1_i) = '0') then
+            reg_bank(wadr1_i) <= wdata1;
             -- Validate after writing
-            reg_bank_validity(wadr1_int) <= '1';
+            reg_bank_validity(wadr1_i) <= '1';
           end if;
         end if;
         -- No conflict, save MEM result
         if (wen2 = '1' and wadr1 /= wadr2) then
-          if (reg_bank_validity(wadr2_int) = '0') then
-            reg_bank(wadr2_int) <= wdata2;
+          if (reg_bank_validity(wadr2_i) = '0') then
+            reg_bank(wadr2_i) <= wdata2;
             -- Validate after writing
-            reg_bank_validity(wadr2_int) <= '1';
+            reg_bank_validity(wadr2_i) <= '1';
           end if;
         end if;
 
@@ -182,36 +182,39 @@ begin
 
   ---- Register bank
   -- Port 1
-  reg_rd1 <= wdata1 when (wen1 = '1' and wadr1 = radr1 and reg_bank_validity(wadr1_int) = '0') else
-    wdata2 when (wen2 = '1' and wadr2 = radr1 and reg_bank_validity(wadr2_int) = '0') else
-    reg_bank(radr1_int);
+  reg_rd1 <= wdata1 when (wen1 = '1' and wadr1 = radr1 and reg_bank_validity(wadr1_i) = '0') else
+    wdata2 when (wen2 = '1' and wadr2 = radr1 and reg_bank_validity(wadr2_i) = '0') else
+    reg_bank(radr1_i) when (radr1_i >= 0 and radr1_i <= 15) else
+    x"0000_0000";
   reg_v1 <= '1' when (wadr1 = radr1 and wen1 = '1') else
     '1' when (wadr2 = radr1 and wen2 = '1') else
-    reg_bank_validity(radr1_int);
+    reg_bank_validity(radr1_i);
   -- Port 2
-  reg_rd2 <= wdata1 when (wen1 = '1' and wadr1 = radr2 and reg_bank_validity(wadr1_int) = '0') else
-    wdata2 when (wen2 = '1' and wadr2 = radr2 and reg_bank_validity(wadr2_int) = '0') else
-    reg_bank(radr2_int);
+  reg_rd2 <= wdata1 when (wen1 = '1' and wadr1 = radr2 and reg_bank_validity(wadr1_i) = '0') else
+    wdata2 when (wen2 = '1' and wadr2 = radr2 and reg_bank_validity(wadr2_i) = '0') else
+    reg_bank(radr2_i) when (radr2_i >= 0 and radr2_i <= 15) else
+    x"0000_0000";
   reg_v2 <= '1' when (wadr1 = radr2 and wen1 = '1') else
     '1' when (wadr2 = radr2 and wen2 = '1') else
-    reg_bank_validity(radr2_int);
+    reg_bank_validity(radr2_i);
   -- Port 3
-  reg_rd3 <= wdata1 when (wen1 = '1' and wadr1 = radr3 and reg_bank_validity(wadr1_int) = '0') else
-    wdata2 when (wen2 = '1' and wadr2 = radr3 and reg_bank_validity(wadr2_int) = '0') else
-    reg_bank(radr3_int);
+  reg_rd3 <= wdata1 when (wen1 = '1' and wadr1 = radr3 and reg_bank_validity(wadr1_i) = '0') else
+    wdata2 when (wen2 = '1' and wadr2 = radr3 and reg_bank_validity(wadr2_i) = '0') else
+    reg_bank(radr3_i) when (radr3_i >= 0 and radr3_i <= 15) else
+    x"0000_0000";
   reg_v3 <= '1' when (wadr1 = radr3 and wen1 = '1') else
     '1' when (wadr2 = radr3 and wen2 = '1') else
-    reg_bank_validity(radr3_int);
+    reg_bank_validity(radr3_i);
 
   ---- PC
   -- Assign data when write is enabled (EXE has priority over MEM)
   -- otherwise use old value
-  reg_pc <= wdata1 when (wen1 = '1' and wadr1_int = 15 and reg_pcv_al = '0') else
-    wdata2 when (wen2 = '1' and wadr2_int = 15 and reg_pcv_al = '0') else
+  reg_pc <= wdata1 when (wen1 = '1' and wadr1_i = 15 and reg_pcv_al = '0') else
+    wdata2 when (wen2 = '1' and wadr2_i = 15 and reg_pcv_al = '0') else
     reg_pc_al;
   -- Mark as valid when any write port is enabled and targets PC
-  reg_pcv <= '1' when (wen1 = '1' and wadr1_int = 15) else
-    '1' when (wen2 = '1' and wadr2_int = 15) else
+  reg_pcv <= '1' when (wadr1_i = 15 and wen1 = '1') else
+    '1' when (wadr2_i = 15 and wen2 = '1') else
     reg_pcv_al;
 
   ---- CPSR
