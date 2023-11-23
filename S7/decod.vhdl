@@ -588,7 +588,36 @@ begin
 
   and_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"0" else
     '0';
-  ....
+  eor_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"1" else
+    '0';
+  sub_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"2" else
+    '0';
+  rsb_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"3" else
+    '0';
+  add_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"4" else
+    '0';
+  adc_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"5" else
+    '0';
+  sbc_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"6" else
+    '0';
+  rsc_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"7" else
+    '0';
+  tst_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"8" else
+    '0';
+  teq_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"9" else
+    '0';
+  cmp_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"A" else
+    '0';
+  cmn_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"B" else
+    '0';
+  orr_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"C" else
+    '0';
+  mov_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"D" else
+    '0';
+  bic_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"E" else
+    '0';
+  mvn_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"F" else
+    '0';
   -- mult instruction
 
   -- trans instruction
