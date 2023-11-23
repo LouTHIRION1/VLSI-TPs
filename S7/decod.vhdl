@@ -618,13 +618,34 @@ begin
     '0';
   mvn_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"F" else
     '0';
+
   -- mult instruction
+  mul_i <= '1' when mult_t = '1' and if_ir(21) = '0' else
+    '0';
+  mla_i <= '1' when mult_t = '1' and if_ir(21) = '1' else
+    '0';
 
   -- trans instruction
+  ldr_i <= '1' when trans_t = '1' and if_ir(20) = '1' and if_ir(22) = '0' else
+    '0';
+  str_i <= '1' when trans_t = '1' and if_ir(20) = '0' and if_ir(22) = '0' else
+    '0';
+  ldrb_i <= '1' when trans_t = '1' and if_ir(20) = '1' and if_ir(22) = '1' else
+    '0';
+  strb_i <= '1' when trans_t = '1' and if_ir(20) = '0' and if_ir(22) = '1' else
+    '0';
 
   -- mtrans instruction
+  ldm_i <= '1' when mtrans_t = '1' and if_ir(20) = '1' else
+    '0';
+  stm_i <= '1' when mtrans_t = '1' and if_ir(20) = '0' else
+    '0';
 
   -- branch instruction
+  b_i <= '1' when branch_t = '1' and if_ir(24) = '0' else
+    '0';
+  bl_i <= '1' when branch_t = '1' and if_ir(24) = '1' else
+    '0';
 
   -- Decode interface operands
   op1 <= reg_pc when branch_t = '1' else
