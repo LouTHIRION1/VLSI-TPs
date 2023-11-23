@@ -488,7 +488,23 @@ begin
   vdd     => vdd,
   vss     => vss);
 
-  -- Execution condition
+  -- Execution condition (Bits 31 downto 28)
+  -- 0000 - x"0" : EQ - (Z = 1)
+  -- 0001 - x"1" : NE - (Z = 0)
+  -- 0010 - x"2" : HS/CS - (C = 1)
+  -- 0011 - x"3" : LO/CC - (C = 0)
+  -- 0100 - x"4" : MI - (N = 1)
+  -- 0101 - x"5" : PL - (N = 0)
+  -- 0110 - x"6" : VS - (V = 1)
+  -- 0111 - x"7" : VC - (V = 0)
+  -- 1000 - x"8" : HI - (C = 1) AND (Z = 0)
+  -- 1001 - x"9" : LS - (C = 0) OR (Z = 1)
+  -- 1010 - x"A" : GE - superieur ou egal
+  -- 1011 - x"B" : LT - strictement inferieur
+  -- 1100 - x"C" : GT - strictement superieur
+  -- 1101 - x"D" : LE - inferieur ou egal
+  -- 1110 - x"E" : AL - toujours
+  -- 1111 - x"F" : NV - reserve
 
   cond <= '1' when
     (if_ir(31 downto 28) = X"0" and zero = '1') or
@@ -508,14 +524,27 @@ begin
     (if_ir(31 downto 28) = X"E") else
     '0';
 
-  condv <= '1' when if_ir(31 downto 28) = X"E" else
-    reg_cznv when (if_ir(31 downto 28) = X"0" or
-    ....
-    if_ir(31 downto 28) = X"9") else
+  condv <= '1' when
+    (if_ir(31 downto 28) = x"0" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"1" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"2" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"3" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"4" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"5" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"6" and reg_vv = '1') or
+    (if_ir(31 downto 28) = x"7" and reg_vv = '1') or
+    (if_ir(31 downto 28) = x"8" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"9" and reg_cznv = '1') or
+    (if_ir(31 downto 28) = x"A" and reg_cznv = '1' and reg_vv = '1') or
+    (if_ir(31 downto 28) = x"B" and reg_cznv = '1' and reg_vv = '1') or
+    (if_ir(31 downto 28) = x"C" and reg_cznv = '1' and reg_vv = '1') or
+    (if_ir(31 downto 28) = x"D" and reg_cznv = '1' and reg_vv = '1') or
+    (if_ir(31 downto 28) = x"E") else
+    '0';
 
-    -- decod instruction type
+  -- DECOD Instruction Type
 
-    regop_t <= '1' when if_ir(27 downto 26) = "00" and
+  regop_t <= '1' when if_ir(27 downto 26) = "00" and
     mult_t = '0' and swap_t = '0' else
     '0';
   mult_t <= '1' when if_ir(27 downto 22) = "000000" and
@@ -524,7 +553,6 @@ begin
   swap_t <= '1' when if_ir(27 downto 23) = "00010" and
     if_ir(11 downto 4) = "00001001" else
     '0';
-  ....
 
   -- decod regop opcode
 
