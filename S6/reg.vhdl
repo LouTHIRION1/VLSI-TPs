@@ -72,9 +72,9 @@ entity Reg is
 end Reg;
 
 architecture behavioral_reg of Reg is
-  type reg_arr is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
   -- Register bank
-  signal reg_bank          : reg_arr;
+  type reg_bank_t is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
+  signal reg_bank          : reg_bank_t;
   signal reg_bank_validity : std_logic_vector(15 downto 0); -- Validity bits
   -- CPSR
   signal reg_n_s    : std_logic;
@@ -83,56 +83,69 @@ architecture behavioral_reg of Reg is
   signal reg_v_s    : std_logic;
   signal reg_cznv_s : std_logic; -- CZN Validity bit
   signal reg_vv_s   : std_logic; -- V Validity bit
+
+  -- Signals used for integer conversion
+  signal wadr1_int      : integer range 0 to 15 := 0;
+  signal wadr2_int      : integer range 0 to 15 := 0;
+  signal radr1_int      : integer range 0 to 15 := 0;
+  signal radr2_int      : integer range 0 to 15 := 0;
+  signal radr3_int      : integer range 0 to 15 := 0;
+  signal inval_adr1_int : integer range 0 to 15 := 0;
+  signal inval_adr2_int : integer range 0 to 15 := 0;
 begin
   process (clk)
-    -- Signals used for integer conversion
-    variable wadr1_int      : integer;
-    variable wadr2_int      : integer;
-    variable radr1_int      : integer;
-    variable radr2_int      : integer;
-    variable radr3_int      : integer;
-    variable inval_adr1_int : integer;
-    variable inval_adr2_int : integer;
+
   begin
     if rising_edge(clk) then
       -- Synchronous Reset (active low)
       if (reset_n = '0') then
         -- Validate all registers regardless of what's stored inside them 
         reg_bank_validity <= x"FFFF";
-        -- CPSR
+        -- Validate CPSR
         reg_cznv_s <= '1'; -- CZN Validity bit (logic instruction)
         reg_vv_s   <= '1'; -- V Validity bit (arithmetic instruction)
       else
         -- Convert addresses to integers to conveniently access bits of std_logic_vector 
-        -- wadr1_int      := to_integer(unsigned(wadr1));
-        -- wadr2_int      := to_integer(unsigned(wadr2));
-        -- radr1_int      := to_integer(unsigned(radr1));
-        -- radr2_int      := to_integer(unsigned(radr2));
-        -- radr3_int      := to_integer(unsigned(radr3));
-        -- inval_adr1_int := to_integer(unsigned(inval_adr1));
-        -- inval_adr2_int := to_integer(unsigned(inval_adr2));
-        -- ---- Register Bank
-        -- -- Assign invalidation bit to the register corresponding to the address
-        -- -- TODO: active low or high?
-        -- reg_bank_validity(inval_adr1_int) <= '0' when inval1 = '1';
-        -- reg_bank_validity(inval_adr2_int) <= '0' when inval2 = '1';
+        -- Note: Be sure to constrain the values!
+        wadr1_int <= to_integer(unsigned(wadr1)) when (wadr1 >= x"0" and wadr1 <= x"F") else
+          0;
+        wadr2_int <= to_integer(unsigned(wadr2)) when (wadr2 >= x"0" and wadr2 <= x"F") else
+          0;
+        radr1_int <= to_integer(unsigned(radr1)) when (radr1 >= x"0" and radr1 <= x"F") else
+          0;
+        radr2_int <= to_integer(unsigned(radr2)) when (radr2 >= x"0" and radr2 <= x"F") else
+          0;
+        radr3_int <= to_integer(unsigned(radr3)) when (radr3 >= x"0" and radr3 <= x"F") else
+          0;
+        inval_adr1_int <= to_integer(unsigned(inval_adr1)) when (inval_adr1 >= x"0" and inval_adr1 <= x"F") else
+          0;
+        inval_adr2_int <= to_integer(unsigned(inval_adr2)) when (inval_adr2 >= x"0" and inval_adr2 <= x"F") else
+          0;
+        ---- Register Bank
+        -- Assign invalidation bit to the register corresponding to the address
+        reg_bank_validity(inval_adr1_int) <= '0' when inval1 = '1';
+        reg_bank_validity(inval_adr2_int) <= '0' when inval2 = '1';
 
-        -- -- Take address of the register to be written, save the data and validate the register afterwards
-        -- -- Always save EXEC result
-        -- if (wen1 = '1') then
-        --   reg_bank(wadr1_int) <= wdata1 when (reg_bank_validity(wadr1_int) = '0');
-        --   -- Validate after writing
-        --   reg_bank_validity(wadr1_int) <= '1';
-        -- end if;
-        -- -- No conflict, save MEM result
-        -- if (wen2 = '1' and wadr1 /= wadr2) then
-        --   reg_bank(wadr2_int) <= wdata2 when (reg_bank_validity(wadr2_int) = '0');
-        --   -- Validate after writing
-        --   reg_bank_validity(wadr2_int) <= '1';
-        -- end if;
+        -- Take address of the register to be written, save the data and validate the register afterwards
+        -- Always save EXEC result
+        if (wen1 = '1') then
+          if (reg_bank_validity(wadr1_int) = '0') then
+            reg_bank(wadr1_int) <= wdata1;
+            -- Validate after writing
+            reg_bank_validity(wadr1_int) <= '1';
+          end if;
+        end if;
+        -- No conflict, save MEM result
+        if (wen2 = '1' and wadr1 /= wadr2) then
+          if (reg_bank_validity(wadr2_int) = '0') then
+            reg_bank(wadr2_int) <= wdata2;
+            -- Validate after writing
+            reg_bank_validity(wadr2_int) <= '1';
+          end if;
+        end if;
 
         -- -- Program Counter
-        -- reg_bank(15) <= std_logic_vector(unsigned(reg_bank(15)) + 4); -- Increment by 4 at every rising edge
+        reg_bank(15) <= std_logic_vector(unsigned(reg_bank(15)) + 4); -- Increment by 4 at every rising edge
 
         ---- CPSR
         -- Validity bits
@@ -158,21 +171,23 @@ begin
     end if; -- Rising edge
   end process;
 
-  ------ Outputs
-
-  -- ---- Registers
-  -- -- Port 1
-  -- reg_rd1 <= reg_bank(radr1_int);
-  -- reg_v1  <= reg_bank_validity(radr1_int);
+  ---- Assign signals to outputs
+  ---- Registers
+  -- Port 1
+  reg_rd1 <= wdata1 when (wen1 = '1' and reg_bank_validity(to_integer(unsigned(wadr1))) = '0') else
+    reg_bank(to_integer(unsigned(radr1)));
+  reg_v1 <= '1' when (wen1 = '1') else
+    reg_bank_validity(to_integer(unsigned(radr1)));
   -- -- Port 2
   -- reg_rd2 <= reg_bank(radr2_int);
   -- reg_v2  <= reg_bank_validity(radr2_int);
   -- -- Port 3
   -- reg_rd3 <= reg_bank(radr3_int);
   -- reg_v3  <= reg_bank_validity(radr3_int);
-  -- -- PC
-  -- reg_pc  <= reg_bank(15);
-  -- reg_pcv <= reg_bank_validity(15);
+  -- PC
+  reg_pc  <= reg_bank(15);
+  reg_pcv <= '1' when (wen1 = '1' and wadr1_int = 15) or (wen2 = '1' and wadr2_int = 15)else
+    reg_bank_validity(15);
 
   ---- CPSR
   -- Assign input values when writeback is enabled and marked as invalid
