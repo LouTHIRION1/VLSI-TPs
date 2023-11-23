@@ -814,6 +814,18 @@ begin
 
         end if;
 
+      when RUN =>
+        -- TODO: 
+
+      when BRANCH =>
+        -- TODO: 
+
+      when LINK =>
+        -- TODO: 
+
+      when MTRANS =>
+        -- TODO: 
+
     end case;
   end process;
 
