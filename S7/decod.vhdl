@@ -649,15 +649,15 @@ begin
 
   -- Decode interface operands
   op1 <= reg_pc when branch_t = '1' else
-    ....
+    -- TODO: 
     rdata1;
 
   offset32 <=
 
-    op2 <= ....
+    op2 <= -- TODO: 
     rdata2;
 
-  alu_dest <= ..... else
+  alu_dest <= -- TODO: else
     if_ir(19 downto 16);
 
   alu_wb <= '1' when
@@ -674,16 +674,16 @@ begin
 
     -- Reg Invalid
 
-    inval_exe_adr <= ...... else
+    inval_exe_adr <= -- TODO: else
     if_ir(15 downto 12);
 
-  inval_exe <= '1' when ....
+  inval_exe <= '1' when -- TODO: 
     '0';
 
-  inval_mem_adr <= ....
+  inval_mem_adr <= -- TODO: 
     mtrans_rd;
 
-  inval_mem <= '1' when .... else
+  inval_mem <= '1' when -- TODO:  else
     '0';
 
   inval_czn <=
@@ -729,7 +729,7 @@ begin
   process (ck)
   begin
     if (rising_edge(ck)) then
-      ....
+      -- TODO: 
     end if;
   end process;
 
@@ -793,7 +793,8 @@ begin
 
   inc_pc <= dec2if_push;
 
-  --state machine process.
+  -- Mealy type Finite State Machine process.
+  -- states: (FETCH, RUN, BRANCH, LINK, MTRANS)
   process (cur_state, dec2if_full, cond, condv, operv, dec2exe_full, if2dec_empty, reg_pcv, bl_i,
     branch_t, and_i, eor_i, sub_i, rsb_i, add_i, adc_i, sbc_i, rsc_i, orr_i, mov_i, bic_i,
     mvn_i, ldr_i, ldrb_i, ldm_i, stm_i, if_ir, mtrans_rd, mtrans_mask_shift)
@@ -809,7 +810,8 @@ begin
         mtrans_loop_adr <= '0';
 
         if dec2if_full = '0' and reg_pcv = '1' then
-          ....
+          -- TODO: 
+
         end if;
 
     end case;
