@@ -183,13 +183,12 @@ begin
     wzero_s     <= '0';
     wcry_s      <= '0';
     wovr_s      <= '0';
-    wait for clk_period;
 
+    wait for clk_period;
     -- Register Bank
-    assert (reg_v1_s = '1') report "Register port 1 should be valid" severity error;
-    assert (reg_v2_s = '1') report "Register port 2 should be valid" severity error;
-    assert (reg_v3_s = '1') report "Register port 3 should be valid" severity error;
     assert (reg_pcv_s = '1') report "PC should be valid" severity error;
+    assert (reg_cznv_s = '1') report "CZN should be valid" severity error; -- CZN Validity bit (logic instruction)
+    assert (reg_vv_s = '1') report "V should be valid" severity error;     -- V Validity bit (arithmetic instruction)
 
     reset_n_s <= '1';
     wait for clk_period;
@@ -315,8 +314,9 @@ begin
     assert (reg_cry_s = '0') report "Wrong C" severity error;  -- C fag
     assert (reg_ovr_s = '0') report "Wrong V" severity error;  -- V flag
 
-    -- inval1_s <= '1'; -- Mark as valid
-    -- inval2_s <= '1'; -- Mark as valid
+    -- report "--- Register Tests ---" severity note;
+    --   inval1_s <= '1'; -- Mark as valid
+    -- -- inval2_s <= '1'; -- Mark as valid
 
     -- wadr1_s      <= x"A";
     -- inval_adr1_s <= x"A";
@@ -346,6 +346,41 @@ begin
     -- report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
 
     -- inval1_s <= '1'; -- Mark as valid
+
+    report "--- Program Counter Tests ---" severity note;
+      wen1_s   <= '0';
+    wen2_s   <= '0';
+    inc_pc_s <= '1';
+
+    wait for clk_period;
+
+    assert(reg_pc_s = x"0000_0004") report "Wrong value for PC" severity error;
+    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+
+    inc_pc_s     <= '0';
+    wen1_s       <= '1';
+    wen2_s       <= '0';
+    wadr1_s      <= x"F";
+    wadr2_s      <= x"F";
+    inval1_s     <= '0';
+    inval2_s     <= '1';
+    inval_adr1_s <= x"F";
+    inval_adr2_s <= x"F";
+    wdata1_s     <= x"0000_1111";
+    wdata2_s     <= x"0000_2222";
+    wait for clk_period;
+
+    assert(reg_pc_s = x"0000_2222") report "Wrong value for PC" severity error;
+    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+
+    inc_pc_s <= '1';
+    inval1_s <= '0';
+    inval2_s <= '0';
+    wait for clk_period;
+
+    assert(reg_pc_s = x"0000_2226") report "Wrong value for PC" severity error;
+    report "Program Counter = " & to_hstring(reg_pc_s) severity note;
+
     wait;
   end process;
 end testbench;
