@@ -76,7 +76,9 @@ architecture behavioral_reg of Reg is
   type reg_bank_t is array (0 to 15) of std_logic_vector(31 downto 0); -- Array of 16 32-bit registers
   signal reg_bank          : reg_bank_t;
   signal reg_bank_validity : std_logic_vector(15 downto 0); -- Validity bits
+  -- Program Counter
   alias reg_pc_al is reg_bank(15);
+  alias reg_pcv_al is reg_bank_validity(15);
   -- CPSR
   signal reg_n_s    : std_logic;
   signal reg_c_s    : std_logic;
@@ -94,6 +96,23 @@ architecture behavioral_reg of Reg is
   signal inval_adr1_int : integer range 0 to 15 := 0;
   signal inval_adr2_int : integer range 0 to 15 := 0;
 begin
+  -- Convert addresses to integers to conveniently access bits of std_logic_vector 
+  -- Note: Be sure to constrain the values!
+  wadr1_int <= to_integer(unsigned(wadr1)) when (wadr1 >= x"0" and wadr1 <= x"F") else
+    0;
+  wadr2_int <= to_integer(unsigned(wadr2)) when (wadr2 >= x"0" and wadr2 <= x"F") else
+    0;
+  radr1_int <= to_integer(unsigned(radr1)) when (radr1 >= x"0" and radr1 <= x"F") else
+    0;
+  radr2_int <= to_integer(unsigned(radr2)) when (radr2 >= x"0" and radr2 <= x"F") else
+    0;
+  radr3_int <= to_integer(unsigned(radr3)) when (radr3 >= x"0" and radr3 <= x"F") else
+    0;
+  inval_adr1_int <= to_integer(unsigned(inval_adr1)) when (inval_adr1 >= x"0" and inval_adr1 <= x"F") else
+    0;
+  inval_adr2_int <= to_integer(unsigned(inval_adr2)) when (inval_adr2 >= x"0" and inval_adr2 <= x"F") else
+    0;
+
   process (clk)
   begin
     if rising_edge(clk) then
@@ -107,27 +126,10 @@ begin
         reg_cznv_s <= '1'; -- CZN Validity bit (logic instruction)
         reg_vv_s   <= '1'; -- V Validity bit (arithmetic instruction)
       else
-        -- Convert addresses to integers to conveniently access bits of std_logic_vector 
-        -- Note: Be sure to constrain the values!
-        wadr1_int <= to_integer(unsigned(wadr1)) when (wadr1 >= x"0" and wadr1 <= x"F") else
-          0;
-        wadr2_int <= to_integer(unsigned(wadr2)) when (wadr2 >= x"0" and wadr2 <= x"F") else
-          0;
-        radr1_int <= to_integer(unsigned(radr1)) when (radr1 >= x"0" and radr1 <= x"F") else
-          0;
-        radr2_int <= to_integer(unsigned(radr2)) when (radr2 >= x"0" and radr2 <= x"F") else
-          0;
-        radr3_int <= to_integer(unsigned(radr3)) when (radr3 >= x"0" and radr3 <= x"F") else
-          0;
-        inval_adr1_int <= to_integer(unsigned(inval_adr1)) when (inval_adr1 >= x"0" and inval_adr1 <= x"F") else
-          0;
-        inval_adr2_int <= to_integer(unsigned(inval_adr2)) when (inval_adr2 >= x"0" and inval_adr2 <= x"F") else
-          0;
-
         ---- Register Bank
         -- Assign invalidation bit to the register corresponding to the address
-        reg_bank_validity(inval_adr1_int) <= '0' when inval1 = '1';
-        reg_bank_validity(inval_adr2_int) <= '0' when inval2 = '1';
+        reg_bank_validity(inval_adr1_int) <= '0' when (inval1 = '1');
+        reg_bank_validity(inval_adr2_int) <= '0' when (inval2 = '1');
 
         -- Take address of the register to be written, save the data and validate the register afterwards
         -- Always save EXEC result
@@ -149,8 +151,8 @@ begin
 
         -- Program Counter
         -- Increment by 4 at every rising edge
-        -- reg_bank(15) <= std_logic_vector(unsigned(reg_bank(15)) + 4);
-        reg_pc_al <= std_logic_vector(unsigned(reg_pc_al) + 4);
+        reg_pc_al <= std_logic_vector(unsigned(reg_pc_al) + 4) when inc_pc = '1' else
+          reg_pc_al;
 
         ---- CPSR
         -- Validity bits
@@ -194,11 +196,12 @@ begin
   ---- PC
   -- Assign write data values when write is enabled (EXE has priority over MEM)
   -- otherwise use old value
-  reg_pc <= wdata1 when (wen1 = '1' and wadr1_int = 15 and reg_bank_validity(15) = '0') else
-    wdata2 when (wen2 = '1' and wadr2_int = 15 and reg_bank_validity(15) = '0') else
+  reg_pc <= wdata1 when (wen1 = '1' and wadr1_int = 15 and reg_pcv_al = '0') else
+    wdata2 when (wen2 = '1' and wadr2_int = 15 and reg_pcv_al = '0') else
     reg_pc_al;
+  -- Mark as valid when any write port is enabled and targets PC
   reg_pcv <= '1' when (wen1 = '1' and wadr1_int = 15) or (wen2 = '1' and wadr2_int = 15) else
-    reg_bank_validity(15);
+    reg_pcv_al;
 
   ---- CPSR
   -- Assign input values when writeback is enabled and marked as invalid
