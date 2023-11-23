@@ -817,11 +817,3 @@ begin
 
   dec_pop <= if2dec_pop;
 end Behavior;
-
--- Mult instruction
-mul_i <= '1' when mult_t = '1' and if_ir(21) = '0' else
-  '0';
-
--- Trans instruction
-ldr_i <= '1' when trans_t = '1' and if_ir(22) = '0' and if_ir(20) = '1' else
-  '0';
