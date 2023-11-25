@@ -488,7 +488,7 @@ begin
   vdd     => vdd,
   vss     => vss);
 
-  -- Execution condition (Bits 31 downto 28)
+  ---- Execution condition (Bits 31 downto 28)
   -- 0000 - x"0" : EQ - (Z = 1)
   -- 0001 - x"1" : NE - (Z = 0)
   -- 0010 - x"2" : HS/CS - (C = 1)
@@ -524,6 +524,7 @@ begin
     (if_ir(31 downto 28) = X"E") else
     '0';
 
+  -- Verify CPSR validity bits
   condv <= '1' when
     (if_ir(31 downto 28) = x"0" and reg_cznv = '1') or
     (if_ir(31 downto 28) = x"1" and reg_cznv = '1') or
@@ -542,33 +543,38 @@ begin
     (if_ir(31 downto 28) = x"E") else
     '0';
 
-  ---- Instruction Type
-
+  ---- Instruction Types
   -- Data Processing (Bits 27 downto 26) = "00"
-  regop_t <= '1' when if_ir(27 downto 26) = b"00" and
-    mult_t = '0' and swap_t = '0' else
+  regop_t <= '1' when
+    (if_ir(27 downto 26) = b"00" and
+    mult_t = '0' and
+    swap_t = '0') else
     '0';
   -- Multiplication (Bits 27 downto 22) = "000000" and (Bits 7 downto 4) = "1001"
   mult_t <= '1' when
-    if_ir(27 downto 22) = b"000000" and
-    if_ir(7 downto 4) = b"1001" else
+    (if_ir(27 downto 22) = b"000000" and
+    if_ir(7 downto 4) = b"1001") else
     '0';
   -- Swap (Bits 27 downto 23) = "00010" and (Bits 11 downto 4) = "00001001"
   swap_t <= '1' when
-    if_ir(27 downto 23) = b"00010" and
-    if_ir(11 downto 4) = b"00001001" else
+    (if_ir(27 downto 23) = b"00010" and
+    if_ir(11 downto 4) = b"00001001") else
     '0';
   -- Branch (Bits 27 downto 25) = "101"
-  branch_t <= '1' when if_ir(27 downto 25) = b"101" else
+  branch_t <= '1' when
+    (if_ir(27 downto 25) = b"101") else
     '0';
   -- Simple memory access (Bits 27 downto 26) = "01"
-  trans_t <= '1' when if_ir(27 downto 26) = b"01" else
+  trans_t <= '1' when
+    (if_ir(27 downto 26) = b"01") else
     '0';
   -- Multiple memory access (Bits 27 downto 25) = "100"
-  mtrans_t <= '1' when if_ir(27 downto 25) = b"100" else
+  mtrans_t <= '1' when
+    (if_ir(27 downto 25) = b"100") else
     '0';
 
-  ---- decod regop Opcodes (Bits 24 downto 21)
+  ---- OPCODES
+  ---- Decod regop Opcodes (Bits 24 downto 21)
   -- 0000 - x"0" : AND : Rd <= Rn and Op2
   -- 0001 - x"1" : EOR : Rd <= Rn xor Op2
   -- 0010 - x"2" : SUB : Rd <= Rn − Op2
@@ -619,13 +625,13 @@ begin
   mvn_i <= '1' when regop_t = '1' and if_ir(24 downto 21) = x"F" else
     '0';
 
-  -- mult instruction
+  -- Mult instruction
   mul_i <= '1' when mult_t = '1' and if_ir(21) = '0' else
     '0';
   mla_i <= '1' when mult_t = '1' and if_ir(21) = '1' else
     '0';
 
-  -- trans instruction
+  -- Simple Transfer instruction
   ldr_i <= '1' when trans_t = '1' and if_ir(20) = '1' and if_ir(22) = '0' else
     '0';
   str_i <= '1' when trans_t = '1' and if_ir(20) = '0' and if_ir(22) = '0' else
@@ -635,19 +641,19 @@ begin
   strb_i <= '1' when trans_t = '1' and if_ir(20) = '0' and if_ir(22) = '1' else
     '0';
 
-  -- mtrans instruction
+  -- Multiple Transfer instruction
   ldm_i <= '1' when mtrans_t = '1' and if_ir(20) = '1' else
     '0';
   stm_i <= '1' when mtrans_t = '1' and if_ir(20) = '0' else
     '0';
 
-  -- branch instruction
+  -- Branch instruction
   b_i <= '1' when branch_t = '1' and if_ir(24) = '0' else
     '0';
   bl_i <= '1' when branch_t = '1' and if_ir(24) = '1' else
     '0';
 
-  -- Decode interface operands
+  ---- Decode interface operands
   op1 <= reg_pc when branch_t = '1' else
     -- TODO: 
     rdata1;
@@ -705,14 +711,20 @@ begin
 
   -- Shifter command
 
-  shift_lsl <=
+  shift_lsl <= '1' when (regop_t = '1' and if_ir(6 downto 5) = "00" and if_ir(25) = '0') else -- Register operation (I = 0)
+    '1' when (trans_t = '1' and if_ir(6 downto 5) = "00" and if_ir(25) = '1') else              -- Simple transfer b25 = 1
+    '1' when (branch_t = '1') else                                                              -- Branch Instruction
+    '0';
 
-    shift_lsr <=
+  shift_lsr <=
     shift_asr <=
     shift_ror <=
-    shift_rrx <=
+    shift_rrx <= ;
 
-    shift_val <= "00010" when branch_t = '1' else
+  shift_val <= "00010" when (branch_t = '1') else                                           -- Branch instructions multiply offset x4 (<< 2)
+    if_ir(11 downto 7) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '0') else       -- Register operation (I = 0)
+    if_ir(11 downto 8) & '0' when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '1') else -- Register operation (I = 0)
+    if_ir(11 downto 8) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '0') else       -- Register operation (I = 0)
 
     -- Alu operand selection
     comp_op1 <= '1' when rsb_i = '1' or
@@ -722,7 +734,7 @@ begin
 
     -- Alu command
 
-    alu_cmd <= "11" when ... else
+    alu_cmd <= "11" when --TODO: else
     "00";
   -- Mtrans reg list
 
