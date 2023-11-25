@@ -653,17 +653,17 @@ begin
   bl_i <= '1' when branch_t = '1' and if_ir(24) = '1' else
     '0';
 
-  ---- Decode interface operands
+  ---- Decode interface operands TODO:
   op1 <= reg_pc when branch_t = '1' else
-    -- TODO: 
+
     rdata1;
 
   offset32 <=
 
-    op2 <= -- TODO: 
+    op2 <=
     rdata2;
 
-  alu_dest <= -- TODO: else
+  alu_dest <= ... else
     if_ir(19 downto 16);
 
   alu_wb <= '1' when
@@ -671,36 +671,36 @@ begin
 
   flag_wb <=
 
-    -- reg read
+    -- reg read TODO:
     radr1 <=
 
     radr2 <=
 
     radr3 <=
 
-    -- Reg Invalid
+    -- Reg Invalid TODO:
 
-    inval_exe_adr <= -- TODO: else
+    inval_exe_adr <= ... else
     if_ir(15 downto 12);
 
-  inval_exe <= '1' when -- TODO: 
+  inval_exe <= '1' when ...
     '0';
 
-  inval_mem_adr <= -- TODO: 
+  inval_mem_adr <= ...
     mtrans_rd;
 
-  inval_mem <= '1' when -- TODO:  else
+  inval_mem <= '1' when ... else
     '0';
 
   inval_czn <=
     inval_ovr <=
 
-    -- operand validite
+    -- operand validite TODO:
 
-    operv <= '1' when ...
+    operv <= '1' when
     '0';
 
-  -- Decode to mem interface 
+  -- Decode to mem interface TODO:
   ld_dest   <=
     pre_index <=
 
@@ -821,7 +821,7 @@ begin
 
   inc_pc <= dec2if_push;
 
-  -- Mealy type Finite State Machine process.
+  -- Mealy type Finite State Machine
   -- states: (FETCH, RUN, BRANCH, LINK, MTRANS)
   process (cur_state, dec2if_full, cond, condv, operv, dec2exe_full, if2dec_empty, reg_pcv, bl_i,
     branch_t, and_i, eor_i, sub_i, rsb_i, add_i, adc_i, sbc_i, rsc_i, orr_i, mov_i, bic_i,
@@ -830,7 +830,9 @@ begin
     case cur_state is
 
       when FETCH =>
-        debug_state     <= X"1";
+        -- TODO:
+        debug_state <= X"1";
+
         if2dec_pop      <= '0';
         dec2exe_push    <= '0';
         blink           <= '0';
@@ -838,7 +840,6 @@ begin
         mtrans_loop_adr <= '0';
 
         if dec2if_full = '0' and reg_pcv = '1' then
-          -- TODO: 
 
         end if;
 
