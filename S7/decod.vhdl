@@ -712,22 +712,38 @@ begin
   -- Shifter command
 
   shift_lsl <= '1' when (regop_t = '1' and if_ir(6 downto 5) = "00" and if_ir(25) = '0') else -- Register operation (I = 0)
-    '1' when (trans_t = '1' and if_ir(6 downto 5) = "00" and if_ir(25) = '1') else              -- Simple transfer b25 = 1
+    '1' when (trans_t = '1' and if_ir(6 downto 5) = "00" and if_ir(25) = '1') else              -- Simple transfer b25 = 1 with shift
     '1' when (branch_t = '1') else                                                              -- Branch Instruction
     '0';
 
-  shift_lsr <=
-    shift_asr <=
-    shift_ror <=
-    shift_rrx <= ;
+  shift_lsr <= '1' when (regop_t = '1' and if_ir(6 downto 5) = "01" and if_ir(25) = '0') else -- Register operation (I = 0)
+    '1' when (trans_t = '1' and if_ir(6 downto 5) = "01" and if_ir(25) = '1') else              -- Simple transfer b25 = 1 with shift
+    '0';
 
-  shift_val <= "00010" when (branch_t = '1') else                                           -- Branch instructions multiply offset x4 (<< 2)
-    if_ir(11 downto 7) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '0') else       -- Register operation (I = 0)
-    if_ir(11 downto 8) & '0' when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '1') else -- Register operation (I = 0)
-    if_ir(11 downto 8) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '0') else       -- Register operation (I = 0)
+  shift_asr <= '1' when (regop_t = '1' and if_ir(6 downto 5) = "10" and if_ir(25) = '0') else -- Register operation (I = 0)
+    '1' when (trans_t = '1' and if_ir(6 downto 5) = "10" and if_ir(25) = '1') else              -- Simple transfer b25 = 1 with shift
+    '0';
 
-    -- Alu operand selection
-    comp_op1 <= '1' when rsb_i = '1' or
+  shift_ror <= '1' when (regop_t = '1' and if_ir(6 downto 5) = "11" and if_ir(25) = '0' and shift_rrx = '0') else -- Register operation (I = 0)
+    '1' when (trans_t = '1' and if_ir(6 downto 5) = "11" and if_ir(25) = '1' and shift_rrx = '0') else              -- Simple transfer b25 = 1 with shift
+    '1' when regop_t = '1' and if_ir(25) = '1' else                                                                 -- Extension sur 32 bits de l’imm ́ediat 8 bits par rotation
+    '0';
+
+  -- RRX shifts are only executed when the rotation/shift value is 0 for a ROR
+  shift_rrx <= '1' when (if_ir(6 downto 5) = "11" and regop_t = '1' and if_ir(25) = '0' and shift_val = "00000") else -- Register operation (I = 0)
+    '1' when (if_ir(6 downto 5) = "11" and trans_t = '1' and if_ir(25) = '1' and shift_val = "00000") else              -- Simple transfer b25 = 1 with shift
+    '0';
+
+  -- Shift/Rotation values are found on the bits 11 - 7 TODO: Complete
+  shift_val <= "00010" when (branch_t = '1') else                                     -- Branch instructions multiply offset x4 (<< 2)
+    if_ir(11 downto 7) when (trans_t = '1' and if_ir(25) = '1') else                    -- Simple transfer (bit 25 I = 1)
+    if_ir(11 downto 8) & '0' when (regop_t = '1' and if_ir(25) = '0') else              -- Data processing with immediate (ignore bit 4)
+    if_ir(11 downto 7) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '0') else -- Register operation (bit 25 I = 0)
+    rdata3(4 downto 0) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '1') else -- Register operation (bit 25 I = 0)
+    "00000";
+
+  -- Alu operand selection
+  comp_op1 <= '1' when rsb_i = '1' or
     comp_op2 <= '1' when sub_i = '1' or
 
     alu_cy <= '1' when sub_i = '1' or
