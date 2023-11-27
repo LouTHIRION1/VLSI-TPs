@@ -339,7 +339,7 @@ begin
     assert(reg_pc_s = x"0000_1111") report "2Expected PC = 00001111" severity error;
     report "2Program Counter = " & to_hstring(reg_pc_s) severity note;
 
-    wen1_s   <= '0';
+    -- wen1_s   <= '0'; TODO: Why does this make the PC work?
     wen2_s   <= '0';
     inval1_s <= '0';
     inval2_s <= '0';
