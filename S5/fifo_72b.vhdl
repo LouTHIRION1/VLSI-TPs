@@ -1,5 +1,5 @@
 library ieee;
-use ieee.std_logic_1164.all;
+use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity fifo is
@@ -35,43 +35,43 @@ begin
     if rising_edge(ck) then
       report "fifo_v : " & std_logic'image(fifo_v)(2);
 
-      -- Synchronous reset
+      -- Synchronous reset (active low)
       if (reset_n = '0') then
-        fifo_v <= '0'; -- Empty FIFO
+        -- Invalid FIFO
+        fifo_v <= '0';
       else
+        -- If FIFO is invalid 
         if (fifo_v = '0') then
+          -- and we Push contents into it (72 bits d'un coup)
           if (push = '1') then
-            fifo_v <= '1';
-          else
-            fifo_v <= '0';
+            fifo_v <= '1'; -- FIFO is valid once there is data inside
+            fifo_d <= din; -- FIFO data <- Data In
           end if;
         else
+          -- If FIFO is valid
+          -- we Pop the contents from it (72 bits d'un coup)
           if (pop = '1') then
+            -- And immediately push new data in
             if (push = '1') then
-              fifo_v <= '1';
+              fifo_v <= '1'; -- FIFO is valid once there is data inside
+              fifo_d <= din; -- FIFO data <- Data In
             else
-              fifo_v <= '0';
+              fifo_v <= '0'; -- FIFO is invalid because there is no more data inside
             end if;
           else
-            fifo_v <= '1';
+            fifo_v <= '1'; -- FIFO is still valid because there is data inside
           end if;
         end if;
-      end if;
+      end if; -- Reset
+    end process;
 
-      -- data
-      if (fifo_v = '0') then
-        if (push = '1') then
-          fifo_d <= din;
-        end if;
-      elsif (push = '1' and pop = '1') then
-        fifo_d <= din;
-      end if;
-    end if;
-  end process;
+    ---- Assign outputs
+    -- FIFO is full when valid (data inside) and there hasn't been a pop yet
+    full <= '1' when (fifo_v = '1' and pop = '0') else
+      '0';
+    -- FIFO is empty when invalid
+    empty <= not fifo_v;
+    -- Data out <- FIFO Data
+    dout <= fifo_d;
 
-  full <= '1' when (fifo_v = '1' and pop = '0') else
-    '0';
-  empty <= not fifo_v;
-  dout  <= fifo_d;
-
-end dataflow;
+  end dataflow;
