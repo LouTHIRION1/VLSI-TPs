@@ -63,15 +63,16 @@ begin
           end if;
         end if;
       end if; -- Reset
-    end process;
+    end if; -- Rising edge
+  end process;
 
-    ---- Assign outputs
-    -- FIFO is full when valid (data inside) and there hasn't been a pop yet
-    full <= '1' when (fifo_v = '1' and pop = '0') else
-      '0';
-    -- FIFO is empty when invalid
-    empty <= not fifo_v;
-    -- Data out <- FIFO Data
-    dout <= fifo_d;
+  ---- Assign outputs
+  -- FIFO is full when valid (data inside) and there hasn't been a pop yet
+  full <= '1' when (fifo_v = '1' and pop = '0') else
+    '0';
+  -- FIFO is empty when invalid
+  empty <= not fifo_v;
+  -- Data out <- FIFO Data
+  dout <= fifo_d;
 
-  end dataflow;
+end dataflow;
