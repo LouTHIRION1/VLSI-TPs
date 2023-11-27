@@ -154,9 +154,9 @@ begin
         end if;
 
         -- Increment PC by 4 at every rising edge
-        -- reg_pc_al <= std_logic_vector(unsigned(reg_pc_al) + 4) when inc_pc = '1' else
+        reg_pc_al <= std_logic_vector(unsigned(reg_pc_al) + 4) when inc_pc = '1';
         --   reg_pc_al;
-        reg_bank(15) <= std_logic_vector(unsigned(reg_bank(15)) + 4) when inc_pc = '1';
+        -- reg_bank(15) <= std_logic_vector(unsigned(reg_bank(15)) + 4) when inc_pc = '1';
 
         ---- CPSR
         -- Validity bits
