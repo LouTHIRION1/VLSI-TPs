@@ -122,11 +122,13 @@ architecture behavioral_exec of EXec is
       vss : in bit);
   end component;
 
-  component fifo_72b
+  component fifo_generic
+    generic
+      (N : integer); -- FIFO Size
     port
     (
-      din  : in std_logic_vector(71 downto 0);
-      dout : out std_logic_vector(71 downto 0);
+      din  : in std_logic_vector(N - 1 downto 0);
+      dout : out std_logic_vector(N - 1 downto 0);
 
       -- commands
       push : in std_logic;
@@ -209,7 +211,9 @@ begin
   vss => vss
   );
 
-  exec2mem : fifo_72b
+  exec2mem : fifo_generic
+  generic
+  map(N => 72)
   port
   map
   (
@@ -284,9 +288,5 @@ begin
 
   exe_push <= '1' when exe2mem_full = '0' else
     '0'; -- Only allow push when the FIFO is not full
-
-  -- TODO: Test FIFO
-
-  -- probe <= alu_res; -- Probe used for simulation purposes
 
 end behavioral_exec;
