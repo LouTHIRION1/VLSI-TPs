@@ -147,32 +147,13 @@ architecture Behavior of Decod is
       vss     : in bit);
   end component;
 
-  component fifo_127b
+  component fifo_generic
+    generic
+      (N : integer); -- FIFO Size
     port
     (
-      din  : in std_logic_vector(126 downto 0);
-      dout : out std_logic_vector(126 downto 0);
-
-      -- commands
-      push : in std_logic;
-      pop  : in std_logic;
-
-      -- flags
-      full  : out std_logic;
-      empty : out std_logic;
-
-      reset_n : in std_logic;
-      ck      : in std_logic;
-      vdd     : in bit;
-      vss     : in bit
-    );
-  end component;
-
-  component fifo_32b
-    port
-    (
-      din  : in std_logic_vector(31 downto 0);
-      dout : out std_logic_vector(31 downto 0);
+      din  : in std_logic_vector(N - 1 downto 0);
+      dout : out std_logic_vector(N - 1 downto 0);
 
       -- commands
       push : in std_logic;
@@ -348,7 +329,11 @@ architecture Behavior of Decod is
 
 begin
 
-  dec2exec : fifo_127b
+  dec2exec : fifo_generic
+  generic
+  map (
+  N => 127
+  );
   port map
   (
     din(126)           => pre_index,
@@ -418,7 +403,11 @@ begin
     vdd     => vdd,
     vss     => vss);
 
-  dec2if : fifo_32b
+  dec2if : fifo_generic
+  generic
+  map (
+  N => 32
+  );
   port
   map (din => reg_pc,
   dout     => dec_pc,
