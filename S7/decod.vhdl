@@ -839,20 +839,24 @@ begin
         mtrans_shift    <= '0';
         mtrans_loop_adr <= '0';
 
-        if dec2if_full = '0' and reg_pcv = '1' then
-
+        if dec2if_full = '0' and reg_pcv = '1' and if2dec_empty = '0' then
+          next_state <= RUN;
         end if;
 
       when RUN =>
+        debug_state <= X"2";
         -- TODO: 
 
       when BRANCH =>
+        debug_state <= X"3";
         -- TODO: 
 
       when LINK =>
+        debug_state <= X"4";
         -- TODO: 
 
       when MTRANS =>
+        debug_state <= X"5";
         -- TODO: 
 
     end case;
