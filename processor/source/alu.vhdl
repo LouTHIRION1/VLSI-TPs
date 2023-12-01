@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 -- Declaration de l'interface
-entity Alu is
+entity alu is
   port
   (
     ---- Inputs
@@ -28,7 +28,7 @@ entity Alu is
     vdd : in bit;
     vss : in bit
   );
-end Alu;
+end alu;
 
 -- Description de l'alu
 architecture Behavioral of alu is
