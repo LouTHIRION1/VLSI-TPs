@@ -10,7 +10,7 @@ end adder_tb;
 architecture testbench of adder_tb is
 
   -- DUT component
-  component adder32 is
+  component adder is
     port
     (
       a, b : in std_logic_vector(31 downto 0);
@@ -29,7 +29,7 @@ architecture testbench of adder_tb is
 
 begin
   -- Connect DUT
-  DUT : adder32 port map
+  DUT : adder port map
     (a_s, b_s, cin_s, sum_s, cout_s);
   process
   begin

@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.numeric_std.all;
 
-entity adder32 is
+entity adder is
   port
   (
     a, b : in std_logic_vector(31 downto 0);
@@ -11,9 +11,9 @@ entity adder32 is
     sum  : out std_logic_vector(31 downto 0);
     cout : out std_logic
   );
-end adder32;
+end adder;
 
-architecture behavioural of adder32 is
+architecture behavioural of adder is
   signal temp : std_logic_vector(32 downto 0);
 begin
   -- Convert signals to 33 bits for carry in

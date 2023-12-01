@@ -3,7 +3,6 @@
 FILES = source/*.vhdl
 
 # Test Bench files
-TB_PATH = testbench/${TB_FILE}*
 TB_FILE = ${TB}_tb
 
 WORKDIR = work
@@ -38,7 +37,8 @@ STOP_TIME = 30ns
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
 .PHONY: clean
 
-all : clean make run
+# all : clean make run
+all : make run
 
 make : 
 # strip removes whitespace from TB argument
@@ -52,8 +52,8 @@ endif
 	@mkdir -p $(WORKDIR)
 # Analyze the files
 # @$(GHDL) -a -v $(GHDL_FLAGS) $(FILES)
-	@$(GHDL) -a -v $(GHDL_FLAGS) source/$(TB)*
-	@$(GHDL) -a -v $(GHDL_FLAGS) $(TB_PATH)
+	@$(GHDL) -a -v $(GHDL_FLAGS) source/$(TB).vhdl
+	@$(GHDL) -a -v $(GHDL_FLAGS) testbench/${TB_FILE}.vhdl
 # Elaborate (create executable)
 	@$(GHDL) -e -v $(GHDL_FLAGS) $(TB_FILE) 
 

@@ -33,7 +33,7 @@ end alu;
 -- Description de l'alu
 architecture Behavioral of alu is
 
-  component adder32 is
+  component adder is
     port
     (
       -- Inputs
@@ -57,7 +57,7 @@ architecture Behavioral of alu is
 
 begin
 
-  addr : adder32 port map
+  addr : adder port map
   (
     a    => op1,
     b    => op2,
