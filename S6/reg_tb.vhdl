@@ -334,7 +334,7 @@ begin
     wadr1_s  <= x"F";
     wadr2_s  <= x"F";
 
-    -- inval1_s     <= '1';
+    -- inval1_s <= '1';
     -- inval_adr1_s <= x"F";
 
     inval2_s     <= '0';
@@ -347,14 +347,14 @@ begin
     report "2Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     -- TODO : Why does this make the PC work?
-    -- inc_pc_s     <= '1';
+    inc_pc_s <= '1';
     wen1_s   <= '0';
     wen2_s   <= '0';
     inval1_s <= '0';
     inval2_s <= '0';
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_1111") report "3Expected PC = 00001111" severity error;
+    assert(reg_pc_s = x"0000_1115") report "3Expected PC = 00001111" severity error;
     report "3Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     inc_pc_s <= '1';
@@ -362,7 +362,7 @@ begin
     inval2_s <= '0';
     wait for clk_period;
 
-    assert(reg_pc_s = x"0000_1115") report "4Expected PC = 00001115" severity error;
+    assert(reg_pc_s = x"0000_1119") report "4Expected PC = 00001115" severity error;
     report "4Program Counter = " & to_hstring(reg_pc_s) severity note;
 
     report "--- Register Tests ---" severity note;
