@@ -188,59 +188,67 @@ begin
   --   wdata2 when (wen2 = '1' and wadr2 = radr1 and reg_bank_validity(wadr2_i) = '0') else
   --   reg_bank(radr1_i) when (radr1_i >= 0 and radr1_i <= 15) else
   --   x"0000_0000";
-  reg_rd1 <= reg_bank(radr1_i) when (radr1_i >= 0 and radr1_i <= 15);
   -- reg_v1 <= '1' when (wadr1 = radr1 and wen1 = '1') else
   --   '1' when (wadr2 = radr1 and wen2 = '1') else
   --   reg_bank_validity(radr1_i);
-  reg_v1 <= reg_bank_validity(radr1_i);
+  reg_rd1 <= reg_bank(radr1_i); -- when (radr1_i >= 0 and radr1_i <= 15);
+  reg_v1  <= reg_bank_validity(radr1_i);
 
   -- Port 2
   -- reg_rd2 <= wdata1 when (wen1 = '1' and wadr1 = radr2 and reg_bank_validity(wadr1_i) = '0') else
   --   wdata2 when (wen2 = '1' and wadr2 = radr2 and reg_bank_validity(wadr2_i) = '0') else
   --   reg_bank(radr2_i) when (radr2_i >= 0 and radr2_i <= 15) else
   --   x"0000_0000";
-  reg_rd2 <= reg_bank(radr2_i) when (radr2_i >= 0 and radr2_i <= 15);
   -- reg_v2 <= '1' when (wadr1 = radr2 and wen1 = '1') else
   --   '1' when (wadr2 = radr2 and wen2 = '1') else
   --   reg_bank_validity(radr2_i);
-  reg_v2 <= reg_bank_validity(radr2_i);
+  reg_rd2 <= reg_bank(radr2_i); -- when (radr2_i >= 0 and radr2_i <= 15);
+  reg_v2  <= reg_bank_validity(radr2_i);
 
   -- Port 3
   -- reg_rd3 <= wdata1 when (wen1 = '1' and wadr1 = radr3 and reg_bank_validity(wadr1_i) = '0') else
   --   wdata2 when (wen2 = '1' and wadr2 = radr3 and reg_bank_validity(wadr2_i) = '0') else
   --   reg_bank(radr3_i) when (radr3_i >= 0 and radr3_i <= 15) else
   --   x"0000_0000";
-  reg_rd3 <= reg_bank(radr3_i) when (radr3_i >= 0 and radr3_i <= 15);
   -- reg_v3 <= '1' when (wadr1 = radr3 and wen1 = '1') else
   --   '1' when (wadr2 = radr3 and wen2 = '1') else
   --   reg_bank_validity(radr3_i);
-  reg_v3 <= reg_bank_validity(radr3_i);
+  reg_rd3 <= reg_bank(radr3_i); -- when (radr3_i >= 0 and radr3_i <= 15);
+  reg_v3  <= reg_bank_validity(radr3_i);
 
   ---- PC
   -- Assign data when write is enabled (EXE has priority over MEM)
   -- otherwise use old value
-  reg_pc <= wdata1 when (wen1 = '1' and wadr1_i = 15 and reg_pcv_al = '0') else
-    wdata2 when (wen2 = '1' and wadr2_i = 15 and reg_pcv_al = '0') else
-    reg_pc_al;
-  -- Mark as valid when any write port is enabled and targets PC
-  reg_pcv <= '1' when (wadr1_i = 15 and wen1 = '1') else
-    '1' when (wadr2_i = 15 and wen2 = '1') else
-    reg_pcv_al;
+  -- reg_pc <= wdata1 when (wen1 = '1' and wadr1_i = 15 and reg_pcv_al = '0') else
+  --   wdata2 when (wen2 = '1' and wadr2_i = 15 and reg_pcv_al = '0') else
+  --   reg_pc_al;
+  -- -- Mark as valid when any write port is enabled and targets PC
+  -- reg_pcv <= '1' when (wadr1_i = 15 and wen1 = '1') else
+  --   '1' when (wadr2_i = 15 and wen2 = '1') else
+  --   reg_pcv_al;
+  reg_pc  <= reg_pc_al;
+  reg_pcv <= reg_pcv_al;
 
   ---- CPSR
   -- Assign input values when writeback is enabled and marked as invalid
   -- otherwise use old value
-  reg_cry <= wcry when (cpsr_wb = '1' and reg_cznv_s = '0') else
-    reg_c_s;
-  reg_zero <= wzero when (cpsr_wb = '1' and reg_cznv_s = '0') else
-    reg_z_s;
-  reg_neg <= wneg when (cpsr_wb = '1' and reg_cznv_s = '0') else
-    reg_n_s;
-  reg_ovr <= wovr when (cpsr_wb = '1' and reg_vv_s = '0') else
-    reg_v_s;
-  -- Mark as valid when writeback is enabled, else take old value
-  reg_cznv <= '1' when cpsr_wb = '1' else
-    reg_cznv_s;
-  reg_vv <= '1' when cpsr_wb = '1' else
-    reg_vv_s;
+  -- reg_cry <= wcry when (cpsr_wb = '1' and reg_cznv_s = '0') else
+  --   reg_c_s;
+  -- reg_zero <= wzero when (cpsr_wb = '1' and reg_cznv_s = '0') else
+  --   reg_z_s;
+  -- reg_neg <= wneg when (cpsr_wb = '1' and reg_cznv_s = '0') else
+  --   reg_n_s;
+  -- reg_ovr <= wovr when (cpsr_wb = '1' and reg_vv_s = '0') else
+  --   reg_v_s;
+  -- -- Mark as valid when writeback is enabled, else take old value
+  -- reg_cznv <= '1' when cpsr_wb = '1' else
+  --   reg_cznv_s;
+  -- reg_vv <= '1' when cpsr_wb = '1' else
+  --   reg_vv_s;
+  reg_cry  <= reg_c_s;
+  reg_zero <= reg_z_s;
+  reg_neg  <= reg_n_s;
+  reg_ovr  <= reg_v_s;
+  reg_cznv <= reg_cznv_s;
+  reg_vv   <= reg_vv_s;
 end behavioral_reg;

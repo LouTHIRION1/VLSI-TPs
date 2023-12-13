@@ -447,7 +447,7 @@ begin
     inval_adr1_s <= x"1";
     inval_adr2_s <= x"2";
     wdata1_s     <= x"0000_EEEE";
-    wdata2_s     <= x"0000_2222";
+    wdata2_s     <= x"0000_3333";
     radr1_s      <= x"1";
     radr2_s      <= x"2";
     radr3_s      <= x"3";
@@ -468,8 +468,8 @@ begin
     inval2_s     <= '0';
     inval_adr1_s <= x"1";
     inval_adr2_s <= x"2";
-    wdata1_s     <= x"0000_EEEE";
-    wdata2_s     <= x"0000_2222";
+    wdata1_s     <= x"0000_FFFF";
+    wdata2_s     <= x"0000_4444";
     radr1_s      <= x"1";
     radr2_s      <= x"2";
     radr3_s      <= x"3";
