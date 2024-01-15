@@ -203,7 +203,7 @@ begin
     wzero_s     <= '0';
     wcry_s      <= '0';
     wovr_s      <= '0';
-    wait for clk_period;
+    wait for clk_period * 2;
     -- Flags are validated after being written
     assert (reg_cznv_s = '1') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
     assert (reg_vv_s = '1') report "V Validity Error" severity error;     -- V Validity bit (arithmetic instruction)
@@ -216,12 +216,11 @@ begin
     inval_czn_s <= '1';
     inval_ovr_s <= '1';
     cpsr_wb_s   <= '1';
-
-    wneg_s  <= '1';
-    wzero_s <= '1';
-    wcry_s  <= '1';
-    wovr_s  <= '1';
-    wait for clk_period;
+    wneg_s      <= '1';
+    wzero_s     <= '1';
+    wcry_s      <= '1';
+    wovr_s      <= '1';
+    wait for clk_period * 2;
 
     -- Flags are validated after being written
     assert (reg_cznv_s = '1') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
@@ -237,12 +236,11 @@ begin
     inval_czn_s <= '1';
     inval_ovr_s <= '1';
     cpsr_wb_s   <= '0';
-
-    wneg_s  <= '0';
-    wzero_s <= '0';
-    wcry_s  <= '0';
-    wovr_s  <= '0';
-    wait for clk_period;
+    wneg_s      <= '0';
+    wzero_s     <= '0';
+    wcry_s      <= '0';
+    wovr_s      <= '0';
+    wait for clk_period * 2;
 
     -- Flags are not validated since they were not written (no writeback)
     assert (reg_cznv_s = '0') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
@@ -256,12 +254,11 @@ begin
     inval_czn_s <= '1';
     inval_ovr_s <= '1';
     cpsr_wb_s   <= '0';
-
-    wneg_s  <= '1';
-    wzero_s <= '1';
-    wcry_s  <= '1';
-    wovr_s  <= '1';
-    wait for clk_period;
+    wneg_s      <= '1';
+    wzero_s     <= '1';
+    wcry_s      <= '1';
+    wovr_s      <= '1';
+    wait for clk_period * 2;
 
     -- Flags are not validated since they were not written (no writeback)
     assert (reg_cznv_s = '0') report "CZN Validity Error" severity error; -- CZN Validity bit (logic instruction)
@@ -325,14 +322,11 @@ begin
 
     inval1_s     <= '1';
     inval_adr1_s <= x"F";
-
-    wait for clk_period;
-
-    inc_pc_s <= '0';
-    wen1_s   <= '1';
-    wen2_s   <= '0';
-    wadr1_s  <= x"F";
-    wadr2_s  <= x"F";
+    inc_pc_s     <= '0';
+    wen1_s       <= '1';
+    wen2_s       <= '0';
+    wadr1_s      <= x"F";
+    wadr2_s      <= x"F";
 
     -- inval1_s <= '1';
     -- inval_adr1_s <= x"F";
@@ -341,7 +335,7 @@ begin
     inval_adr2_s <= x"F";
     wdata1_s     <= x"0000_1111";
     wdata2_s     <= x"0000_2222";
-    wait for clk_period;
+    wait for clk_period * 2;
 
     assert(reg_pc_s = x"0000_1111") report "2Expected PC = 00001111" severity error;
     report "2Program Counter = " & to_hstring(reg_pc_s) severity note;
@@ -378,14 +372,12 @@ begin
     inval_adr1_s <= x"1";
     inval_adr2_s <= x"2";
 
-    wait for clk_period;
-
     wdata1_s <= x"0000_1111";
     wdata2_s <= x"0000_2222";
     radr1_s  <= x"1";
     radr2_s  <= x"2";
     radr3_s  <= x"3";
-    wait for clk_period;
+    wait for clk_period * 2;
 
     assert(reg_rd1_s = x"0000_1111") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
     report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
@@ -408,7 +400,7 @@ begin
     radr1_s      <= x"1";
     radr2_s      <= x"2";
     radr3_s      <= x"3";
-    wait for clk_period;
+    wait for clk_period * 2;
 
     assert(reg_rd1_s = x"0000_1111") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
     report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
@@ -429,7 +421,7 @@ begin
     radr1_s      <= x"1";
     radr2_s      <= x"2";
     radr3_s      <= x"3";
-    wait for clk_period;
+    wait for clk_period * 2;
 
     assert(reg_rd1_s = x"0000_1111") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
     report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
@@ -473,11 +465,11 @@ begin
     radr1_s      <= x"1";
     radr2_s      <= x"2";
     radr3_s      <= x"3";
-    wait for clk_period;
+    wait for clk_period * 2;
 
     -- assert(reg_rd1_s = x"0000_0000") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr1_s))) severity error;
     report "reg_rd1=" & to_hstring(reg_rd1_s) severity note;
-    assert(reg_rd2_s = x"0000_EEEE") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error;
+    assert(reg_rd2_s = x"0000_EEEE") report "Wrong value for R" & integer'image(to_integer(unsigned(wadr2_s))) severity error; -- Valeur finale
     report "reg_rd2=" & to_hstring(reg_rd2_s) severity note;
     wait;
   end process;
