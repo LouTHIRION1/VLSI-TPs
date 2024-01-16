@@ -676,9 +676,9 @@ begin
   alu_wb <=
     '1' when mult_t = '1' else                                                                  -- Multiplication
     '1' when regop_t = '1' and tst_i = '0' and teq_i = '0' and cmp_i = '0' and cmn_i = '0' else -- Data Processing (Writes to Rd)
-    '1' when branch_t = '1'                                                                     -- Branch (writes to PC)
-    '1' when trans_t = '1' and if_ir(21) = '1'                                                  -- Simple memory access with writeback
-    '1' when mtrans_t = '1' and if_ir(21) = '1'                                                 -- Simple memory access with writeback
+    '1' when branch_t = '1' else                                                                -- Branch (writes to PC)
+    '1' when trans_t = '1' and if_ir(21) = '1' else                                             -- Simple memory access with writeback
+    '1' when mtrans_t = '1' and if_ir(21) = '1' else                                            -- Simple memory access with writeback
     '0';
 
   -- Update flags 
