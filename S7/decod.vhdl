@@ -771,14 +771,21 @@ begin
     "00000";
 
   -- Alu operand selection
-  comp_op1 <= '1' when rsb_i = '1' or
-    comp_op2 <= '1' when sub_i = '1' or
+  -- 2's complement for the first operand
+  comp_op1 <=
+    '1' when (rsb_i = '1' or rsc_i = '1') else
+    '0';
 
-    alu_cy <= '1' when sub_i = '1' or
+  -- 2's complement for the second operand
+  comp_op2 <=
+    '1' when sub_i = '1' or sbc_i = '1' or cmp_i = '1' or bic_i = '1' or mvn_i = '1' else
+    '0';
 
-    -- Alu command
+  alu_cy <= '1' when sub_i = '1' or;
 
-    alu_cmd <= "11" when --TODO: else
+  -- Alu command
+
+  alu_cmd <= "11" when --TODO: else
     "00";
   -- Mtrans reg list
 
