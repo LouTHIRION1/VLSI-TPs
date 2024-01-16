@@ -654,33 +654,61 @@ begin
     '0';
 
   ---- Decode interface operands TODO:
-  op1 <= reg_pc when branch_t = '1' else
+  op1 <=
+    reg_pc when (branch_t = '1') else
+    exe_res when (mtrans_shift = '1') else
+    rdata1 when (regop_t = '1' and mov_i = '0' and mvn_i = '0') or (trans_t = '1') or (mtrans_t = '1') else
+    x"00000000";
 
-    rdata1;
+  offset32 <= x"0000_0000"; -- TODO: Branch
 
-  offset32 <=
-
-    op2 <=
+  op2 <= -- TODO:
+    offset32 when (branch_t = '1') else
     rdata2;
 
-  alu_dest <= ... else
-    if_ir(19 downto 16);
+  -- ALU destination Rd
+  alu_dest <=
+    if_ir(15 downto 12) when regop_t = '1' else -- Data Processing 
+    if_ir(15 downto 12) when trans_t = '1' else -- Simple memory access 
+    if_ir(19 downto 16) when mult_t = '1';      -- Multiplication
 
-  alu_wb <= '1' when
+  -- ALU Writeback enabled
+  alu_wb <=
+    '1' when mult_t = '1' else                                                                  -- Multiplication
+    '1' when regop_t = '1' and tst_i = '0' and teq_i = '0' and cmp_i = '0' and cmn_i = '0' else -- Data Processing (Writes to Rd)
+    '1' when branch_t = '1'                                                                     -- Branch (writes to PC)
+    '1' when trans_t = '1' and if_ir(21) = '1'                                                  -- Simple memory access with writeback
+    '1' when mtrans_t = '1' and if_ir(21) = '1'                                                 -- Simple memory access with writeback
     '0';
 
+  -- Update flags 
   flag_wb <=
+    if_ir(20) when regop_t = '1' else -- Data Processing, bit S = '1'
+    '0';
 
-    -- reg read TODO:
-    radr1 <=
+  ---- Read addresses for registers
+  -- Read address 1
+  radr1 <=
+    if_ir(19 downto 16) when regop_t = '1' else -- Data Processing 
+    if_ir(19 downto 16) when mult_t = '1' else  -- Multiplication
+    if_ir(19 downto 16) when trans_t = '1' else -- Simple memory access
+    if_ir(19 downto 16) when mtrans_t = '1';    -- Multiple memory access
 
-    radr2 <=
+  -- Read address 2 = Rm
+  radr2 <=
+    if_ir(3 downto 0) when regop_t = '1' and if_ir(25) = '0' else -- Op2 Registre
+    if_ir(3 downto 0) when trans_t = '1' and if_ir(25) = '1' else -- Simple memory access
+    mtrans_rd when mtrans_t = '1' else
+    "0000";
 
-    radr3 <=
+  -- Read address 3 = 
+  radr3 <=
+    mtrans_rd when mtrans_t = '1' else          -- Multiple memory access
+    if_ir(15 downto 12) when trans_t = '1' else -- Simple memory access
+    if_ir(11 downto 8);                         -- Shift
 
-    -- Reg Invalid TODO:
-
-    inval_exe_adr <= ... else
+  -- Reg Invalid TODO:
+  inval_exe_adr <= ... else
     if_ir(15 downto 12);
 
   inval_exe <= '1' when ...
