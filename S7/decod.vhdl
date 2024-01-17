@@ -641,7 +641,7 @@ begin
   bl_i <= '1' when branch_t = '1' and if_ir(24) = '1' else
     '0';
 
-  ---- Decode interface operands TODO:
+  ---- Decode interface operands
   op1 <=
     reg_pc when (branch_t = '1') else
     exe_res when (mtrans_shift = '1') else
@@ -707,14 +707,9 @@ begin
   -- inval_czn <= ;
   -- inval_ovr <= ;
 
-  -- operand validite TODO:
-  operv <=
-    '1' when
-    (branch_t = '1' and reg_pcv = '1') or
-    (regop_t = '1' and (((mov_i = '1' or mvn_i = '1') and ((if_ir(25) = '1') or (rvalid2 = '1'))) or ((mov_i = '0' and mvn_i = '0') and (rvalid1 = '1') and ((if_ir(25) = '1') or (rvalid2 = '1'))))) or
-    (trans_t = '1' and ((rvalid1 = '1') and ((if_ir(25) = '0') or (rvalid2 = '1'))))
-    else
-    '0';
+  -- Source operands validity TODO:
+  -- operv <= '1' when ... else
+  --   '0';
 
   -- Decode to mem interface TODO:
   -- ld_dest   <= ;
