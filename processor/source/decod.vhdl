@@ -228,7 +228,6 @@ architecture Behavior of Decod is
   signal mtrans_ia : std_logic;
   signal mtrans_ib : std_logic;
   signal mtrans_da : std_logic;
-  signal mtrans_da : std_logic;
 
   signal mtrans_mask_shift : std_logic_vector(15 downto 0);
   signal mtrans_mask       : std_logic_vector(15 downto 0);
@@ -333,7 +332,7 @@ begin
   generic
   map (
   N => 127
-  );
+  )
   port map
   (
     din(126)           => pre_index,
@@ -407,7 +406,7 @@ begin
   generic
   map (
   N => 32
-  );
+  )
   port
   map (din => reg_pc,
   dout     => dec_pc,
@@ -642,61 +641,83 @@ begin
   bl_i <= '1' when branch_t = '1' and if_ir(24) = '1' else
     '0';
 
-  ---- Decode interface operands TODO:
-  op1 <= reg_pc when branch_t = '1' else
+  ---- Decode interface operands
+  op1 <=
+    reg_pc when (branch_t = '1') else
+    exe_res when (mtrans_shift = '1') else
+    rdata1 when (regop_t = '1' and mov_i = '0' and mvn_i = '0') or (trans_t = '1') or (mtrans_t = '1') else
+    x"00000000";
 
-    rdata1;
+  offset32 <= x"0000_0000"; -- TODO: Branch
 
-  offset32 <=
-
-    op2 <=
+  op2 <= -- TODO:
+    offset32 when (branch_t = '1') else
     rdata2;
 
-  alu_dest <= ... else
-    if_ir(19 downto 16);
+  -- ALU destination Rd
+  alu_dest <=
+    if_ir(15 downto 12) when regop_t = '1' else -- Data Processing 
+    if_ir(15 downto 12) when trans_t = '1' else -- Simple memory access 
+    if_ir(19 downto 16) when mult_t = '1';      -- Multiplication
 
-  alu_wb <= '1' when
+  -- ALU Writeback enabled
+  alu_wb <=
+    '1' when mult_t = '1' else                                                                  -- Multiplication
+    '1' when regop_t = '1' and tst_i = '0' and teq_i = '0' and cmp_i = '0' and cmn_i = '0' else -- Data Processing (Writes to Rd)
+    '1' when branch_t = '1' else                                                                -- Branch (writes to PC)
+    '1' when trans_t = '1' and if_ir(21) = '1' else                                             -- Simple memory access with writeback
+    '1' when mtrans_t = '1' and if_ir(21) = '1' else                                            -- Simple memory access with writeback
     '0';
 
+  -- Update flags 
   flag_wb <=
-
-    -- reg read TODO:
-    radr1 <=
-
-    radr2 <=
-
-    radr3 <=
-
-    -- Reg Invalid TODO:
-
-    inval_exe_adr <= ... else
-    if_ir(15 downto 12);
-
-  inval_exe <= '1' when ...
+    if_ir(20) when regop_t = '1' else -- Data Processing, bit S = '1'
     '0';
 
-  inval_mem_adr <= ...
-    mtrans_rd;
+  ---- Read addresses for registers
+  -- Read address 1
+  radr1 <=
+    if_ir(19 downto 16) when regop_t = '1' else -- Data Processing 
+    if_ir(19 downto 16) when mult_t = '1' else  -- Multiplication
+    if_ir(19 downto 16) when trans_t = '1' else -- Simple memory access
+    if_ir(19 downto 16) when mtrans_t = '1';    -- Multiple memory access
 
-  inval_mem <= '1' when ... else
-    '0';
+  -- Read address 2 = Rm
+  radr2 <=
+    if_ir(3 downto 0) when regop_t = '1' and if_ir(25) = '0' else -- Op2 Registre
+    if_ir(3 downto 0) when trans_t = '1' and if_ir(25) = '1' else -- Simple memory access
+    mtrans_rd when mtrans_t = '1' else
+    "0000";
 
-  inval_czn <=
-    inval_ovr <=
+  -- Read address 3 = 
+  radr3 <=
+    mtrans_rd when mtrans_t = '1' else          -- Multiple memory access
+    if_ir(15 downto 12) when trans_t = '1' else -- Simple memory access
+    if_ir(11 downto 8);                         -- Shift
 
-    -- operand validite TODO:
+  ---- Reg Invalidation TODO:
+  -- inval_exe_adr <= ... else
+  --   if_ir(15 downto 12);
+  -- inval_exe <= '1' when ...
+  --   '0';
+  -- inval_mem_adr <= ...
+  --   mtrans_rd;
+  -- inval_mem <= '1' when ... else
+  --   '0';
+  -- inval_czn <= ;
+  -- inval_ovr <= ;
 
-    operv <= '1' when
-    '0';
+  -- Source operands validity TODO:
+  -- operv <= '1' when ... else
+  --   '0';
 
   -- Decode to mem interface TODO:
-  ld_dest   <=
-    pre_index <=
-
-    mem_lw <=
-    mem_lb <= ldrb_i;
-  mem_sw <=
-    mem_sb <= strb_i;
+  -- ld_dest   <= ;
+  -- pre_index <= ;
+  -- mem_lw    <= ;
+  -- mem_lb    <= ldrb_i;
+  -- mem_sw    <= ;
+  -- mem_sb    <= strb_i;
 
   -- Shifter command
 
@@ -731,24 +752,35 @@ begin
     rdata3(4 downto 0) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '1') else -- Register operation (bit 25 I = 0)
     "00000";
 
-  -- Alu operand selection
-  comp_op1 <= '1' when rsb_i = '1' or
-    comp_op2 <= '1' when sub_i = '1' or
+  ---- ALU 
+  -- 2's complement
+  comp_op1 <=
+    '1' when (rsb_i = '1' or rsc_i = '1') else
+    '0';
 
-    alu_cy <= '1' when sub_i = '1' or
+  comp_op2 <=
+    '1' when sub_i = '1' or sbc_i = '1' or cmp_i = '1' or bic_i = '1' or mvn_i = '1' else
+    '0';
 
-    -- Alu command
+  -- Carry
+  alu_cy <=
+    '1' when rsb_i = '1' or cmp_i = '1' or sub_i = '1' or (sbc_i = '1' and cry = '1') or (adc_i = '1' and cry = '1') or (rsc_i = '1' and cry = '1') else
+    '0';
 
-    alu_cmd <= "11" when --TODO: else
+  -- Alu command
+  alu_cmd <=
+    "01" when and_i = '1' or tst_i = '1' or bic_i = '1' else
+    "10" when orr_i = '1' else
+    "11" when eor_i = '1' or teq_i = '1' else
     "00";
-  -- Mtrans reg list
 
-  process (ck)
-  begin
-    if (rising_edge(ck)) then
-      -- TODO: 
-    end if;
-  end process;
+  ---- Mtrans reg list
+  -- TODO:
+  -- process (ck)
+  -- begin
+  --   if (rising_edge(ck)) then
+  --   end if;
+  -- end process;
 
   mtrans_mask_shift <= X"FFFE" when if_ir(0) = '1' and mtrans_mask(0) = '1' else
     X"FFFC" when if_ir(1) = '1' and mtrans_mask(1) = '1' else
@@ -769,9 +801,10 @@ begin
 
   mtrans_list <= if_ir(15 downto 0) and mtrans_mask;
 
-  process (mtrans_list)
-  begin
-  end process;
+  -- TODO:
+  -- process (mtrans_list)
+  -- begin
+  -- end process;
 
   mtrans_1un <= '1' when mtrans_nbr = "00001" else
     '0';
@@ -793,11 +826,10 @@ begin
     X"E" when mtrans_list(14) = '1' else
     X"F";
 
-  -- FSM
+  ---- Finite State Machine
 
   process (ck)
   begin
-
     if (rising_edge(ck)) then
       if (reset_n = '0') then
         cur_state <= FETCH;
@@ -827,6 +859,7 @@ begin
         blink           <= '0';
         mtrans_shift    <= '0';
         mtrans_loop_adr <= '0';
+        dec_pop         <= '0';
 
         if dec2if_full = '0' and reg_pcv = '1' and if2dec_empty = '0' then
           next_state <= RUN;
