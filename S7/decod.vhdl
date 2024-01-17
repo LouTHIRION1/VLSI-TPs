@@ -770,24 +770,29 @@ begin
     rdata3(4 downto 0) when (regop_t = '1' and if_ir(25) = '0' and if_ir(4) = '1') else -- Register operation (bit 25 I = 0)
     "00000";
 
-  -- Alu operand selection
-  -- 2's complement for the first operand
+  ---- ALU 
+  -- 2's complement
   comp_op1 <=
     '1' when (rsb_i = '1' or rsc_i = '1') else
     '0';
 
-  -- 2's complement for the second operand
   comp_op2 <=
     '1' when sub_i = '1' or sbc_i = '1' or cmp_i = '1' or bic_i = '1' or mvn_i = '1' else
     '0';
 
-  alu_cy <= '1' when sub_i = '1' or;
+  -- Carry
+  alu_cy <=
+    '1' when rsb_i = '1' or cmp_i = '1' or sub_i = '1' or (sbc_i = '1' and cry = '1') or (adc_i = '1' and cry = '1') or (rsc_i = '1' and cry = '1') else
+    '0';
 
   -- Alu command
-
-  alu_cmd <= "11" when --TODO: else
+  alu_cmd <=
+    "01" when and_i = '1' or tst_i = '1' or bic_i = '1' else
+    "10" when orr_i = '1' else
+    "11" when eor_i = '1' or teq_i = '1' else
     "00";
-  -- Mtrans reg list
+
+  ---- Mtrans reg list
 
   process (ck)
   begin
