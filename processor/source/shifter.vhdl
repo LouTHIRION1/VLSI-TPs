@@ -6,18 +6,18 @@ use IEEE.numeric_std.all;
 entity Shifter is port
 (
   -- Type of instruction
-  shift_lsl : in std_logic := '0'; -- Logic Shift Left
-  shift_lsr : in std_logic := '0'; -- Logic Shift Right
-  shift_asr : in std_logic := '0'; -- Arithmetic Shift Right
-  shift_ror : in std_logic := '0'; -- ROtate Right
-  shift_rrx : in std_logic := '0'; -- Rotate Right eXtended
+  shift_lsl : in std_logic; -- Logic Shift Left
+  shift_lsr : in std_logic; -- Logic Shift Right
+  shift_asr : in std_logic; -- Arithmetic Shift Right
+  shift_ror : in std_logic; -- ROtate Right
+  shift_rrx : in std_logic; -- Rotate Right eXtended
   -- Inputs
   shift_val : in std_logic_vector(4 downto 0);  -- Shift Value (2^5 = 32 possible places)
   din       : in std_logic_vector(31 downto 0); -- Data in
-  cin       : in std_logic := '0';              -- Carry in
+  cin       : in std_logic;                     -- Carry in
   -- Outputs
   dout : out std_logic_vector(31 downto 0); -- Data out
-  cout : out std_logic := '0';              -- Carry out
+  cout : out std_logic;                     -- Carry out
   -- Global interface
   vdd : in bit;
   vss : in bit);
@@ -27,7 +27,7 @@ architecture Behavioral of Shifter is
   signal dout_s : std_logic_vector(32 downto 0);
   signal temp   : std_logic_vector(31 downto 0);
   signal din_s  : std_logic_vector(32 downto 0);
-  signal cout_s : std_logic := '0';
+  signal cout_s : std_logic;
 begin
   process (din, din_s, dout_s, shift_val, cin, shift_lsl, shift_lsr, shift_asr, shift_ror, shift_rrx) is
     variable shift_amount : integer := 0;

@@ -6,72 +6,72 @@ entity EXec is
   port
   (
     -- Decode interface synchronization
-    dec2exe_empty : in std_logic  := '0'; -- '1' when DEC FIFO is empty
-    exe_pop       : out std_logic := '0'; -- Gere la FIFO de décode
+    dec2exe_empty : in std_logic;  -- '1' when DEC FIFO is empty
+    exe_pop       : out std_logic; -- Gere la FIFO de décode
 
     -- Decode interface operands
-    dec_op1      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- first ALU input (Op1)
-    dec_op2      : in std_logic_vector(31 downto 0) := x"0000_0000"; -- shifter input (into Op2)
-    dec_exe_dest : in std_logic_vector(3 downto 0)  := "0000";       -- Rd destination {!}
-    dec_exe_wb   : in std_logic                     := '0';          -- Rd destination write back {!}
-    dec_flag_wb  : in std_logic                     := '0';          -- CSPR modifiy {S}
+    dec_op1      : in std_logic_vector(31 downto 0); -- first ALU input (Op1)
+    dec_op2      : in std_logic_vector(31 downto 0); -- shifter input (into Op2)
+    dec_exe_dest : in std_logic_vector(3 downto 0);  -- Rd destination {!}
+    dec_exe_wb   : in std_logic;                     -- Rd destination write back {!}
+    dec_flag_wb  : in std_logic;                     -- CSPR modifiy {S}
 
     -- Decode to mem interface 
-    dec_mem_data  : in std_logic_vector(31 downto 0) := x"0000_0000"; -- data to MEM W
-    dec_mem_dest  : in std_logic_vector(3 downto 0)  := "0000";       -- Destination MEM R
-    dec_pre_index : in std_logic                     := '0';
+    dec_mem_data  : in std_logic_vector(31 downto 0); -- data to MEM W
+    dec_mem_dest  : in std_logic_vector(3 downto 0);  -- Destination MEM R
+    dec_pre_index : in std_logic;
 
-    dec_mem_lw : in std_logic := '0'; -- Load Word
-    dec_mem_lb : in std_logic := '0'; -- Load Byte
-    dec_mem_sw : in std_logic := '0'; -- Store Word
-    dec_mem_sb : in std_logic := '0'; -- Store Byte
+    dec_mem_lw : in std_logic; -- Load Word
+    dec_mem_lb : in std_logic; -- Load Byte
+    dec_mem_sw : in std_logic; -- Store Word
+    dec_mem_sb : in std_logic; -- Store Byte
 
     ---- Shifter
-    dec_shift_lsl : in std_logic                    := '0';
-    dec_shift_lsr : in std_logic                    := '0';
-    dec_shift_asr : in std_logic                    := '0';
-    dec_shift_ror : in std_logic                    := '0';
-    dec_shift_rrx : in std_logic                    := '0';
-    dec_shift_val : in std_logic_vector(4 downto 0) := "00000";
-    dec_cy        : in std_logic                    := '0';
+    dec_shift_lsl : in std_logic;
+    dec_shift_lsr : in std_logic;
+    dec_shift_asr : in std_logic;
+    dec_shift_ror : in std_logic;
+    dec_shift_rrx : in std_logic;
+    dec_shift_val : in std_logic_vector(4 downto 0);
+    dec_cy        : in std_logic;
 
     ---- ALU
-    dec_comp_op1 : in std_logic                    := '0';  -- MUX Operand 1
-    dec_comp_op2 : in std_logic                    := '0';  -- MUX Operand 2
-    dec_alu_cy   : in std_logic                    := '0';  -- ALU Cin
-    dec_alu_cmd  : in std_logic_vector(1 downto 0) := "00"; -- ALU command
+    dec_comp_op1 : in std_logic;                    -- MUX Operand 1
+    dec_comp_op2 : in std_logic;                    -- MUX Operand 2
+    dec_alu_cy   : in std_logic;                    -- ALU Cin
+    dec_alu_cmd  : in std_logic_vector(1 downto 0); -- ALU command
 
     ---- EXE bypass to DECOD
-    exe_res : out std_logic_vector(31 downto 0) := x"0000_0000";
+    exe_res : out std_logic_vector(31 downto 0);
 
     -- Flags
-    exe_c : out std_logic := '0';
-    exe_v : out std_logic := '0';
-    exe_n : out std_logic := '0';
-    exe_z : out std_logic := '0';
+    exe_c : out std_logic;
+    exe_v : out std_logic;
+    exe_n : out std_logic;
+    exe_z : out std_logic;
 
-    exe_dest    : out std_logic_vector(3 downto 0) := "0000"; -- Rd destination
-    exe_wb      : out std_logic                    := '0';    -- Rd destination write back
-    exe_flag_wb : out std_logic                    := '0';    -- CSPR modifiy
+    exe_dest    : out std_logic_vector(3 downto 0); -- Rd destination
+    exe_wb      : out std_logic;                    -- Rd destination write back
+    exe_flag_wb : out std_logic;                    -- CSPR modifiy
 
     -- Mem interface
-    exe_mem_adr  : out std_logic_vector(31 downto 0) := x"0000_0000"; -- Alu res register
-    exe_mem_data : out std_logic_vector(31 downto 0) := x"0000_0000";
-    exe_mem_dest : out std_logic_vector(3 downto 0)  := "0000";
+    exe_mem_adr  : out std_logic_vector(31 downto 0); -- Alu res register
+    exe_mem_data : out std_logic_vector(31 downto 0);
+    exe_mem_dest : out std_logic_vector(3 downto 0);
 
-    exe_mem_lw : out std_logic := '0';
-    exe_mem_lb : out std_logic := '0';
-    exe_mem_sw : out std_logic := '0';
-    exe_mem_sb : out std_logic := '0';
+    exe_mem_lw : out std_logic;
+    exe_mem_lb : out std_logic;
+    exe_mem_sw : out std_logic;
+    exe_mem_sb : out std_logic;
 
-    exe2mem_empty : out std_logic := '0';
-    mem_pop       : in std_logic  := '0';
+    exe2mem_empty : out std_logic;
+    mem_pop       : in std_logic;
 
     -- global interface
-    clk     : in std_logic := '0';
-    reset_n : in std_logic := '0';
-    vdd     : in bit       := '0';
-    vss     : in bit       := '0');
+    clk     : in std_logic;
+    reset_n : in std_logic;
+    vdd     : in bit;
+    vss     : in bit);
 
   -- Probe
   -- probe : out std_logic_vector(31 downto 0));
@@ -86,18 +86,18 @@ architecture behavioral_exec of EXec is
     port
     (
       -- Type of instruction
-      shift_lsl : in std_logic := '0'; -- Logic Shift Left
-      shift_lsr : in std_logic := '0'; -- Logic Shift Right
-      shift_asr : in std_logic := '0'; -- Arithmetic Shift Right
-      shift_ror : in std_logic := '0'; -- ROtate Right
-      shift_rrx : in std_logic := '0'; -- Rotate Right eXtended
+      shift_lsl : in std_logic; -- Logic Shift Left
+      shift_lsr : in std_logic; -- Logic Shift Right
+      shift_asr : in std_logic; -- Arithmetic Shift Right
+      shift_ror : in std_logic; -- ROtate Right
+      shift_rrx : in std_logic; -- Rotate Right eXtended
       -- Inputs
       shift_val : in std_logic_vector(4 downto 0);  -- Shift Value (2^5 = 32 possible places)
       din       : in std_logic_vector(31 downto 0); -- Data in
-      cin       : in std_logic := '0';              -- Carry in
+      cin       : in std_logic;                     -- Carry in
       -- Outputs
       dout : out std_logic_vector(31 downto 0); -- Data out
-      cout : out std_logic := '0';              -- Carry out
+      cout : out std_logic;                     -- Carry out
       -- Global interface
       vdd : in bit;
       vss : in bit);

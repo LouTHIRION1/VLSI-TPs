@@ -17,11 +17,11 @@ entity alu is
     ---- Output
     -- Resultat + retenue Carry out
     res  : out std_logic_vector(31 downto 0);
-    cout : out std_logic := '0'; -- Carry out 
+    cout : out std_logic; -- Carry out 
     -- Flags
-    z : out std_logic := '0'; -- Zero (1 if zero, 0 otherwise)
-    n : out std_logic := '0'; -- Negative (1 if negative, 0 if positive)
-    v : out std_logic := '0'; -- Overflow (1 if overflow, 0 otherwise)
+    z : out std_logic; -- Zero (1 if zero, 0 otherwise)
+    n : out std_logic; -- Negative (1 if negative, 0 if positive)
+    v : out std_logic; -- Overflow (1 if overflow, 0 otherwise)
 
     ---- 
     -- Tensions
