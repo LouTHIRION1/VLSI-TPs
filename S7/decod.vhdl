@@ -147,32 +147,13 @@ architecture Behavior of Decod is
       vss     : in bit);
   end component;
 
-  component fifo_127b
+  component fifo_generic
+    generic
+      (N : integer); -- FIFO Size
     port
     (
-      din  : in std_logic_vector(126 downto 0);
-      dout : out std_logic_vector(126 downto 0);
-
-      -- commands
-      push : in std_logic;
-      pop  : in std_logic;
-
-      -- flags
-      full  : out std_logic;
-      empty : out std_logic;
-
-      reset_n : in std_logic;
-      ck      : in std_logic;
-      vdd     : in bit;
-      vss     : in bit
-    );
-  end component;
-
-  component fifo_32b
-    port
-    (
-      din  : in std_logic_vector(31 downto 0);
-      dout : out std_logic_vector(31 downto 0);
+      din  : in std_logic_vector(N - 1 downto 0);
+      dout : out std_logic_vector(N - 1 downto 0);
 
       -- commands
       push : in std_logic;
@@ -246,7 +227,6 @@ architecture Behavior of Decod is
 
   signal mtrans_ia : std_logic;
   signal mtrans_ib : std_logic;
-  signal mtrans_da : std_logic;
   signal mtrans_da : std_logic;
 
   signal mtrans_mask_shift : std_logic_vector(15 downto 0);
@@ -348,7 +328,11 @@ architecture Behavior of Decod is
 
 begin
 
-  dec2exec : fifo_127b
+  dec2exec : fifo_generic
+  generic
+  map (
+  N => 127
+  )
   port map
   (
     din(126)           => pre_index,
@@ -418,7 +402,11 @@ begin
     vdd     => vdd,
     vss     => vss);
 
-  dec2if : fifo_32b
+  dec2if : fifo_generic
+  generic
+  map (
+  N => 32
+  )
   port
   map (din => reg_pc,
   dout     => dec_pc,
@@ -707,35 +695,34 @@ begin
     if_ir(15 downto 12) when trans_t = '1' else -- Simple memory access
     if_ir(11 downto 8);                         -- Shift
 
-  -- Reg Invalid TODO:
-  inval_exe_adr <= ... else
-    if_ir(15 downto 12);
+  ---- Reg Invalidation TODO:
+  -- inval_exe_adr <= ... else
+  --   if_ir(15 downto 12);
+  -- inval_exe <= '1' when ...
+  --   '0';
+  -- inval_mem_adr <= ...
+  --   mtrans_rd;
+  -- inval_mem <= '1' when ... else
+  --   '0';
+  -- inval_czn <= ;
+  -- inval_ovr <= ;
 
-  inval_exe <= '1' when ...
-    '0';
-
-  inval_mem_adr <= ...
-    mtrans_rd;
-
-  inval_mem <= '1' when ... else
-    '0';
-
-  inval_czn <=
-    inval_ovr <=
-
-    -- operand validite TODO:
-
-    operv <= '1' when
+  -- operand validite TODO:
+  operv <=
+    '1' when
+    (branch_t = '1' and reg_pcv = '1') or
+    (regop_t = '1' and (((mov_i = '1' or mvn_i = '1') and ((if_ir(25) = '1') or (rvalid2 = '1'))) or ((mov_i = '0' and mvn_i = '0') and (rvalid1 = '1') and ((if_ir(25) = '1') or (rvalid2 = '1'))))) or
+    (trans_t = '1' and ((rvalid1 = '1') and ((if_ir(25) = '0') or (rvalid2 = '1'))))
+    else
     '0';
 
   -- Decode to mem interface TODO:
-  ld_dest   <=
-    pre_index <=
-
-    mem_lw <=
-    mem_lb <= ldrb_i;
-  mem_sw <=
-    mem_sb <= strb_i;
+  -- ld_dest   <= ;
+  -- pre_index <= ;
+  -- mem_lw    <= ;
+  -- mem_lb    <= ldrb_i;
+  -- mem_sw    <= ;
+  -- mem_sb    <= strb_i;
 
   -- Shifter command
 
@@ -793,13 +780,12 @@ begin
     "00";
 
   ---- Mtrans reg list
-
-  process (ck)
-  begin
-    if (rising_edge(ck)) then
-      -- TODO: 
-    end if;
-  end process;
+  -- TODO:
+  -- process (ck)
+  -- begin
+  --   if (rising_edge(ck)) then
+  --   end if;
+  -- end process;
 
   mtrans_mask_shift <= X"FFFE" when if_ir(0) = '1' and mtrans_mask(0) = '1' else
     X"FFFC" when if_ir(1) = '1' and mtrans_mask(1) = '1' else
@@ -820,9 +806,10 @@ begin
 
   mtrans_list <= if_ir(15 downto 0) and mtrans_mask;
 
-  process (mtrans_list)
-  begin
-  end process;
+  -- TODO:
+  -- process (mtrans_list)
+  -- begin
+  -- end process;
 
   mtrans_1un <= '1' when mtrans_nbr = "00001" else
     '0';
@@ -844,11 +831,10 @@ begin
     X"E" when mtrans_list(14) = '1' else
     X"F";
 
-  -- FSM
+  ---- Finite State Machine
 
   process (ck)
   begin
-
     if (rising_edge(ck)) then
       if (reset_n = '0') then
         cur_state <= FETCH;
@@ -878,6 +864,7 @@ begin
         blink           <= '0';
         mtrans_shift    <= '0';
         mtrans_loop_adr <= '0';
+        dec_pop         <= '0';
 
         if dec2if_full = '0' and reg_pcv = '1' and if2dec_empty = '0' then
           next_state <= RUN;
